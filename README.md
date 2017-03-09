@@ -1,1 +1,1 @@
-[![Build status](https://ci.appveyor.com/api/projects/status/oi4pfp9ygabas4e1/branch/master?svg=true)](https://ci.appveyor.com/project/carlos-vicente/configuration-store/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/oi4pfp9ygabas4e1?svg=true)](https://ci.appveyor.com/project/carlos-vicente/configuration-store)
