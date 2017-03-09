@@ -184,6 +184,6 @@ Status API Training Shop Blog About Pricing
 � 2016 GitHub, Inc. Terms Privacy Security Contact Help
 Build/results.html
 
-build/tools/*
+tools/*
 
-!build/tools/packages.config
+!tools/packages.config
