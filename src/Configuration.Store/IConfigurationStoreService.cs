@@ -10,6 +10,6 @@ namespace Configuration.Store
             string version,
             int? currentSequence);
 
-        Task<int> SetConfiguration(string key, string version, string data);
+        Task<int> SetConfiguration(string key, string version, ConfigurationDataType dataType, string data);
     }
 }

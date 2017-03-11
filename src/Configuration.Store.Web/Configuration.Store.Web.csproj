@@ -94,12 +94,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapp\Bootstrapper.cs" />
+    <Compile Include="Bootstrapp\Modules\ConfigStoreModule.cs" />
+    <Compile Include="Bootstrapp\Modules\PersistenceModule.cs" />
     <Compile Include="Modules\ConfigurationModule.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Bootstrapp\Modules\" />
+    <ProjectReference Include="..\Configuration.Store.Persistence.Memory\Configuration.Store.Persistence.Memory.csproj">
+      <Project>{05B6CF7E-A4E7-48C2-B550-0E102E6667E0}</Project>
+      <Name>Configuration.Store.Persistence.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configuration.Store.Persistence\Configuration.Store.Persistence.csproj">
+      <Project>{07854DC9-1459-4815-9C69-9FA7955B2C89}</Project>
+      <Name>Configuration.Store.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configuration.Store\Configuration.Store.csproj">
+      <Project>{AD79E24B-622C-4671-AB88-350CCDCE3AEB}</Project>
+      <Name>Configuration.Store</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

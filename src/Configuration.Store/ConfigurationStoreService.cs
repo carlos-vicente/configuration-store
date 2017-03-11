@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Configuration.Store.Persistence;
 
 namespace Configuration.Store
@@ -34,18 +35,26 @@ namespace Configuration.Store
                     };
             }
 
-            var data = await _repository
+            var config = await _repository
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false);
+
+            if(config == null)
+                return null;
 
             return new Configuration
             {
                 Sequence = sequence,
-                Data = data
+                Data = config.Data,
+                Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), config.Type)
             };
         }
 
-        public async Task<int> SetConfiguration(string key, string version, string data)
+        public async Task<int> SetConfiguration(
+            string key,
+            string version,
+            ConfigurationDataType dataType,
+            string data)
         {
             //TODO: params check
 
@@ -56,8 +65,13 @@ namespace Configuration.Store
 
             var newSequence = currentSequence + 1;
 
-            await _repository
-                .SaveNewConfiguration(key, version, newSequence, data);
+            await _repository.SaveNewConfiguration(
+                    key,
+                    version,
+                    newSequence,
+                    dataType.ToString(),
+                    data)
+                .ConfigureAwait(false);
 
             return newSequence;
         }
