@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{BAEF514E-1A8E-48CC-8D96-DEDD6DEC444A}</ProjectGuid>
+    <ProjectGuid>{05B6CF7E-A4E7-48C2-B550-0E102E6667E0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Configuration.Store.Persistence.Memory</RootNamespace>
