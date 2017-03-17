@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Nancy;
 
@@ -12,18 +13,19 @@ namespace Configuration.Store.Web.Modules
         {
             _configStoreService = configStoreService;
 
-            Get["GetConfigForVersion", "/{configKey}/{configVersion}", true] = GetConfigForVersion;
+            //Get["GetConfigForVersion", "/{configKey:alpha}/{configVersion:version}", true] = GetConfigForVersion;
+            Get["/{configKey}/{configVersion:version}"] = _ => $"{_.configKey}:{_.configVersion}";
         }
 
         private async Task<dynamic> GetConfigForVersion(dynamic parameters, CancellationToken token)
         {
             string key = parameters.configKey;
-            string version = parameters.configVersion;
+            Version version = parameters.configVersion;
 
             int? currentSequence = this.Request.Query.seq;
 
             var configuration = await _configStoreService
-                .GetConfiguration(key, version, currentSequence)
+                .GetConfiguration(key, version.ToString(), currentSequence)
                 .ConfigureAwait(false);
 
             var statusCode = HttpStatusCode.OK;
