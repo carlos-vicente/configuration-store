@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Configuration.Store.Persistence;
+using MassTransit;
 
 namespace Configuration.Store
 {
@@ -15,65 +18,165 @@ namespace Configuration.Store
 
         public async Task<Configuration> GetConfiguration(
             string key,
-            string version,
+            Version version,
+            string environmentTag,
             int? currentSequence)
         {
             //TODO: params check
-
-            var sequence = await _repository
-                .GetSequence(key, version)
-                .ConfigureAwait(false);
-
-            if (currentSequence.HasValue)
-            {
-                // check if there has been any change since last time it was obtained
-                if (sequence > currentSequence.Value)
-                    return new Configuration
-                    {
-                        Sequence = sequence,
-                        Data = null
-                    };
-            }
-
+            //TODO: check environment
+            
             var config = await _repository
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false);
 
-            if(config == null)
+            if (config == null)
                 return null;
+
+
+            var storedValue = config
+                .Values
+                .SingleOrDefault(val => val.EnvironmentTags.Contains(environmentTag));
+
+            if (storedValue == null)
+                return null;
+
+            if (currentSequence.HasValue)
+            {
+                // check if there has been any change since last time it was obtained
+                if (storedValue.Sequence == currentSequence.Value)
+                    return new Configuration
+                    {
+                        Sequence = storedValue.Sequence,
+                        Data = null
+                    };
+            }
 
             return new Configuration
             {
-                Sequence = sequence,
-                Data = config.Data,
+                Sequence = storedValue.Sequence,
+                Data = storedValue.Data,
                 Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), config.Type)
             };
         }
 
-        public async Task<int> SetConfiguration(
+        public async Task AddConfiguration(
             string key,
-            string version,
-            ConfigurationDataType dataType,
-            string data)
+            Version version,
+            ConfigurationDataType dataType)
         {
-            //TODO: params check
+            // todo: params check
 
-            // check if there is already a configuration for this {key, version}
-            var currentSequence = await _repository
-                .GetSequence(key, version)
+            var currentConfig = await _repository
+                .GetConfiguration(key, version)
                 .ConfigureAwait(false);
 
-            var newSequence = currentSequence + 1;
+            if(currentConfig != null)
+                throw new ArgumentException($"Can not create configuration with key {key} and version {version}, as it already exists!");
 
-            await _repository.SaveNewConfiguration(
+            await _repository
+                .AddNewConfiguration(key, version, dataType.ToString())
+                .ConfigureAwait(false);
+        }
+
+        public async Task RemoveConfiguration(
+            string key,
+            Version version)
+        {
+            var currentConfig = await _repository
+              .GetConfiguration(key, version)
+              .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not delete value on configuration with key {key} and version {version}, as it does not exists!");
+
+            await _repository
+                .DeleteConfiguration(key, version)
+                .ConfigureAwait(false);
+        }
+
+        public async Task<Guid> AddValueToConfiguration(
+            string key,
+            Version version,
+            IEnumerable<string> tags,
+            string value)
+        {
+            var currentConfig = await _repository
+               .GetConfiguration(key, version)
+               .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not add value to configuration with key {key} and version {version}, as it does not exists!");
+
+            // check there are no tag overlaps between diferent values from same key and version
+            var storedValue = currentConfig
+                .Values
+                .FirstOrDefault(val => val.EnvironmentTags.Any(tags.Contains));
+            if (storedValue != null)
+                throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)}");
+
+            var valueId = NewId.NextGuid();
+
+            // there is no overlap, so add it
+            await _repository
+                .AddNewValueToConfiguration(
                     key,
                     version,
-                    newSequence,
-                    dataType.ToString(),
-                    data)
+                    valueId,
+                    tags,
+                    value)
                 .ConfigureAwait(false);
 
-            return newSequence;
+            return valueId;
+        }
+
+        public async Task UpdateValueOnConfiguration(
+            string key,
+            Version version,
+            Guid valueId,
+            IEnumerable<string> tags,
+            string value)
+        {
+            var currentConfig = await _repository
+               .GetConfiguration(key, version)
+               .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not update value on configuration with key {key} and version {version}, as it does not exists!");
+
+            var storedValue = currentConfig
+                .Values
+                .SingleOrDefault(val => val.Id == valueId);
+
+            if(storedValue == null)
+                throw new ArgumentException($"There is no configuration value for key {key} on version {version} with identifier {valueId}");
+
+            await _repository
+                .UpdateValueOnConfiguration(key, version, valueId, tags, value)
+                .ConfigureAwait(false);
+        }
+
+        public async Task RemoveValueFromConfiguration(
+            string key,
+            Version version,
+            Guid valueId)
+        {
+            var currentConfig = await _repository
+               .GetConfiguration(key, version)
+               .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not delete value on configuration with key {key} and version {version}, as it does not exists!");
+
+            var storedValue = currentConfig
+                .Values
+                .SingleOrDefault(val => val.Id == valueId);
+
+            if (storedValue == null)
+                throw new ArgumentException($"There is no configuration value for key {key} on version {version} with identifier {valueId}");
+
+            await _repository
+                .DeleteValueOnConfiguration(key, version, valueId)
+                .ConfigureAwait(false);
         }
     }
 }

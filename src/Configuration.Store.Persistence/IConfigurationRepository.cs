@@ -1,17 +1,16 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Configuration.Store.Persistence
 {
-    public class StoredConfig
-    {
-        public string Type { get; set; }
-        public string Data { get; set; }
-    }
-
     public interface IConfigurationRepository
     {
-        Task<int> GetSequence(string key, string version);
-        Task<StoredConfig> GetConfiguration(string key, string version);
-        Task SaveNewConfiguration(string key, string version, int sequence, string dataType, string data);
+        Task<StoredConfig> GetConfiguration(string key, Version version);
+        Task AddNewConfiguration(string key, Version version, string dataType);
+        Task DeleteConfiguration(string key, Version version);
+        Task AddNewValueToConfiguration(string key, Version version, Guid valueId, IEnumerable<string> envTags, string value);
+        Task UpdateValueOnConfiguration(string key, Version version, Guid valueId, IEnumerable<string> envTags, string value);
+        Task DeleteValueOnConfiguration(string key, Version version, Guid valueId);
     }
 }
