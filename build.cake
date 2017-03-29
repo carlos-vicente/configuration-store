@@ -1,4 +1,5 @@
 var target = Argument("target", "Default");
+var noClean = Argument<bool>("no-clean", false);
 
 var solutionFile = "./Configuration.Store.sln";
 
@@ -11,6 +12,10 @@ Task("Restore Nuget Packages")
 Task("Build")
     .IsDependentOn("Restore Nuget Packages")
     .Does(() => {
+        var targets = string.Format(
+            "{0}Build",
+            noClean ? string.Empty : "Clean;");
+        
         DotNetBuild(solutionFile, settings =>
             settings.SetConfiguration("Release")
                 .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Normal)

@@ -10,7 +10,14 @@ namespace Configuration.Store.Persistence.Memory
     {
         //[key]{data-type, [version]{id, sequence, data, tags*}*}
         private readonly IDictionary<string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>> _configs;
-        
+
+        // JUST FOR TESTING, NEVER MAKE IT PUBLIC
+        internal InMemoryConfigurationRepository(
+            IDictionary<string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>> configs)
+        {
+            _configs = configs;
+        }
+
         public InMemoryConfigurationRepository()
         {
             _configs = new ConcurrentDictionary<string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>();

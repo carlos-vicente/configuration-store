@@ -34,8 +34,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\src\Configuration.Store.Web\Bin\Configuration.Store.Persistence.dll</HintPath>
     </Reference>
-    <Reference Include="FakeItEasy, Version=3.1.0.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\FakeItEasy.3.1.0\lib\net40\FakeItEasy.dll</HintPath>
+    <Reference Include="FakeItEasy, Version=2.3.3.0, Culture=neutral, PublicKeyToken=eff28e2146d5fd2c, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\FakeItEasy.2.3.3\lib\net40\FakeItEasy.dll</HintPath>
     </Reference>
     <Reference Include="Fixie, Version=1.0.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Fixie.1.0.2\lib\net45\Fixie.dll</HintPath>
@@ -70,6 +70,13 @@
       <Project>{05b6cf7e-a4e7-48c2-b550-0e102e6667e0}</Project>
       <Name>Configuration.Store.Persistence.Memory</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Configuration.Store\Configuration.Store.csproj">
+      <Project>{AD79E24B-622C-4671-AB88-350CCDCE3AEB}</Project>
+      <Name>Configuration.Store</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
