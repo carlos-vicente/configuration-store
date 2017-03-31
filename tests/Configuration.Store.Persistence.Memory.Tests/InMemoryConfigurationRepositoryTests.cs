@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Common.Tests;
 using FluentAssertions;
 using Ploeh.AutoFixture;
 
@@ -16,6 +17,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
         public InMemoryConfigurationRepositoryTests()
         {
             _fixture = new Fixture();
+            _fixture.Customizations.Add(new VersionBuilder());
         }
 
         public async Task GetConfiguration_ShouldReturnNull_WhenNoConfigurationIsAvailable()

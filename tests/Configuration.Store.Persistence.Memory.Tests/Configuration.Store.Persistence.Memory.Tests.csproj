@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="Autofac.Extras.FakeItEasy, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.Extras.FakeItEasy.4.0.0\lib\net451\Autofac.Extras.FakeItEasy.dll</HintPath>
+    </Reference>
     <Reference Include="Configuration.Store.Persistence, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\src\Configuration.Store.Web\Bin\Configuration.Store.Persistence.dll</HintPath>
@@ -59,10 +65,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvetionSelector.cs" />
     <Compile Include="InMemoryConfigurationRepositoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +81,10 @@
     <ProjectReference Include="..\..\src\Configuration.Store\Configuration.Store.csproj">
       <Project>{AD79E24B-622C-4671-AB88-350CCDCE3AEB}</Project>
       <Name>Configuration.Store</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common.Tests\Common.Tests.csproj">
+      <Project>{A96A020C-016A-48FE-8172-CF43C92A8B1A}</Project>
+      <Name>Common.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

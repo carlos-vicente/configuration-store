@@ -61,10 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\common\AutoFakerConvention.cs">
-      <Link>AutoFakerConvention.cs</Link>
-    </Compile>
     <Compile Include="ConfigurationStoreServiceTests.cs" />
+    <Compile Include="ConvetionSelector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
