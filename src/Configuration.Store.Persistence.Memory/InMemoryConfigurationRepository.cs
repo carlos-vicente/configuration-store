@@ -55,6 +55,9 @@ namespace Configuration.Store.Persistence.Memory
             Version version,
             string dataType)
         {
+            if (_configs.ContainsKey(key))
+                throw new ArgumentException("key already available");
+
             _configs[key] = new Tuple
                 <string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
                     dataType, new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>

@@ -136,5 +136,65 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // assert
             config.ShouldBeEquivalentTo(expectedConfig);
         }
+
+        public async Task AddNewConfiguration_ShouldAddTheConfiguration_WhenItDoesNotExist()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+
+            _sut = new InMemoryConfigurationRepository();
+
+            var expected = new StoredConfig
+            {
+                Type = dataType,
+                Values = new List<StoredConfigValues>()
+            };
+
+            // act
+            await _sut
+                .AddNewConfiguration(key, version, dataType)
+                .ConfigureAwait(false);
+
+            // assert
+            (await _sut
+                .GetConfiguration(key, version)
+                .ConfigureAwait(false))
+                .ShouldBeEquivalentTo(expected);
+        }
+
+        public void AddNewConfiguration_ShouldThrowException_WhenItAlreadyExists()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple
+                                <string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                    dataType.ToString(),
+                                    new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                    {
+                                        {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>()}
+                                    })
+                        }
+                    });
+
+            // act
+            Func<Task> exThrower = async () => await _sut
+                .AddNewConfiguration(key, version, dataType.ToString())
+                .ConfigureAwait(false);
+
+            // assert
+            exThrower
+                .ShouldThrow<ArgumentException>();
+        }
     }
 }
