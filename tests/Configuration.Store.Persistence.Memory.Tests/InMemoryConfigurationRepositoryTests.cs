@@ -196,5 +196,44 @@ namespace Configuration.Store.Persistence.Memory.Tests
             exThrower
                 .ShouldThrow<ArgumentException>();
         }
+
+        public async Task AddNewValueToConfiguration_ShouldAddTheNewValue_WhenConfigurationExists()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                    dataType.ToString(),
+                                    new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                    {
+                                        {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>()}
+                                    })
+                        }
+                    });
+
+            // act
+            await _sut
+                .AddNewValueToConfiguration(key, version, valueId, tags, data)
+                .ConfigureAwait(false);
+
+            // assert
+        }
+
+        public void AddNewValueToConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        {
+
+        }
     }
 }

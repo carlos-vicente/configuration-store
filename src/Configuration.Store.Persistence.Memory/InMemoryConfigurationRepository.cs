@@ -75,11 +75,15 @@ namespace Configuration.Store.Persistence.Memory
             IEnumerable<string> envTags,
             string value)
         {
+            if (!_configs.ContainsKey(key) || !_configs[key].Item2.ContainsKey(version))
+                throw new ArgumentException($"key {key} for version {version} not found");
+
             var valueToStore = new Tuple<Guid, int, string, IEnumerable<string>>(
                 valueId,
                 1,
                 value,
                 envTags);
+
             _configs[key].Item2[version].Add(valueToStore);
 
             return Task.FromResult(0);
