@@ -187,12 +187,11 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         }
                     });
 
-            // act
             Func<Task> exThrower = async () => await _sut
                 .AddNewConfiguration(key, version, dataType.ToString())
                 .ConfigureAwait(false);
 
-            // assert
+            // act/assert
             exThrower
                 .ShouldThrow<ArgumentException>();
         }
@@ -202,7 +201,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -215,7 +214,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         {
                             key,
                             new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
-                                    dataType.ToString(),
+                                    dataType,
                                     new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
                                     {
                                         {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>()}
@@ -223,17 +222,69 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         }
                     });
 
+            var expected = new StoredConfig
+            {
+                Type = dataType,
+                Values = new List<StoredConfigValues>
+                {
+                    new StoredConfigValues
+                    {
+                        Id = valueId,
+                        Sequence = 1,
+                        EnvironmentTags = tags,
+                        Data = data
+                    }
+                }
+            };
+
             // act
             await _sut
                 .AddNewValueToConfiguration(key, version, valueId, tags, data)
                 .ConfigureAwait(false);
 
             // assert
+            (await _sut
+                .GetConfiguration(key, version)
+                .ConfigureAwait(false))
+                .ShouldBeEquivalentTo(expected);
         }
 
         public void AddNewValueToConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
         {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
 
+            var unknownKey = _fixture.Create<string>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                    dataType,
+                                    new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                    {
+                                        {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>()}
+                                    })
+                        }
+                    });
+
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .AddNewValueToConfiguration(unknownKey, version, valueId, tags, data)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower
+                .ShouldThrow<ArgumentException>();
         }
     }
 }
