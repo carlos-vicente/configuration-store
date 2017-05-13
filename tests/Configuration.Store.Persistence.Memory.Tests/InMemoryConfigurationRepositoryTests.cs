@@ -286,5 +286,15 @@ namespace Configuration.Store.Persistence.Memory.Tests
             exceptionThrower
                 .ShouldThrow<ArgumentException>();
         }
+
+        public async Task UpdateValueOnConfiguration_ShouldAddNewDataWithBumpedVersion_WhenConfigurationExists()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
