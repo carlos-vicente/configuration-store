@@ -257,7 +257,6 @@ namespace Configuration.Store.Persistence.Memory.Tests
             var dataType = _fixture.Create<ConfigurationDataType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
-            var sequence = _fixture.Create<int>();
             var tags = _fixture.CreateMany<string>().ToList();
 
             var unknownKey = _fixture.Create<string>();
@@ -314,7 +313,11 @@ namespace Configuration.Store.Persistence.Memory.Tests
                                             version,
                                             new List<Tuple<Guid, int, string, IEnumerable<string>>>
                                             {
-                                                new Tuple<Guid, int, string, IEnumerable<string>>(valueId, sequence, data, tags)
+                                                new Tuple<Guid, int, string, IEnumerable<string>>(
+                                                    valueId,
+                                                    sequence,
+                                                    data,
+                                                    tags)
                                             }
                                         }
                                     })
@@ -348,9 +351,135 @@ namespace Configuration.Store.Persistence.Memory.Tests
                 .ShouldBeEquivalentTo(expected);
         }
 
-        //public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var unknownKey = _fixture.Create<string>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                dataType,
+                                new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                {
+                                    {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            1,
+                                            data,
+                                            tags)
+                                    }}
+                                })
+                        }
+                    });
+
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .UpdateValueOnConfiguration(unknownKey, version, valueId, tags, data)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower
+                .ShouldThrow<ArgumentException>();
+        }
+
+        public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationExistsButNotTheVersion()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var unknownVersion = _fixture.Create<Version>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                dataType,
+                                new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                {
+                                    {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            1,
+                                            data,
+                                            tags)
+                                    }}
+                                })
+                        }
+                    });
+
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .UpdateValueOnConfiguration(key, unknownVersion, valueId, tags, data)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower
+                .ShouldThrow<ArgumentException>();
+        }
+
+        public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationExistsWithVersionButNoValueIdentifier()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var unknownValueId = _fixture.Create<Guid>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                dataType,
+                                new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                {
+                                    {version, new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            1,
+                                            data,
+                                            tags)
+                                    }}
+                                })
+                        }
+                    });
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .UpdateValueOnConfiguration(key, version, unknownValueId, tags, data)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower
+                .ShouldThrow<ArgumentException>();
+        }
     }
 }

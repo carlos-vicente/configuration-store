@@ -96,6 +96,11 @@ namespace Configuration.Store.Persistence.Memory
             IEnumerable<string> envTags,
             string value)
         {
+            if (!_configs.ContainsKey(key) 
+                || !_configs[key].Item2.ContainsKey(version)
+                || _configs[key].Item2[version].All(t => t.Item1 != valueId))
+                throw new ArgumentException($"key {key} for version {version} not found");
+
             var config = _configs[key].Item2[version]
                 .SingleOrDefault(val => val.Item1 == valueId);
 
