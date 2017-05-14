@@ -289,12 +289,68 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
         public async Task UpdateValueOnConfiguration_ShouldAddNewDataWithBumpedVersion_WhenConfigurationExists()
         {
-            throw new NotImplementedException();
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var newData = _fixture.Create<string>();
+
+            _sut =
+                new InMemoryConfigurationRepository(new Dictionary
+                    <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                    {
+                        {
+                            key,
+                            new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                                    dataType,
+                                    new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                                    {
+                                        {
+                                            version,
+                                            new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                            {
+                                                new Tuple<Guid, int, string, IEnumerable<string>>(valueId, sequence, data, tags)
+                                            }
+                                        }
+                                    })
+                        }
+                    });
+
+            var expected = new StoredConfig
+            {
+                Type = dataType,
+                Values = new List<StoredConfigValues>
+                {
+                    new StoredConfigValues
+                    {
+                        Id = valueId,
+                        Sequence = sequence + 1,
+                        EnvironmentTags = tags,
+                        Data = newData
+                    }
+                }
+            };
+
+            // act
+            await _sut
+                .UpdateValueOnConfiguration(key, version, valueId, tags, newData)
+                .ConfigureAwait(false);
+
+            // actual
+            (await _sut
+                .GetConfiguration(key, version)
+                .ConfigureAwait(false))
+                .ShouldBeEquivalentTo(expected);
         }
 
-        public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
-        {
-            throw new NotImplementedException();
-        }
+        //public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        //{
+        //    throw new NotImplementedException();
+        //}
     }
 }
