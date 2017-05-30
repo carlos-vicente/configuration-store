@@ -41,15 +41,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.4.0\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.5.0\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.3.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
     <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
@@ -94,12 +94,32 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapp\Bootstrapper.cs" />
-    <Compile Include="Modules\ConfigurationModule.cs" />
+    <Compile Include="Bootstrapp\Modules\ConfigStoreModule.cs" />
+    <Compile Include="Bootstrapp\Modules\PersistenceModule.cs" />
+    <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
+    <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
+    <Compile Include="Contracts\Requests\UpdateValueOnConfigurationRequest.cs" />
+    <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\StringExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bootstrapp\Modules\" />
+    <Folder Include="Modules\Ui\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Configuration.Store.Persistence.Memory\Configuration.Store.Persistence.Memory.csproj">
+      <Project>{05B6CF7E-A4E7-48C2-B550-0E102E6667E0}</Project>
+      <Name>Configuration.Store.Persistence.Memory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configuration.Store.Persistence\Configuration.Store.Persistence.csproj">
+      <Project>{07854DC9-1459-4815-9C69-9FA7955B2C89}</Project>
+      <Name>Configuration.Store.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Configuration.Store\Configuration.Store.csproj">
+      <Project>{AD79E24B-622C-4671-AB88-350CCDCE3AEB}</Project>
+      <Name>Configuration.Store</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
