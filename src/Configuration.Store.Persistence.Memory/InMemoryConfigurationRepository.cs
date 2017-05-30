@@ -119,6 +119,10 @@ namespace Configuration.Store.Persistence.Memory
 
         public Task DeleteConfiguration(string key, Version version)
         {
+            if(!_configs.ContainsKey(key)
+                || !_configs[key].Item2.ContainsKey(version))
+                throw new ArgumentException($"key {key} for version {version} not found");
+
             _configs[key].Item2.Remove(version);
 
             return Task.FromResult(0);
@@ -126,8 +130,14 @@ namespace Configuration.Store.Persistence.Memory
 
         public Task DeleteValueOnConfiguration(string key, Version version, Guid valueId)
         {
-            var config = _configs[key].Item2[version]
-                   .SingleOrDefault(val => val.Item1 == valueId);
+            if (!_configs.ContainsKey(key)
+                || !_configs[key].Item2.ContainsKey(version)
+                || _configs[key].Item2[version].All(t => t.Item1 != valueId))
+                throw new ArgumentException($"key {key} for version {version} not found");
+
+            var config = _configs[key]
+                .Item2[version]
+                .SingleOrDefault(val => val.Item1 == valueId);
 
             _configs[key].Item2[version].Remove(config);
 

@@ -481,5 +481,307 @@ namespace Configuration.Store.Persistence.Memory.Tests
             exceptionThrower
                 .ShouldThrow<ArgumentException>();
         }
+
+        public async Task DeleteConfiguration_ShouldDeleteConfiguration_WhenConfigurationExists()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>()
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            // act
+            await _sut
+                .DeleteConfiguration(key, version)
+                .ConfigureAwait(false);
+
+            // assert
+            store[key]
+                .Item2
+                .ContainsKey(version)
+                .Should()
+                .BeFalse();
+        }
+
+        public void DeleteConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+
+            var wrongKey = _fixture.Create<string>();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>()
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .DeleteConfiguration(wrongKey, version)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower.ShouldThrow<ArgumentException>();
+        }
+
+        public void DeleteConfiguration_ShouldThrowException_WhenConfigurationExistsButVersionDoesNot()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+
+            var wrongVersion = _fixture.Create<Version>();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>()
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .DeleteConfiguration(key, wrongVersion)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower.ShouldThrow<ArgumentException>();
+        }
+
+        public async Task DeleteValueOnConfiguration_ShouldDeleteValue_WhenConfigurationAndValueExist()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags)
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            // act
+            await _sut
+                .DeleteValueOnConfiguration(key, version, valueId)
+                .ConfigureAwait(false);
+
+            // assert
+            store[key]
+                .Item2[version]
+                .FirstOrDefault(t => t.Item1 == valueId)
+                .Should()
+                .BeNull();
+        }
+
+        public void DeleteValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var wrongKey = _fixture.Create<string>();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags)
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .DeleteValueOnConfiguration(wrongKey, version, valueId)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower.ShouldThrow<ArgumentException>();
+        }
+
+        public void DeleteValueOnConfiguration_ShouldThrowException_WhenConfigurationExistsButVersionDoesNot()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var wrongVersion = _fixture.Create<Version>();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags)
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .DeleteValueOnConfiguration(key, wrongVersion, valueId)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower.ShouldThrow<ArgumentException>();
+        }
+
+        public void DeleteValueOnConfiguration_ShouldThrowException_WhenConfigurationAndVersionExistButValueDoesNot()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var wrongValueId = _fixture.Create<Guid>();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags)
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            Func<Task> exceptionThrower = async () => await _sut
+                .DeleteValueOnConfiguration(key, version, wrongValueId)
+                .ConfigureAwait(false);
+
+            // act/assert
+            exceptionThrower.ShouldThrow<ArgumentException>();
+        }
     }
 }
