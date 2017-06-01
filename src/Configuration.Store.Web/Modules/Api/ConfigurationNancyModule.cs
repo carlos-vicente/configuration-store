@@ -17,16 +17,15 @@ namespace Configuration.Store.Web.Modules.Api
         private readonly IConfigurationStoreService _configStoreService;
 
         public ConfigurationNancyModule(IConfigurationStoreService configStoreService)
-            : base("/api")
         {
             _configStoreService = configStoreService;
 
-            Get["GetConfigForVersion", "/{configKey}/{configVersion:version}/{envTag}", true] = GetConfigForVersion;
-            Put["AddNewConfiguration", "/{configKey}", true] = AddNewConfiguration;
-            Put["AddNewValueToConfiguration", "/{configKey}/{configVersion:version}/values", true] = AddNewValueToConfiguration;
-            Put["UpdateValueOnConfiguration", "/{configKey}/{configVersion:version}/values/{valueId:guid}", true] = UpdateValueOnConfiguration;
-            Delete["DeleteValueFromConfiguration", "/{configKey}/{configVersion:version}/values/{valueId:guid}", true] = DeleteValueFromConfiguration;
-            Delete["DeleteConfiguration", "/{configKey}/{configVersion:version}", true] = DeleteConfiguration;
+            Get["GetConfigForVersion", RouteRegistry.Api.Configuration.GetConfigForVersion, true] = GetConfigForVersion;
+            Put["AddNewConfiguration", RouteRegistry.Api.Configuration.AddNewConfiguration, true] = AddNewConfiguration;
+            Put["AddNewValueToConfiguration", RouteRegistry.Api.Configuration.AddNewValueToConfiguration, true] = AddNewValueToConfiguration;
+            Put["UpdateValueOnConfiguration", RouteRegistry.Api.Configuration.UpdateValueOnConfiguration, true] = UpdateValueOnConfiguration;
+            Delete["DeleteValueFromConfiguration", RouteRegistry.Api.Configuration.DeleteValueFromConfiguration, true] = DeleteValueFromConfiguration;
+            Delete["DeleteConfiguration", RouteRegistry.Api.Configuration.DeleteConfiguration, true] = DeleteConfiguration;
         }
 
         private async Task<dynamic> GetConfigForVersion(dynamic parameters, CancellationToken token)

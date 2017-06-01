@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="CsQuery, Version=1.3.3.249, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\CsQuery.1.3.4\lib\net40\CsQuery.dll</HintPath>
     </Reference>
@@ -48,6 +51,9 @@
     <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Bootstrappers.Autofac, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Bootstrappers.Autofac.1.4.1\lib\net40\Nancy.Bootstrappers.Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Testing, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.Testing.1.4.1\lib\net40\Nancy.Testing.dll</HintPath>
     </Reference>
@@ -64,6 +70,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConvetionSelector.cs" />
+    <Compile Include="Modules\Api\ConfigurationNancyModuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +82,10 @@
     <ProjectReference Include="..\..\src\Configuration.Store.Web\Configuration.Store.Web.csproj">
       <Project>{4124212a-ec13-4694-8db7-03629db096b0}</Project>
       <Name>Configuration.Store.Web</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Common.Tests\Common.Tests.csproj">
+      <Project>{a96a020c-016a-48fe-8172-cf43c92a8b1a}</Project>
+      <Name>Common.Tests</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

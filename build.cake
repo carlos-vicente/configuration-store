@@ -30,9 +30,10 @@ Task("Run Unit Tests")
             NUnitXml = "./TestResult.xml"
         };
         
-        Fixie(
-            "./tests/**/bin/Release/*.Tests.dll",
-            settings);
+        var files = GetFiles("./tests/**/bin/Release/*.Tests.dll")
+            .Where(f => !f.ToString().Contains("Common"));
+        
+        Fixie(files, settings);
     });
 
 Task("Upload test results to AppVeyor")

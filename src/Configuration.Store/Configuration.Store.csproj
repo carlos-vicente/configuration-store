@@ -30,8 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NewId, Version=3.0.0.0, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\NewId.3.0.0\lib\net452\NewId.dll</HintPath>
+    <Reference Include="NewId, Version=3.0.1.17, Culture=neutral, PublicKeyToken=b8e0e9f2f1e657fa, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\NewId.3.0.1\lib\net452\NewId.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
