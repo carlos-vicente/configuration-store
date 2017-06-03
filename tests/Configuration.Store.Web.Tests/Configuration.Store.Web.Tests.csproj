@@ -83,10 +83,17 @@
       <Project>{4124212a-ec13-4694-8db7-03629db096b0}</Project>
       <Name>Configuration.Store.Web</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\src\Configuration.Store\Configuration.Store.csproj">
+      <Project>{AD79E24B-622C-4671-AB88-350CCDCE3AEB}</Project>
+      <Name>Configuration.Store</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common.Tests\Common.Tests.csproj">
       <Project>{a96a020c-016a-48fe-8172-cf43c92a8b1a}</Project>
       <Name>Common.Tests</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
