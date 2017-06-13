@@ -59,7 +59,7 @@ Task("Unzip Nancy.ViewEngines.React node_modules folder after restore HACK")
         };
                 
         Information(commandLine);
-        Information(settings.Arguments);
+        Information(settings.Arguments.RenderSafe());
         
         using(var process = StartAndReturnProcess(commandLine, settings))
         {
