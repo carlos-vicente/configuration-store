@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Configuration.Store.Web.Bootstrapp.Modules;
 using Nancy.Bootstrappers.Autofac;
+using Nancy.Conventions;
 
 namespace Configuration.Store.Web.Bootstrapp
 {
@@ -14,6 +15,12 @@ namespace Configuration.Store.Web.Bootstrapp
             builder.RegisterModule<PersistenceModule>();
 
             return builder.Build();
+        }
+
+        protected override void ConfigureConventions(NancyConventions nancyConventions)
+        {
+            base.ConfigureConventions(nancyConventions);
+            nancyConventions.StaticContentsConventions.AddDirectory("lib");
         }
     }
 }
