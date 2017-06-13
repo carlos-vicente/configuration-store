@@ -105,7 +105,6 @@
     <Content Include="packages.config" />
     <None Include=".bin\node.cmd" />
     <Content Include="package.json" />
-    <Content Include="prepare.ps1" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
