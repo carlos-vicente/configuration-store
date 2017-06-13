@@ -22,7 +22,8 @@ Task("Restore Javascript Packages")
         
         var npmSettings = new NpmInstallSettings
         {
-            WorkingDirectory = webDirectory
+            WorkingDirectory = webDirectory,
+            LogLevel = NpmLogLevel.Warn
         };
 
         NpmInstall(npmSettings);
