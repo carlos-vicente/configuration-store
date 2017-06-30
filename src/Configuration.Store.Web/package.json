@@ -12,12 +12,10 @@
   },
   "author": "Carlos Vicente",
   "license": "MIT",
-  "repository": "https://github.com/carlos-vicente/materializecss-template.git",
+  "repository": "https://github.com/carlos-vicente/configuration-store",
   "main": "index.js",
   "dependencies": {
     "materialize-css": "^0.98.2",
-    "react": "^15.5.4",
-    "react-redux": "^5.0.5",
-    "redux": "^3.6.0"
+    "react": "^15.5.4"
   }
 }

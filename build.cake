@@ -1,9 +1,7 @@
 #addin "Cake.Npm"
 #addin "Cake.Yarn"
 #addin "Cake.Gulp"
-#addin "Cake.Compression"
-    
-#reference "./tools/Addins/SharpZipLib/lib/20/ICSharpCode.SharpZipLib.dll"
+
 
 var target = Argument("target", "Default");
 var noClean = Argument<bool>("no-clean", false);
@@ -44,34 +42,8 @@ Task("Restore Javascript Packages")
             });
     });
 
-Task("Unzip Nancy.ViewEngines.React node_modules folder after restore HACK")
-    .IsDependentOn("Restore Nuget Packages")
-    .Does(() => {
-        var nancyViewEnginesReactDirectory = GetDirectories("./packages/Nancy.ViewEngines.React*").Single();
-        
-        var commandLine = string.Format("{0}/tools/7za.exe", nancyViewEnginesReactDirectory.FullPath);
-        var zipFile = string.Format("{0}/node_modules.7z", nancyViewEnginesReactDirectory.FullPath);
-        var settings = new ProcessSettings
-        {
-            Arguments = string.Format(
-                "x -t7z -y \"{0}\" -o\"{1}\"",
-                zipFile,
-                nancyViewEnginesReactDirectory.FullPath)
-        };
-                
-        Information(commandLine);
-        Information(settings.Arguments.RenderSafe());
-        
-        using(var process = StartAndReturnProcess(commandLine, settings))
-        {
-            process.WaitForExit();
-            Information("Exit code: {0} (unzipping node_modules.7z)", process.GetExitCode());
-        }
-    });
-
 Task("Build")
     .IsDependentOn("Restore Nuget Packages")
-    .IsDependentOn("Unzip Nancy.ViewEngines.React node_modules folder after restore HACK")
     .IsDependentOn("Restore Javascript Packages")
     .Does(() => {
         var targets = string.Format(
