@@ -6,7 +6,7 @@ namespace Configuration.Store.Web.Modules.Ui
     {
         public ConfigurationAppNancyModule()
         {
-            Get["/"] = _ => this.Negotiate.WithView("index");
+            Get["/"] = _ => this.Negotiate.WithView("ConfigurationStore");
         }
     }
 }
