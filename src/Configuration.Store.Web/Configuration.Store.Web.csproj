@@ -81,7 +81,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Components\ConfigurationList.jsx" />
     <Content Include="gulpfile.js" />
+    <Content Include="gulp\tasks\babel-task.js" />
     <Content Include="gulp\tasks\default.js" />
     <Content Include="gulp\tasks\jquery-task.js" />
     <Content Include="gulp\tasks\react-task.js" />

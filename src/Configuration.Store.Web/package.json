@@ -6,7 +6,11 @@
     "email": "carlosvicente200@gmail.com"
   },
   "devDependencies": {
+    "babel-cli": "^6.24.1",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
     "gulp": "^3.9.1",
+    "gulp-babel": "^6.1.2",
     "require-dir": "^0.3.2",
     "yarn": "^0.24.5"
   },
@@ -16,6 +20,7 @@
   "main": "index.js",
   "dependencies": {
     "materialize-css": "^0.98.2",
-    "react": "^15.5.4"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
   }
 }
