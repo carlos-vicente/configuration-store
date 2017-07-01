@@ -14,6 +14,12 @@ namespace Configuration.Store
     public interface IConfigurationStoreService
     {
         /// <summary>
+        /// Gets all configuration keys available, including their type and latest version
+        /// </summary>
+        /// <returns>All available configuration keys</returns>
+        Task<IEnumerable<ConfigurationKey>> GetConfigurationKeys();
+
+        /// <summary>
         /// Gets a configuration value for all speficied filters;
         /// </summary>
         /// <param name="key">The configuration key being requested</param>
@@ -29,11 +35,24 @@ namespace Configuration.Store
             string environmentTag,
             int? currentSequence);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
         Task AddConfiguration(
             string key,
             Version version,
             ConfigurationDataType dataType);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
         Task RemoveConfiguration(
             string key,
             Version version);
@@ -67,6 +86,13 @@ namespace Configuration.Store
             IEnumerable<string> tags,
             string value);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <param name="valueId"></param>
+        /// <returns></returns>
         Task RemoveValueFromConfiguration(
             string key,
             Version version,

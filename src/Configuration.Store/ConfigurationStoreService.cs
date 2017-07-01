@@ -16,6 +16,20 @@ namespace Configuration.Store
             _repository = repository;
         }
 
+        public async Task<IEnumerable<ConfigurationKey>> GetConfigurationKeys()
+        {
+            return (await _repository
+                .GetConfigurations()
+                .ConfigureAwait(false))
+                .Select(storedKey => new ConfigurationKey
+                {
+                    Key = storedKey.Key,
+                    LatestVersion = storedKey.LastestVersion,
+                    Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), storedKey.Type)
+                })
+                .ToList();
+        }
+
         public async Task<Configuration> GetConfiguration(
             string key,
             Version version,

@@ -43,6 +43,8 @@
     <Compile Include="IConfigurationRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="StoredConfig.cs" />
+    <Compile Include="StoredConfigKey.cs" />
+    <Compile Include="StoredConfigValues.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

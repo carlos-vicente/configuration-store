@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationDataType.cs" />
+    <Compile Include="ConfigurationKey.cs" />
     <Compile Include="ConfigurationStoreService.cs" />
     <Compile Include="IConfigurationStoreService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -23,6 +23,26 @@ namespace Configuration.Store.Persistence.Memory
             _configs = new ConcurrentDictionary<string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>();
         }
 
+        public Task<IEnumerable<StoredConfigKey>> GetConfigurations()
+        {
+            return Task.FromResult(_configs
+                .Keys
+                .Select(key =>
+                {
+                    var latestVersion = _configs[key]
+                        .Item2
+                        .Keys
+                        .OrderByDescending(k => k)
+                        .First();
+                    return new StoredConfigKey
+                    {
+                        Key = key,
+                        Type = _configs[key].Item1,
+                        LastestVersion = latestVersion
+                    };
+                }));
+        }
+
         public Task<StoredConfig> GetConfiguration(string key, Version version)
         {
             StoredConfig config = null;

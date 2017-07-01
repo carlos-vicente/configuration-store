@@ -14,5 +14,14 @@
                 public static readonly string DeleteConfiguration = "/api/{configKey}/{configVersion:version}";
             }
         }
+
+        public static class Ui
+        {
+            public static class Configuration
+            {
+                public static readonly string GetHome = "/";
+                public static readonly string GetConfiguration = "/{configKey}";
+            }
+        }
     }
 }
