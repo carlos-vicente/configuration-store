@@ -1,4 +1,6 @@
-﻿class ConfigurationList extends React.Component {
+﻿import ConfigurationKey from './ConfigurationKey';
+
+class ConfigurationList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -15,7 +17,10 @@
                         <li>{configKey.Key}</li>
                     )}
                 </ul>
+                <ConfigurationKey />
             </div>
         );
     }
 }
+
+export default ConfigurationList;

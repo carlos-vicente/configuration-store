@@ -84,13 +84,17 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Components\ConfigurationKey.jsx" />
     <Content Include="Components\ConfigurationList.jsx" />
+    <Content Include="Components\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
-    <Content Include="gulp\tasks\babel-task.js" />
+    <Content Include="gulp\tasks\amd-task.js" />
+    <Content Include="gulp\tasks\build-task.js" />
     <Content Include="gulp\tasks\default.js" />
     <Content Include="gulp\tasks\jquery-task.js" />
     <Content Include="gulp\tasks\react-task.js" />
     <Content Include="gulp\tasks\materialize-task.js" />
+    <Content Include="gulp\tasks\require-task.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <None Include="Web.Debug.config">
@@ -104,6 +108,7 @@
     <Content Include="Views\ConfigurationStore.html" />
     <Content Include="Views\Master.html" />
     <Content Include="Views\Shared\RenderReactElement.html" />
+    <Content Include="Views\Shared\RenderReactElementWithRequire.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
