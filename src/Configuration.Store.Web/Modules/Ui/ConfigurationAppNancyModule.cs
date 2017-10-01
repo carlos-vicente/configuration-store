@@ -1,6 +1,7 @@
 ﻿using Configuration.Store.Web.Models;
 using Configuration.Store.Web.Models.Shared;
 using Nancy;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -24,13 +25,21 @@ namespace Configuration.Store.Web.Modules.Ui
                 .ConfigureAwait(false);
 
             return Negotiate
-                .WithModel(new ReactViewModel<HomeViewModel>
+                .WithModel(new HomeViewModel
                 {
-                    ComponentName = "ConfigurationList",
-                    ContainerHtmlId = "root",
-                    Data = new HomeViewModel
+                    //configKeys = configKeys
+                    configKeys = new List<ConfigurationKey>
                     {
-                        configKeys = configKeys
+                        new ConfigurationKey
+                        {
+                            Key = "key 1",
+                            Type = ConfigurationDataType.JSON
+                        },
+                        new ConfigurationKey
+                        {
+                            Key = "key 2",
+                            Type = ConfigurationDataType.JSON
+                        }
                     }
                 })
                 .WithView("ConfigurationStore");

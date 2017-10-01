@@ -20,7 +20,8 @@ namespace Configuration.Store.Web.Bootstrapp
         protected override void ConfigureConventions(NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
-            nancyConventions.StaticContentsConventions.AddDirectory("lib");
+            nancyConventions.StaticContentsConventions.AddDirectory("Scripts");
+            nancyConventions.StaticContentsConventions.AddDirectory("Styles");
         }
     }
 }

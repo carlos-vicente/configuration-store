@@ -1,6 +1,6 @@
 ﻿class ConfigurationKey extends React.Component {
     render() {
-        return <span>key</span>
+        return <li>{this.props.configKey}</li>
     }
 }
 

@@ -3,9 +3,9 @@ using Fixie;
 
 namespace Configuration.Store.Web.Tests
 {
-    public class ConvetionSelector : TestAssembly
+    public class ConventionSelector : TestAssembly
     {
-        public ConvetionSelector()
+        public ConventionSelector()
         {
             Apply<AutoFakerConvention>();
         }

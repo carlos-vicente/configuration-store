@@ -14,10 +14,10 @@ class ConfigurationList extends React.Component {
             <div>
                 <ul>
                     {this.state.configKeys.map((configKey) =>
-                        <li>{configKey.Key}</li>
+                        <ConfigurationKey configKey={configKey.Key} />
                     )}
                 </ul>
-                <ConfigurationKey />
+                
             </div>
         );
     }

@@ -187,3 +187,6 @@ Build/results.html
 tools/*
 
 !tools/packages.config
+
+**/materialize/*
+**/Scripts/app/*
