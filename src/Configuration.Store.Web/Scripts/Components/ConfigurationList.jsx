@@ -13,8 +13,8 @@ class ConfigurationList extends React.Component {
         return (
             <div>
                 <ul>
-                    {this.state.configKeys.map((configKey) =>
-                        <ConfigurationKey configKey={configKey.Key} />
+                    {this.state.configKeys.map((configKey, index) =>
+                        <ConfigurationKey key={index} configKey={configKey.Key} />
                     )}
                 </ul>
                 
