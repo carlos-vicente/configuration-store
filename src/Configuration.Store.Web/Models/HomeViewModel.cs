@@ -4,6 +4,13 @@ namespace Configuration.Store.Web.Models
 {
     public class HomeViewModel
     {
-        public IEnumerable<ConfigurationKey> configKeys { get; set; }
+        public IEnumerable<ConfigKey> ConfigKeys { get; set; }
+    }
+
+    public class ConfigKey
+    {
+        public string Key { get; set; }
+        public string LatestVersion { get; set; }
+        public ConfigurationDataType Type { get; set; }
     }
 }

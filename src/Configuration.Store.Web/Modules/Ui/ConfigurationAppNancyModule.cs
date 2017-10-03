@@ -1,4 +1,5 @@
-﻿using Configuration.Store.Web.Models;
+﻿using AutoMapper;
+using Configuration.Store.Web.Models;
 using Configuration.Store.Web.Models.Shared;
 using Nancy;
 using System.Collections.Generic;
@@ -27,20 +28,7 @@ namespace Configuration.Store.Web.Modules.Ui
             return Negotiate
                 .WithModel(new HomeViewModel
                 {
-                    //configKeys = configKeys
-                    configKeys = new List<ConfigurationKey>
-                    {
-                        new ConfigurationKey
-                        {
-                            Key = "key 1",
-                            Type = ConfigurationDataType.JSON
-                        },
-                        new ConfigurationKey
-                        {
-                            Key = "key 2",
-                            Type = ConfigurationDataType.JSON
-                        }
-                    }
+                    ConfigKeys = Mapper.Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKey>>(configKeys)
                 })
                 .WithView("ConfigurationStore");
         }

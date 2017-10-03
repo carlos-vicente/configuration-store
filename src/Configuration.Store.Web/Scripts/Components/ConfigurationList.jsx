@@ -1,6 +1,4 @@
-﻿import ConfigurationKey from './ConfigurationKey';
-
-class ConfigurationList extends React.Component {
+﻿class ConfigurationList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -11,14 +9,24 @@ class ConfigurationList extends React.Component {
 
     render() {
         return (
-            <div>
-                <ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Configuration Key</th>
+                        <th>Latest version</th>
+                        <th>Type</th>
+                    </tr>
+                </thead>
+                <tbody>
                     {this.state.configKeys.map((configKey, index) =>
-                        <ConfigurationKey key={index} configKey={configKey.Key} />
+                        <tr key={index}>
+                            <td>{configKey.key}</td>
+                            <td>{configKey.latestVersion}</td>
+                            <td>{configKey.type}</td>
+                        </tr>
                     )}
-                </ul>
-                
-            </div>
+                </tbody>
+            </table>
         );
     }
 }

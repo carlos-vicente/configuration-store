@@ -1,4 +1,6 @@
-﻿using Microsoft.Owin.Extensions;
+﻿using AutoMapper;
+using Configuration.Store.Web.Models;
+using Microsoft.Owin.Extensions;
 using Owin;
 
 namespace Configuration.Store.Web
@@ -9,6 +11,8 @@ namespace Configuration.Store.Web
         {
             app.UseNancy();
             app.UseStageMarker(PipelineStage.MapHandler);
+
+            Mapper.Initialize(config => config.AddProfile<ConfigKeyMappingProfile>());
         }
     }
 }
