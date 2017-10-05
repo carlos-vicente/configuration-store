@@ -9,24 +9,14 @@
 
     render() {
         return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>Configuration Key</th>
-                        <th>Latest version</th>
-                        <th>Type</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.state.configKeys.map((configKey, index) =>
-                        <tr key={index}>
-                            <td>{configKey.key}</td>
-                            <td>{configKey.latestVersion}</td>
-                            <td>{configKey.type}</td>
-                        </tr>
-                    )}
-                </tbody>
-            </table>
+            <div className="collection">
+                {this.state.configKeys.map((configKey, index) =>
+                    <a key={index} href="#!" className="collection-item">
+                        <span className="new badge" data-badge-caption={configKey.type}></span>
+                        {configKey.key} ({configKey.latestVersion})
+                    </a>
+                )}
+            </div>
         );
     }
 }
