@@ -2,6 +2,8 @@
 using Configuration.Store.Web.Bootstrapp.Modules;
 using Nancy.Bootstrappers.Autofac;
 using Nancy.Conventions;
+using Nancy.Swagger.Services;
+using Swagger.ObjectModel;
 
 namespace Configuration.Store.Web.Bootstrapp
 {
@@ -9,6 +11,20 @@ namespace Configuration.Store.Web.Bootstrapp
     {
         protected override ILifetimeScope GetApplicationContainer()
         {
+            SwaggerMetadataProvider.SetInfo(
+                "Configuration store Api documentation",
+                "v0.1",
+                "An Api to manage the configuration values for your application",
+                new Contact
+                {
+                    Name = "Carlos Vicente",
+                    EmailAddress = "carlosvicente200@gmail.com"
+                });
+
+            ApplicationPipelines
+                .AfterRequest
+                .AddItemToEndOfPipeline(x => x.Response.Headers.Add("Access-Control-Allow-Origin", "*"));
+
             var builder = new ContainerBuilder();
 
             builder.RegisterModule<ConfigStoreModule>();
@@ -22,6 +38,7 @@ namespace Configuration.Store.Web.Bootstrapp
             base.ConfigureConventions(nancyConventions);
             nancyConventions.StaticContentsConventions.AddDirectory("Scripts");
             nancyConventions.StaticContentsConventions.AddDirectory("Styles");
+            nancyConventions.StaticContentsConventions.AddDirectory("swagger");
         }
     }
 }

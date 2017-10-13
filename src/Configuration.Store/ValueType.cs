@@ -1,6 +1,6 @@
 ﻿namespace Configuration.Store
 {
-    public enum ConfigurationDataType
+    public enum ValueType
     {
         String,
         JSON

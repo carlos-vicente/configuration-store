@@ -2,7 +2,13 @@
 var babel = require('gulp-babel');
 
 var babelOptions = {
-    presets: ['react', 'es2015'],
+    presets: [
+        'react', 
+        ["env", {
+            "targets": {
+                "browsers": ["last 2 versions", "safari >= 7"]
+            }
+        }]],
     plugins: ['transform-es2015-modules-amd']
 };
 

@@ -25,7 +25,7 @@ namespace Configuration.Store
                 {
                     Key = storedKey.Key,
                     LatestVersion = storedKey.LastestVersion,
-                    Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), storedKey.Type)
+                    Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type)
                 })
                 .ToList();
         }
@@ -69,14 +69,14 @@ namespace Configuration.Store
             {
                 Sequence = storedValue.Sequence,
                 Data = storedValue.Data,
-                Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), config.Type)
+                Type = (ValueType)Enum.Parse(typeof(ValueType), config.Type)
             };
         }
 
         public async Task AddConfiguration(
             string key,
             Version version,
-            ConfigurationDataType dataType)
+            ValueType dataType)
         {
             // todo: params check
 

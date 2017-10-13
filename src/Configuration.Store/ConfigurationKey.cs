@@ -6,6 +6,6 @@ namespace Configuration.Store
     {
         public string Key { get; set; }
         public Version LatestVersion { get; set; }
-        public ConfigurationDataType Type { get; set; }
+        public ValueType Type { get; set; }
     }
 }

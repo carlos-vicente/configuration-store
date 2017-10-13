@@ -14,9 +14,9 @@ namespace Configuration.Store
 
         /// <summary>
         /// The type of configuration value
-        /// <see cref="ConfigurationDataType"/>
+        /// <see cref="ValueType"/>
         /// </summary>
-        public ConfigurationDataType Type { get; set; }
+        public ValueType Type { get; set; }
 
         /// <summary>
         /// The actual value, defined in the format specified by <seealso cref="Type"/>

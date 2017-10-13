@@ -52,7 +52,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                             key,
                             new Tuple
                                 <string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
-                                    _fixture.Create<ConfigurationDataType>().ToString(),
+                                    _fixture.Create<ValueType>().ToString(),
                                     new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
                                     {
                                         {
@@ -84,7 +84,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>();
+            var dataType = _fixture.Create<ValueType>();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -142,7 +142,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             _sut = new InMemoryConfigurationRepository();
 
@@ -169,7 +169,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>();
+            var dataType = _fixture.Create<ValueType>();
 
             _sut =
                 new InMemoryConfigurationRepository(new Dictionary
@@ -201,7 +201,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -254,7 +254,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -291,7 +291,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -356,7 +356,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -400,7 +400,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -444,7 +444,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -487,7 +487,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var store = new Dictionary
                 <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
@@ -526,7 +526,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var wrongKey = _fixture.Create<string>();
 
@@ -562,7 +562,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var wrongVersion = _fixture.Create<Version>();
 
@@ -598,7 +598,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -648,7 +648,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -695,7 +695,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -742,7 +742,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();

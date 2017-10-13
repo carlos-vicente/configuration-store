@@ -45,7 +45,7 @@ namespace Configuration.Store
         Task AddConfiguration(
             string key,
             Version version,
-            ConfigurationDataType dataType);
+            ValueType dataType);
 
         /// <summary>
         /// 

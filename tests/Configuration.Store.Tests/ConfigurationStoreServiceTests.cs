@@ -35,7 +35,7 @@ namespace Configuration.Store.Tests
 
             var storedConfig = _fixture
                 .Build<StoredConfig>()
-                .With(sc => sc.Type, _fixture.Create<ConfigurationDataType>().ToString())
+                .With(sc => sc.Type, _fixture.Create<ValueType>().ToString())
                 .With(sc => sc.Values, new List<StoredConfigValues>
                 {
                     _fixture
@@ -47,7 +47,7 @@ namespace Configuration.Store.Tests
 
             var expectedConfig = new Configuration
             {
-                Type = (ConfigurationDataType) Enum.Parse(typeof(ConfigurationDataType), storedConfig.Type),
+                Type = (ValueType) Enum.Parse(typeof(ValueType), storedConfig.Type),
                 Sequence = storedConfig.Values.Single().Sequence,
                 Data = storedConfig.Values.Single().Data
             };
@@ -74,7 +74,7 @@ namespace Configuration.Store.Tests
 
             var storedConfig = _fixture
                 .Build<StoredConfig>()
-                .With(sc => sc.Type, _fixture.Create<ConfigurationDataType>().ToString())
+                .With(sc => sc.Type, _fixture.Create<ValueType>().ToString())
                 .With(sc => sc.Values, new List<StoredConfigValues>
                 {
                     _fixture

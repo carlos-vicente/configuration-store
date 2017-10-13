@@ -20,12 +20,24 @@ namespace Configuration.Store.Web.Modules.Api
         {
             _configStoreService = configStoreService;
 
-            Get["GetConfigForVersion", RouteRegistry.Api.Configuration.GetConfigForVersion, true] = GetConfigForVersion;
-            Put["AddNewConfiguration", RouteRegistry.Api.Configuration.AddNewConfiguration, true] = AddNewConfiguration;
-            Put["AddNewValueToConfiguration", RouteRegistry.Api.Configuration.AddNewValueToConfiguration, true] = AddNewValueToConfiguration;
-            Put["UpdateValueOnConfiguration", RouteRegistry.Api.Configuration.UpdateValueOnConfiguration, true] = UpdateValueOnConfiguration;
-            Delete["DeleteValueFromConfiguration", RouteRegistry.Api.Configuration.DeleteValueFromConfiguration, true] = DeleteValueFromConfiguration;
-            Delete["DeleteConfiguration", RouteRegistry.Api.Configuration.DeleteConfiguration, true] = DeleteConfiguration;
+            Get[RouteRegistry.Api.Configuration.GetConfigForVersion.Name,
+                RouteRegistry.Api.Configuration.GetConfigForVersion.Template,
+                true] = GetConfigForVersion;
+            Put[RouteRegistry.Api.Configuration.AddNewConfiguration.Name,
+                RouteRegistry.Api.Configuration.AddNewConfiguration.Template,
+                true] = AddNewConfiguration;
+            Put[RouteRegistry.Api.Configuration.AddNewValueToConfiguration.Name,
+                RouteRegistry.Api.Configuration.AddNewValueToConfiguration.Template,
+                true] = AddNewValueToConfiguration;
+            Put[RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Name,
+                RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Template,
+                true] = UpdateValueOnConfiguration;
+            Delete[RouteRegistry.Api.Configuration.DeleteValueFromConfiguration.Name,
+                RouteRegistry.Api.Configuration.DeleteValueFromConfiguration.Template,
+                true] = DeleteValueFromConfiguration;
+            Delete[RouteRegistry.Api.Configuration.DeleteConfiguration.Name,
+                RouteRegistry.Api.Configuration.DeleteConfiguration.Template,
+                true] = DeleteConfiguration;
         }
 
         private async Task<dynamic> GetConfigForVersion(dynamic parameters, CancellationToken token)
@@ -34,7 +46,7 @@ namespace Configuration.Store.Web.Modules.Api
             Version version = parameters.configVersion;
             string environmentTag = parameters.envTag;
 
-            int? currentSequence = this.Request.Query.seq;
+            int? currentSequence = Request.Query.seq;
 
             var configuration = await _configStoreService
                 .GetConfiguration(key, version, environmentTag, currentSequence)
