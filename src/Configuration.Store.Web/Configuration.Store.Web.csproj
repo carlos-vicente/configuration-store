@@ -119,6 +119,7 @@
     <Content Include="gulp\tasks\require-task.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="Views\swagger-ui.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -139,20 +140,21 @@
     <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\UpdateValueOnConfigurationRequest.cs" />
-    <Compile Include="Models\ConfigKeyMappingProfile.cs" />
+    <Compile Include="Models\ConfigKey.cs" />
+    <Compile Include="Models\Mapping\ConfigKeyMappingProfile.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
-    <Compile Include="Models\Shared\ReactViewModel.cs" />
+    <Compile Include="Models\SwaggerViewModel.cs" />
     <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />
     <Compile Include="Modules\Api\Metadata\ConfigurationNancyMetadataModule.cs" />
     <Compile Include="Modules\RouteRegistry.cs" />
     <Compile Include="Modules\Ui\ConfigurationAppNancyModule.cs" />
+    <Compile Include="Modules\Ui\SwaggerNancyModule.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="ViewHelpers\HtmlJsonHelper.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\app\" />
     <Folder Include="Styles\" />
   </ItemGroup>
   <ItemGroup>

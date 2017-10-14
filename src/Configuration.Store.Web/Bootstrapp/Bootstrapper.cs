@@ -38,7 +38,6 @@ namespace Configuration.Store.Web.Bootstrapp
             base.ConfigureConventions(nancyConventions);
             nancyConventions.StaticContentsConventions.AddDirectory("Scripts");
             nancyConventions.StaticContentsConventions.AddDirectory("Styles");
-            nancyConventions.StaticContentsConventions.AddDirectory("swagger");
         }
     }
 }

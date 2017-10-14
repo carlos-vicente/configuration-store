@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Configuration.Store.Web.Models;
+using Configuration.Store.Web.Models.Mapping;
 using Microsoft.Owin.Extensions;
 using Owin;
 

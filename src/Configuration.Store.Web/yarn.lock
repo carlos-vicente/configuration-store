@@ -2954,6 +2954,10 @@ swagger-ui-dist@^3.3.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/swagger-ui-dist/-/swagger-ui-dist-3.3.1.tgz#f82a59e842bce91c02f1db527744f97aeaf146b7"
 
+swagger-ui-themes@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/swagger-ui-themes/-/swagger-ui-themes-3.0.0.tgz#4523cad5a43d460ec4c6ae633baa8a6e8fd69ba9"
+
 tar-fs@^1.15.1:
   version "1.15.3"
   resolved "https://registry.yarnpkg.com/tar-fs/-/tar-fs-1.15.3.tgz#eccf935e941493d8151028e636e51ce4c3ca7f20"

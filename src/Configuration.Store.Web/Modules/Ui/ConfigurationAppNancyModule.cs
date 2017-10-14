@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Configuration.Store.Web.Models;
-using Configuration.Store.Web.Models.Shared;
 using Nancy;
 using System.Collections.Generic;
 using System.Threading;
