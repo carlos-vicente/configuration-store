@@ -115,6 +115,53 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
                 {
                     configurationStoreTag
                 });
+
+            RouteDescriber.DescribeRouteWithParams(
+                RouteRegistry.Api.Configuration.AddNewValueToConfiguration.Name,
+                "Adds a new configuration value to an existing key, used to add values to a different set of environments",
+                "Add a new configuration value for the key",
+                new[]
+                {
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Message = "OK"
+                    },
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.BadRequest,
+                        Message = "Request received does not match expectation"
+                    }
+                },
+                new[]
+                {
+                    new Parameter
+                    {
+                        Name = "configKey",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "configVersion:version",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key's version",
+                        Type = "string"
+                    },
+                    new BodyParameter<NewValueToConfigurationRequest>(modelCatalog)
+                    {
+                        Name = "new configuration value",
+                        Required = true,
+                        Description = "The configuration value definition"
+                    }
+                },
+                new[]
+                {
+                    configurationStoreTag
+                });
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Configuration.Store.Web.Modules.Api
             Put[RouteRegistry.Api.Configuration.AddNewValueToConfiguration.Name,
                 RouteRegistry.Api.Configuration.AddNewValueToConfiguration.Template,
                 true] = AddNewValueToConfiguration;
-            Put[RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Name,
+            Post[RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Name,
                 RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Template,
                 true] = UpdateValueOnConfiguration;
             Delete[RouteRegistry.Api.Configuration.DeleteValueFromConfiguration.Name,
