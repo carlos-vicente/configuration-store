@@ -25,7 +25,8 @@ namespace Configuration.Store
                 {
                     Key = storedKey.Key,
                     LatestVersion = storedKey.LastestVersion,
-                    Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type)
+                    Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type),
+                    CreatedAt = storedKey.CreatedAt
                 })
                 .ToList();
         }
@@ -88,7 +89,7 @@ namespace Configuration.Store
                 throw new ArgumentException($"Can not create configuration with key {key} and version {version}, as it already exists!");
 
             await _repository
-                .AddNewConfiguration(key, version, dataType.ToString())
+                .AddNewConfiguration(key, version, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
         }
 
@@ -137,7 +138,8 @@ namespace Configuration.Store
                     version,
                     valueId,
                     tags,
-                    value)
+                    value,
+                    DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             return valueId;

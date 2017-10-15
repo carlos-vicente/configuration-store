@@ -38,7 +38,8 @@ namespace Configuration.Store.Persistence.Memory
                     {
                         Key = key,
                         Type = _configs[key].Item1,
-                        LastestVersion = latestVersion
+                        LastestVersion = latestVersion,
+                        CreatedAt = DateTime.UtcNow // this is a memory stub, really don't care about when it was created
                     };
                 }));
         }
@@ -61,7 +62,8 @@ namespace Configuration.Store.Persistence.Memory
                                 Id = tuple.Item1,
                                 Sequence = tuple.Item2,
                                 Data = tuple.Item3,
-                                EnvironmentTags = tuple.Item4
+                                EnvironmentTags = tuple.Item4,
+                                CreatedAt = DateTime.UtcNow // this is a memory stub, really don't care about when it was created
                             })
                     };
                 }
@@ -73,7 +75,8 @@ namespace Configuration.Store.Persistence.Memory
         public Task AddNewConfiguration(
             string key,
             Version version,
-            string dataType)
+            string dataType,
+            DateTime createdAt)
         {
             if (_configs.ContainsKey(key))
                 throw new ArgumentException("key already available");
@@ -93,7 +96,8 @@ namespace Configuration.Store.Persistence.Memory
             Version version,
             Guid valueId,
             IEnumerable<string> envTags,
-            string value)
+            string value,
+            DateTime createdAt)
         {
             if (!_configs.ContainsKey(key) || !_configs[key].Item2.ContainsKey(version))
                 throw new ArgumentException($"key {key} for version {version} not found");

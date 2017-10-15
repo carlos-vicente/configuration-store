@@ -7,5 +7,6 @@ namespace Configuration.Store
         public string Key { get; set; }
         public Version LatestVersion { get; set; }
         public ValueType Type { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

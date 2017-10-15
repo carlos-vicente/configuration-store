@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.Tests;
 using FluentAssertions;
 using Ploeh.AutoFixture;
+using FluentAssertions.Equivalency;
 
 namespace Configuration.Store.Persistence.Memory.Tests
 {
@@ -134,7 +135,10 @@ namespace Configuration.Store.Persistence.Memory.Tests
                 .ConfigureAwait(false);
 
             // assert
-            config.ShouldBeEquivalentTo(expectedConfig);
+            config.ShouldBeEquivalentTo(
+                expectedConfig,
+                options => options
+                    .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public async Task AddNewConfiguration_ShouldAddTheConfiguration_WhenItDoesNotExist()
@@ -146,6 +150,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             _sut = new InMemoryConfigurationRepository();
 
+            var createdAt = DateTime.UtcNow;
             var expected = new StoredConfig
             {
                 Type = dataType,
@@ -154,14 +159,17 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // act
             await _sut
-                .AddNewConfiguration(key, version, dataType)
+                .AddNewConfiguration(key, version, dataType, createdAt)
                 .ConfigureAwait(false);
 
             // assert
             (await _sut
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void AddNewConfiguration_ShouldThrowException_WhenItAlreadyExists()
@@ -188,7 +196,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                     });
 
             Func<Task> exThrower = async () => await _sut
-                .AddNewConfiguration(key, version, dataType.ToString())
+                .AddNewConfiguration(key, version, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -222,6 +230,8 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         }
                     });
 
+            var createdAt = DateTime.UtcNow;
+
             var expected = new StoredConfig
             {
                 Type = dataType,
@@ -232,14 +242,15 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         Id = valueId,
                         Sequence = 1,
                         EnvironmentTags = tags,
-                        Data = data
+                        Data = data,
+                        CreatedAt = createdAt
                     }
                 }
             };
 
             // act
             await _sut
-                .AddNewValueToConfiguration(key, version, valueId, tags, data)
+                .AddNewValueToConfiguration(key, version, valueId, tags, data, createdAt)
                 .ConfigureAwait(false);
 
             // assert
@@ -278,7 +289,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
 
             Func<Task> exceptionThrower = async () => await _sut
-                .AddNewValueToConfiguration(unknownKey, version, valueId, tags, data)
+                .AddNewValueToConfiguration(unknownKey, version, valueId, tags, data, DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -348,7 +359,10 @@ namespace Configuration.Store.Persistence.Memory.Tests
             (await _sut
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()

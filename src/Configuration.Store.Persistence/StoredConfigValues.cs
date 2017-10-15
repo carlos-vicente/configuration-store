@@ -9,5 +9,6 @@ namespace Configuration.Store.Persistence
         public int Sequence { get; set; }
         public string Data { get; set; }
         public IEnumerable<string> EnvironmentTags { get; set; }
+        public DateTime CreatedAt { get; set; }
     }
 }

@@ -13,7 +13,7 @@
                 {this.state.configKeys.map((configKey, index) =>
                     <a key={index} href="#!" className="collection-item">
                         <span className="new badge" data-badge-caption={configKey.type}></span>
-                        {configKey.key} ({configKey.latestVersion})
+                        {configKey.key} {configKey.latestVersion} {configKey.createdAt}
                     </a>
                 )}
             </div>
