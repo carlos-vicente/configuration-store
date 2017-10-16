@@ -217,6 +217,86 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
                 {
                     configurationStoreTag
                 });
+
+            RouteDescriber.DescribeRouteWithParams(
+                RouteRegistry.Api.Configuration.DeleteConfiguration.Name,
+                "Deletes a specific configuration key, with a specific version, and all its values",
+                "Deletes a configuration key",
+                new[] 
+                {
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Message = "Deleted configuration key"
+                    },
+                },
+                new[] 
+                {
+                    new Parameter
+                    {
+                        Name = "configKey",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "configVersion:version",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key's version",
+                        Type = "string"
+                    }
+                },
+                new[] 
+                {
+                    configurationStoreTag
+                });
+
+            RouteDescriber.DescribeRouteWithParams(
+                RouteRegistry.Api.Configuration.DeleteValueFromConfiguration.Name,
+                "Deletes a specific configuration value for a key with a specific version",
+                "Deletes a configuration key",
+                new[]
+                {
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Message = "Deleted configuration key"
+                    },
+                },
+                new[]
+                {
+                    new Parameter
+                    {
+                        Name = "configKey",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "configVersion:version",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key's version",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "valueId:guid",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration value's identifier",
+                        Type = "string"
+                    }
+                },
+                new[]
+                {
+                    configurationStoreTag
+                });
         }
     }
 }
