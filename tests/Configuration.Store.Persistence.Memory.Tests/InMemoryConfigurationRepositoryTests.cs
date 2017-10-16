@@ -257,7 +257,10 @@ namespace Configuration.Store.Persistence.Memory.Tests
             (await _sut
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void AddNewValueToConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()

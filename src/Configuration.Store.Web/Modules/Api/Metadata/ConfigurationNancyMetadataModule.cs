@@ -162,6 +162,61 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
                 {
                     configurationStoreTag
                 });
+
+            RouteDescriber.DescribeRouteWithParams(
+                RouteRegistry.Api.Configuration.UpdateValueOnConfiguration.Name,
+                "Updates a specific configuration value, bumping the sequence number",
+                "Updates a configuration value",
+                new[]
+                {
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Message = "OK"
+                    },
+                    new HttpResponseMetadata
+                    {
+                        Code = (int)HttpStatusCode.BadRequest,
+                        Message = "Request received does not match expectation"
+                    }
+                },
+                new[]
+                {
+                    new Parameter
+                    {
+                        Name = "configKey",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "configVersion:version",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration key's version",
+                        Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "valueId:guid",
+                        In = ParameterIn.Path,
+                        Required = true,
+                        Description = "The configuration value's identifier",
+                        Type = "string"
+                    },
+                    new BodyParameter<UpdateValueOnConfigurationRequest>(modelCatalog)
+                    {
+                        Name = "new configuration value",
+                        Required = true,
+                        Description = "The configuration value definition"
+                    }
+                },
+                new[]
+                {
+                    configurationStoreTag
+                });
         }
     }
 }
