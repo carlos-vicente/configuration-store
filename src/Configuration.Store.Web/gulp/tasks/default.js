@@ -1,6 +1,6 @@
 var gulp = require('gulp');
 
-gulp.task('default', ['copyJquery', 'copyMaterialize', 'copyReactDist', 'copyRequireJs', 'copySwaggerUiDist', 'build'],
+gulp.task('default', ['copyJquery', 'copyMaterialize', 'copyReactDist', 'copyMoment', 'copyRequireJs', 'copySwaggerUiDist', 'build'],
     function () {
     // this watch makes sure that when something changes in the watched files,
     // then task 'copyJquery' must be invoked

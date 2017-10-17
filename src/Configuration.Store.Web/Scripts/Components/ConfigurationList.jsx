@@ -1,4 +1,6 @@
-﻿class ConfigurationList extends React.Component {
+﻿import moment from 'Scripts/lib/moment/moment.min'
+
+class ConfigurationList extends React.Component {
     constructor(props) {
         super(props);
 
@@ -9,14 +11,26 @@
 
     render() {
         return (
-            <div className="collection">
-                {this.state.configKeys.map((configKey, index) =>
-                    <a key={index} href="#!" className="collection-item">
-                        <span className="new badge" data-badge-caption={configKey.type}></span>
-                        {configKey.key} {configKey.latestVersion} {configKey.createdAt}
-                    </a>
-                )}
-            </div>
+            <table className="highlight">
+                <thead>
+                    <tr>
+                        <th>Configuration key</th>
+                        <th>Latest version</th>
+                        <th className="hide-on-med-and-down">Created at</th>
+                        <th className="hide-on-small-only">Configuration type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {this.state.configKeys.map((configKey, index) =>
+                        <tr key={index}>
+                            <td><a href="#!">{configKey.key}</a></td>
+                            <td>{configKey.latestVersion}</td>
+                            <td className="hide-on-med-and-down">{moment(configKey.createdAt).format('LLL')}</td>
+                            <td className="hide-on-small-only"><div className="chip">{configKey.type}</div></td>
+                        </tr>
+                    )}
+                </tbody>
+            </table>
         );
     }
 }

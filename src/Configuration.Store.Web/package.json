@@ -23,6 +23,7 @@
   "main": "index.js",
   "dependencies": {
     "materialize-css": "^0.98.2",
+    "moment": "^2.19.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "requirejs": "^2.3.3",
