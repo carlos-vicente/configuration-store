@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Configuration.Store.Web.Models.Mapping;
 using Microsoft.Owin.Extensions;
 using Owin;
+using System.Reflection;
 
 namespace Configuration.Store.Web
 {
@@ -12,7 +12,7 @@ namespace Configuration.Store.Web
             app.UseNancy();
             app.UseStageMarker(PipelineStage.MapHandler);
 
-            Mapper.Initialize(config => config.AddProfile<ConfigKeyMappingProfile>());
+            Mapper.Initialize(config => config.AddProfiles(Assembly.GetExecutingAssembly()));
         }
     }
 }

@@ -1,0 +1,24 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Models.ConfigurationListViewModel>
+@model ConfigurationListViewModel
+
+@{
+    Layout = "Shared/Master.cshtml";
+    ViewBag.Title = "Configuration List";
+}
+
+@section Scripts
+{
+    <link type="text/css" rel="stylesheet" href="~/Styles/app/Components/ConfigurationList.css" />
+
+    <script>
+        requirejs(['Scripts/app/ConfigurationList'], function (configList) 
+        {
+            var data = @Html.AsJson(Model);
+
+            var element = React.createElement(configList.default, data);
+            var rootElement = document.getElementById('root');
+
+            ReactDOM.render(element, rootElement);
+        });
+    </script>
+}

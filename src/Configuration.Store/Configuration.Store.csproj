@@ -46,6 +46,7 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="ConfigurationKey.cs" />
     <Compile Include="ConfigurationStoreService.cs" />
+    <Compile Include="ConfigurationValue.cs" />
     <Compile Include="IConfigurationStoreService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ValueType.cs" />

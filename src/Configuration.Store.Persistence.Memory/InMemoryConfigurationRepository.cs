@@ -120,7 +120,7 @@ namespace Configuration.Store.Persistence.Memory
             IEnumerable<string> envTags,
             string value)
         {
-            if (!_configs.ContainsKey(key) 
+            if (!_configs.ContainsKey(key)
                 || !_configs[key].Item2.ContainsKey(version)
                 || _configs[key].Item2[version].All(t => t.Item1 != valueId))
                 throw new ArgumentException($"key {key} for version {version} not found");
@@ -143,7 +143,7 @@ namespace Configuration.Store.Persistence.Memory
 
         public Task DeleteConfiguration(string key, Version version)
         {
-            if(!_configs.ContainsKey(key)
+            if (!_configs.ContainsKey(key)
                 || !_configs[key].Item2.ContainsKey(version))
                 throw new ArgumentException($"key {key} for version {version} not found");
 
@@ -166,6 +166,16 @@ namespace Configuration.Store.Persistence.Memory
             _configs[key].Item2[version].Remove(config);
 
             return Task.FromResult(0);
+        }
+
+        public Task<IEnumerable<Version>> GetConfigurationKeyVersions(string key)
+        {
+            if (_configs.ContainsKey(key))
+            {
+                return Task.FromResult<IEnumerable<Version>>(_configs[key].Item2.Keys);
+            }
+
+            return Task.FromResult<IEnumerable<Version>>(null);
         }
     }
 }

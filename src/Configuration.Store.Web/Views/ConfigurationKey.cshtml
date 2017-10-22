@@ -1,0 +1,24 @@
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Models.ConfigurationKeyViewModel>
+@model ConfigurationKeyViewModel
+
+@{
+    Layout = "Shared/Master.cshtml";
+    ViewBag.Title = "Configuration key";
+}
+
+@section Scripts
+{
+    <link type="text/css" rel="stylesheet" href="~/Styles/app/Components/ConfigurationKey.css" />
+
+    <script>
+        requirejs(['../Scripts/app/ConfigurationKey'], function (configKey)
+        {
+            var data = @Html.AsJson(Model);
+
+            var element = React.createElement(configKey.default, data);
+            var rootElement = document.getElementById('root');
+
+            ReactDOM.render(element, rootElement);
+        });
+    </script>
+}

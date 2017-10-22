@@ -7,6 +7,7 @@ namespace Configuration.Store.Persistence
     public interface IConfigurationRepository
     {
         Task<IEnumerable<StoredConfigKey>> GetConfigurations();
+        Task<IEnumerable<Version>> GetConfigurationKeyVersions(string key);
         Task<StoredConfig> GetConfiguration(string key, Version version);
         Task AddNewConfiguration(string key, Version version, string dataType, DateTime createdAt);
         Task DeleteConfiguration(string key, Version version);

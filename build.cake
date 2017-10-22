@@ -21,7 +21,9 @@ Task("Clean generated code")
         CleanDirectories(new DirectoryPath[]
         {
             Directory("./src/Configuration.Store.Web/node_modules"),
-            Directory("./src/Configuration.Store.Web/Styles"),
+            Directory("./src/Configuration.Store.Web/Styles/materialize"),
+            Directory("./src/Configuration.Store.Web/Styles/swagger"),
+            Directory("./src/Configuration.Store.Web/Styles/app"),
             Directory("./src/Configuration.Store.Web/Scripts/app"),
             Directory("./src/Configuration.Store.Web/Scripts/lib")
         });

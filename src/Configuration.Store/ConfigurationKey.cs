@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Configuration.Store
 {
@@ -8,5 +9,6 @@ namespace Configuration.Store
         public Version LatestVersion { get; set; }
         public ValueType Type { get; set; }
         public DateTime CreatedAt { get; set; }
+        public IEnumerable<ConfigurationValue> Values { get; set; }
     }
 }

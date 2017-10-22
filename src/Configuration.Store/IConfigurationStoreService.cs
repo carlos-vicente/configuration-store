@@ -20,6 +20,14 @@ namespace Configuration.Store
         Task<IEnumerable<ConfigurationKey>> GetConfigurationKeys();
 
         /// <summary>
+        /// Gets all the configuration values for a given key;
+        /// </summary>
+        /// <param name="key">The configuration key being requested</param>
+        /// <returns>NULL when no configuration value has been found</returns>
+        /// <returns>All Configuration values available for the key</returns>
+        Task<ConfigurationKey> GetConfigurationKey(string key);
+
+        /// <summary>
         /// Gets a configuration value for all speficied filters;
         /// </summary>
         /// <param name="key">The configuration key being requested</param>

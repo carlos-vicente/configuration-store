@@ -2,7 +2,7 @@
 
 namespace Configuration.Store.Web.Models
 {
-    public class ConfigKey
+    public class ConfigKeyListItem : BaseModel
     {
         public string Key { get; set; }
         public string LatestVersion { get; set; }

@@ -120,6 +120,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="Views\swagger-ui.cshtml" />
+    <Content Include="Views\ConfigurationKey.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -129,7 +130,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\Pages\ConfigurationStore.jsx" />
-    <None Include="Views\ConfigurationStore.cshtml" />
+    <None Include="Views\ConfigurationList.cshtml" />
     <None Include="Views\Shared\Master.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -140,9 +141,15 @@
     <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\UpdateValueOnConfigurationRequest.cs" />
-    <Compile Include="Models\ConfigKey.cs" />
+    <Compile Include="Models\BaseModel.cs" />
+    <Compile Include="Models\ConfigKeyDetailed.cs" />
+    <Compile Include="Models\ConfigKeyListItem.cs" />
+    <Compile Include="Models\ConfigurationKeyViewModel.cs" />
+    <Compile Include="Models\ConfigurationListViewModel.cs" />
+    <Compile Include="Models\ConfigValueListItem.cs" />
+    <Compile Include="Models\Mapping\ConfigKeyDetailMappingProfile.cs" />
     <Compile Include="Models\Mapping\ConfigKeyMappingProfile.cs" />
-    <Compile Include="Models\HomeViewModel.cs" />
+    <Compile Include="Models\Nav.cs" />
     <Compile Include="Models\SwaggerViewModel.cs" />
     <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />
     <Compile Include="Modules\Api\Metadata\ConfigurationNancyMetadataModule.cs" />

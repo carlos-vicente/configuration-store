@@ -74,6 +74,55 @@ namespace Configuration.Store
             };
         }
 
+        public async Task<ConfigurationKey> GetConfigurationKey(string key)
+        {
+            var versions = await _repository
+                .GetConfigurationKeyVersions(key)
+                .ConfigureAwait(false);
+
+            if (versions == null)
+                return null;
+
+            var configKey = new ConfigurationKey
+            {
+                Key = key
+            };
+
+            var values = new List<ConfigurationValue>();
+            foreach(var version in versions)
+            {
+                var configuration = await _repository
+                    .GetConfiguration(key, version)
+                    .ConfigureAwait(false);
+
+                // TODO: no need to this multiple times, find a better concept representation/storage interface
+                configKey.Type = (ValueType)Enum.Parse(typeof(ValueType), configuration.Type);
+
+                var latestValue = configuration
+                    .Values
+                    .OrderByDescending(val => val.Sequence)
+                    .FirstOrDefault();
+
+                if (latestValue == null)
+                    continue;
+
+                values.Add(new ConfigurationValue
+                {
+                    Version = version,
+                    LatestData = latestValue.Data,
+                    LatestSequence = latestValue.Sequence,
+                    EnvironmentTags = latestValue.EnvironmentTags,
+                    CreatedAt = latestValue.CreatedAt
+                });
+            }
+
+            configKey.Values = values
+                .OrderBy(val => val.Version)
+                .ToArray();
+
+            return configKey;
+        }
+
         public async Task AddConfiguration(
             string key,
             Version version,

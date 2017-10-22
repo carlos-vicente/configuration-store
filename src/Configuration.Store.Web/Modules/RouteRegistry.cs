@@ -50,7 +50,12 @@
             public static class Configuration
             {
                 public static readonly string GetHome = "/";
-                public static readonly string GetConfiguration = "/{configKey}";
+                public static readonly string GetConfiguration = "/key/{configKey}";
+
+                public static string GetConfigurationRoute(string configKey)
+                {
+                    return GetConfiguration.Replace("{configKey}", configKey);
+                }
             }
         }
     }
