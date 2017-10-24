@@ -98,22 +98,25 @@ namespace Configuration.Store
                 // TODO: no need to this multiple times, find a better concept representation/storage interface
                 configKey.Type = (ValueType)Enum.Parse(typeof(ValueType), configuration.Type);
 
-                var latestValue = configuration
+                var currentValues = configuration
                     .Values
-                    .OrderByDescending(val => val.Sequence)
-                    .FirstOrDefault();
+                    .GroupBy(val => val.EnvironmentTags);
 
-                if (latestValue == null)
-                    continue;
-
-                values.Add(new ConfigurationValue
+                foreach(var valuesForEnv in currentValues)
                 {
-                    Version = version,
-                    LatestData = latestValue.Data,
-                    LatestSequence = latestValue.Sequence,
-                    EnvironmentTags = latestValue.EnvironmentTags,
-                    CreatedAt = latestValue.CreatedAt
-                });
+                    var latestValue = valuesForEnv
+                        .OrderByDescending(val => val.Sequence)
+                        .First();
+
+                    values.Add(new ConfigurationValue
+                    {
+                        Version = version,
+                        LatestData = latestValue.Data,
+                        LatestSequence = latestValue.Sequence,
+                        EnvironmentTags = valuesForEnv.Key,
+                        CreatedAt = latestValue.CreatedAt
+                    });
+                }
             }
 
             configKey.Values = values

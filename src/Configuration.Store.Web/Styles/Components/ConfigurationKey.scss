@@ -1,5 +1,13 @@
-.key-detail{
-    h2{
+.key-detail {
+    margin-top: 3em;
+
+    h2 {
         display: inline-block;
+    }
+
+    .key-head {
+        .chip{
+            margin-left:20px;
+        }
     }
 }

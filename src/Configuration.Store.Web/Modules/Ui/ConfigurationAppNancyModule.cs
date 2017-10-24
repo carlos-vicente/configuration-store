@@ -2,6 +2,7 @@
 using Configuration.Store.Web.Models;
 using Nancy;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -28,7 +29,8 @@ namespace Configuration.Store.Web.Modules.Ui
             return Negotiate
                 .WithModel(new ConfigurationListViewModel
                 {
-                    ConfigKeys = Mapper.Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKeyListItem>>(configKeys)
+                    ConfigKeys = Mapper
+                        .Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKeyListItem>>(configKeys.OrderBy(k => k.Key))
                 })
                 .WithView("ConfigurationList");
         }

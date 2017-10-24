@@ -121,6 +121,8 @@
     <Content Include="package.json" />
     <Content Include="Views\swagger-ui.cshtml" />
     <Content Include="Views\ConfigurationKey.cshtml" />
+    <Content Include="Styles\Components\ConfigurationKey.scss" />
+    <Content Include="Styles\Components\ConfigurationList.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -161,9 +163,7 @@
     <Compile Include="Utils\StringExtensions.cs" />
     <Compile Include="ViewHelpers\HtmlJsonHelper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Styles\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Configuration.Store.Persistence.Memory\Configuration.Store.Persistence.Memory.csproj">
       <Project>{05B6CF7E-A4E7-48C2-B550-0E102E6667E0}</Project>

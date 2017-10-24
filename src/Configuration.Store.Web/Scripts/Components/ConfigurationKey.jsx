@@ -11,7 +11,7 @@
     render() {
         return (
             <div className="key-detail">
-                <span>
+                <span className="key-head">
                     <h2>{this.state.detail.key}</h2><span className="chip">{this.state.detail.type}</span>
                 </span>
 
