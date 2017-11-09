@@ -18,15 +18,27 @@ Task("Clean generated code")
     .WithCriteria(!noClean)
     .Does(() =>
     {
-        CleanDirectories(new DirectoryPath[]
-        {
-            Directory("./src/Configuration.Store.Web/node_modules"),
-            Directory("./src/Configuration.Store.Web/Styles/materialize"),
-            Directory("./src/Configuration.Store.Web/Styles/swagger"),
-            Directory("./src/Configuration.Store.Web/Styles/app"),
-            Directory("./src/Configuration.Store.Web/Scripts/app"),
-            Directory("./src/Configuration.Store.Web/Scripts/lib")
-        });
+        var directoriesToClean = new List<DirectoryPath>();
+        
+        if(DirectoryExists("./src/Configuration.Store.Web/node_modules"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/node_modules"));
+        
+        if(DirectoryExists("./src/Configuration.Store.Web/Styles/materialize"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/Styles/materialize"));
+        
+        if(DirectoryExists("./src/Configuration.Store.Web/Styles/swagger"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/Styles/swagger"));
+            
+        if(DirectoryExists("./src/Configuration.Store.Web/Styles/app"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/Styles/app"));
+
+        if(DirectoryExists("./src/Configuration.Store.Web/Scripts/app"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/Scripts/app")); 
+            
+        if(DirectoryExists("./src/Configuration.Store.Web/Scripts/lib"))
+            directoriesToClean.Add(Directory("./src/Configuration.Store.Web/Scripts/lib"));
+        
+        CleanDirectories(directoriesToClean);
     });
 
 Task("Restore Javascript Packages")

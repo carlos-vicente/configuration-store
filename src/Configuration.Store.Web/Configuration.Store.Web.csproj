@@ -108,7 +108,10 @@
   <ItemGroup>
     <Content Include="gulp\tasks\swagger-ui-task.js" />
     <Content Include="Scripts\Components\ConfigurationKey.jsx" />
+    <Content Include="Scripts\Components\ConfigurationKeyValue.jsx" />
     <Content Include="Scripts\Components\ConfigurationList.jsx" />
+    <Content Include="Scripts\Components\ConfigurationListItem.jsx" />
+    <Content Include="Scripts\Components\NewKeyForm.jsx" />
     <Content Include="Scripts\Components\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
     <Content Include="gulp\tasks\build-task.js" />

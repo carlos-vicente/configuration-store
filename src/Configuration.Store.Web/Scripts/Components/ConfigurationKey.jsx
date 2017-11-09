@@ -1,4 +1,6 @@
-﻿class ConfigurationKey extends React.Component {
+﻿import ConfigurationKeyValue from './ConfigurationKeyValue'
+
+class ConfigurationKey extends React.Component {
 
     constructor(props) {
         super(props);
@@ -26,14 +28,7 @@
                     </thead>
                     <tbody>
                         {this.state.detail.values.map((value, index) =>
-                            <tr key={index} className="">
-                                <td>{value.version}</td>
-                                <td>{value.latestData}</td>
-                                <td className="hide-on-med-and-down">{value.latestSequence}</td>
-                                <td className="hide-on-small-only">
-                                    {value.environmentTags.map((tag, tagIndex) => <span key={tagIndex} className="chip">{tag}</span>)}
-                                </td>
-                            </tr>
+                            <ConfigurationKeyValue key={index} value={value} />
                         )}
                     </tbody>
                 </table>
