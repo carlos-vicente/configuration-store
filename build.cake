@@ -6,6 +6,7 @@ var target = Argument("target", "Default");
 var noClean = Argument<bool>("no-clean", false);
 
 var solutionFile = "./Configuration.Store.sln";
+var webDirectory = "./src/Configuration.Store.Web/";
 
 Task("Restore Nuget Packages")
     .Does(() => 
@@ -45,8 +46,6 @@ Task("Restore Javascript Packages")
     .IsDependentOn("Clean generated code")
     .Does(() => 
     {
-        var webDirectory = "./src/Configuration.Store.Web/";
-        
         var npmSettings = new NpmInstallSettings
         {
             WorkingDirectory = webDirectory,
