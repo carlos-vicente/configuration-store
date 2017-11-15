@@ -8,10 +8,10 @@
         };
 
         // 'this' handler bindings
-        this.openForm = this.openForm.bind(this);
-        this.closeForm = this.closeForm.bind(this);
-        this.saveKey = this.saveKey.bind(this);
-        this.afterFade = this.afterFade.bind(this);
+        this._openForm = this._openForm.bind(this);
+        this._closeForm = this._closeForm.bind(this);
+        this._saveKey = this._saveKey.bind(this);
+        this._afterFade = this._afterFade.bind(this);
     }
 
     componentDidMount() {
@@ -24,7 +24,7 @@
         jQuery(this.valueTypeSelect).material_select('destroy');
     }
 
-    afterFade(){
+    _afterFade(){
         this.setState((prevState, props) => {
             return {
                 shown: !prevState.shown
@@ -32,18 +32,21 @@
         });
     }
 
-    openForm(clickEvent){
-        jQuery(this.formContainer).fadeIn(this.state.speed, this.afterFade);
+    _openForm(clickEvent){
+        jQuery(this.formContainer).fadeIn(this.state.speed, this._afterFade);
     }
     
-    closeForm(clickEvent){
-        jQuery(this.formContainer).fadeOut(this.state.speed, this.afterFade);
+    _closeForm(clickEvent){
+        jQuery(this.formContainer).fadeOut(this.state.speed, this._afterFade);
     }
 
-    saveKey(submitEvent){
+    _saveKey(submitEvent){
         // handle submit of state
         console.log('Submit');
         submitEvent.preventDefault();
+
+        // TODO: call this on the done promise's event
+        this.props.onNewKeySaved();
     }
 
     render() {
@@ -61,20 +64,20 @@
 
         return (
             <article>
-                <a className={bigOpenButtonClassName} onClick={this.openForm} style={{width: 170}}>
+                <a className={bigOpenButtonClassName} onClick={this._openForm} style={{width: 170}}>
                     <i className="material-icons right">add</i>Add key
                 </a>
-                <a className={bigCloseButtonClassName} onClick={this.closeForm} style={{width: 170}}>
+                <a className={bigCloseButtonClassName} onClick={this._closeForm} style={{width: 170}}>
                     <i className="material-icons right">close</i>Close
                 </a>
-                <a className={smallOpenButtonClassName} onClick={this.openForm}>
+                <a className={smallOpenButtonClassName} onClick={this._openForm}>
                     <i className="material-icons">add</i>
                 </a>
-                <a className={smallCloseButtonClassName} onClick={this.closeForm}>
+                <a className={smallCloseButtonClassName} onClick={this._closeForm}>
                     <i className="material-icons">close</i>
                 </a>
                 <article className="row" style={{ display:'none' }} ref={(fc) => { this.formContainer = fc; }}>
-                    <form className="col s12" onSubmit={this.saveKey}>
+                    <form className="col s12" onSubmit={this._saveKey}>
                         <div className="row">
                             <div className="input-field col s12 m3">
                                 <input placeholder="Key name" id="key" type="text" className="validate"/>

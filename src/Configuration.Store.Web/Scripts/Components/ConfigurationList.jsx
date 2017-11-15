@@ -10,11 +10,15 @@ class ConfigurationList extends React.Component {
         };
     }
 
+    _onNewKeySaved(){
+        console.log("New key event");
+    }
+
     render() {
         return (
             <div className="config-list">
                 {/* TODO: add a search box here to search on all configuration keys */}
-                <NewKeyForm />
+                <NewKeyForm onNewKeySaved={this._onNewKeySaved} />
                 <table className="highlight">
                     <thead>
                         <tr className="config-list-head">

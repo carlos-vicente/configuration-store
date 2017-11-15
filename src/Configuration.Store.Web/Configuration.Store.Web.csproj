@@ -106,7 +106,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="gulp\tasks\swagger-ui-task.js" />
+    <Content Include="gulp\tasks\dependencies-task.js" />
+    <Content Include="gulp\tasks\sass-task.js" />
     <Content Include="Scripts\Components\ConfigurationKey.jsx" />
     <Content Include="Scripts\Components\ConfigurationKeyValue.jsx" />
     <Content Include="Scripts\Components\ConfigurationList.jsx" />
@@ -116,10 +117,6 @@
     <Content Include="gulpfile.js" />
     <Content Include="gulp\tasks\build-task.js" />
     <Content Include="gulp\tasks\default.js" />
-    <Content Include="gulp\tasks\jquery-task.js" />
-    <Content Include="gulp\tasks\react-task.js" />
-    <Content Include="gulp\tasks\materialize-task.js" />
-    <Content Include="gulp\tasks\require-task.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="Views\swagger-ui.cshtml" />

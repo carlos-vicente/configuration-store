@@ -61,16 +61,6 @@ Task("Restore Javascript Packages")
             {
                 yarnSettings.ToolPath = "./src/Configuration.Store.Web/node_modules/.bin/yarn.cmd";
             });
-        
-        Gulp
-            .Local
-            .Execute(gulpSettings => 
-            {
-                gulpSettings.WithGulpFile(string.Format("{0}gulpfile.js", webDirectory));
-                gulpSettings.SetPathToGulpJs(string.Format(
-                    "{0}node_modules/gulp/bin/gulp.js",
-                    webDirectory));
-            });
     });
 
 Task("Build")
@@ -78,6 +68,18 @@ Task("Build")
     .IsDependentOn("Restore Javascript Packages")
     .Does(() => 
     {
+        // build javascript stuff
+        Gulp
+            .Local
+            .Execute(gulpSettings => 
+            {
+                gulpSettings
+                    .WithGulpFile(string.Format("{0}gulpfile.js", webDirectory));
+                gulpSettings
+                    .SetPathToGulpJs(string.Format("{0}node_modules/gulp/bin/gulp.js", webDirectory));
+            });
+
+        // build .net stuff
         var targets = string.Format(
             "{0}Build",
             noClean ? string.Empty : "Clean;");
