@@ -9,6 +9,7 @@ gulp.task('copyDependencies', function(){
     gulp.src(['node_modules/react/umd/*.*', 'node_modules/react-dom/umd/*.*']).pipe(gulp.dest('Scripts/lib/react/'));
     gulp.src('node_modules/requirejs/require.js').pipe(gulp.dest('Scripts/lib/require'));
     gulp.src('node_modules/swagger-ui-dist/*.js*').pipe(gulp.dest('Scripts/lib/swagger'));
+    gulp.src('node_modules/core-js/client/*.js*').pipe(gulp.dest('Scripts/lib/core-js'));
     gulp.src('node_modules/whatwg-fetch/*.js*').pipe(gulp.dest('Scripts/lib/fetch'));
     gulp.src('node_modules/es6-promise/dist/*.js').pipe(gulp.dest('Scripts/lib/promise'));
 
