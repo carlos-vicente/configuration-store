@@ -12,11 +12,14 @@
         this._closeForm = this._closeForm.bind(this);
         this._saveKey = this._saveKey.bind(this);
         this._afterFade = this._afterFade.bind(this);
+        this._handleInputChange = this._handleInputChange.bind(this);
+        this._changeInputValue = this._changeInputValue.bind(this);
+        this._handleSelectChange = this._handleSelectChange.bind(this);
     }
 
     componentDidMount() {
         // todo: change to this.formContainer > select
-        jQuery(this.valueTypeSelect).material_select();
+        jQuery(this.valueTypeSelect).material_select(this._handleSelectChange);
     }
 
     componentWillUnmount() {
@@ -41,12 +44,54 @@
     }
 
     _saveKey(submitEvent){
-        // handle submit of state
-        console.log('Submit');
         submitEvent.preventDefault();
+        
+        var url = '/api/' + this.state.key;
+        var body = JSON.stringify({
+            type: this.state.valueType,
+            version: this.state.version
+        });
 
-        // TODO: call this on the done promise's event
-        this.props.onNewKeySaved();
+        console.log('Creating new key:');
+        console.log(url);
+        console.log(body);
+
+        fetch(url, {
+            method: "PUT",
+            body: body,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        .then((response) => {
+            console.log(response);
+            if(response.ok){
+                this.props.onNewKeySaved();
+            }
+        }, (error) => {
+            console.log(error);
+        });
+    }
+
+    _changeInputValue(inputName, inputValue){
+        this.setState({
+            [inputName]: inputValue
+        });
+  
+        console.log('Setting "' + inputName + '" with value "' + inputValue + '"');
+    }
+
+    _handleSelectChange(){
+        var value = jQuery(this.valueTypeSelect).val();
+        this._changeInputValue('valueType', value);
+    }
+
+    _handleInputChange(event) {
+        const target = event.target;
+        const value = target.value;
+        const name = target.name;
+    
+        this._changeInputValue(name, value);        
     }
 
     render() {
@@ -80,20 +125,20 @@
                     <form className="col s12" onSubmit={this._saveKey}>
                         <div className="row">
                             <div className="input-field col s12 m3">
-                                <input placeholder="Key name" id="key" type="text" className="validate"/>
-                                <label htmlFor="key">Key name</label>
+                                <input placeholder="Key name" name="key" id="key" type="text" className="validate" onChange={this._handleInputChange}/>
+                                <label className="active" htmlFor="key">Key name</label>
                             </div>
                             <div className="input-field col s12 m3">
-                                <input placeholder="Version" id="version" type="text" className="validate"/>
-                                <label htmlFor="version">Version</label>
+                                <input placeholder="Version" name="version" id="version" type="text" className="validate" onChange={this._handleInputChange}/>
+                                <label className="active" htmlFor="version">Version</label>
                             </div>
                             <div className="input-field col s12 m3">
-                                <select defaultValue="" ref={(sel) => { this.valueTypeSelect = sel; }}>
+                                <select defaultValue="" id="valueType" ref={(sel) => { this.valueTypeSelect = sel; }}>
                                     <option value="" disabled>Choose one</option>
                                     <option value="String">String</option>
                                     <option value="JSON">JSON</option>
                                 </select>
-                                <label>Value type</label>
+                                <label htmlFor="valueType">Value type</label>
                             </div>
                             <div className="input-field col s12 m3">
                                 <button className="btn waves-effect waves-light light-blue" name="action">
