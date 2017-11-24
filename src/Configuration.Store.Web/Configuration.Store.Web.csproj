@@ -45,8 +45,8 @@
     <Reference Include="Autofac, Version=4.6.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.4.6.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.1\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
     <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
       <HintPath>..\..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
@@ -85,6 +85,7 @@
     <Reference Include="Swagger.ObjectModel, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Swagger.ObjectModel.2.1.1-alpha\lib\Net45\Swagger.ObjectModel.dll</HintPath>
     </Reference>
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -108,12 +109,12 @@
   <ItemGroup>
     <Content Include="gulp\tasks\dependencies-task.js" />
     <Content Include="gulp\tasks\sass-task.js" />
-    <Content Include="Scripts\Components\ConfigurationKey.jsx" />
-    <Content Include="Scripts\Components\ConfigurationKeyValue.jsx" />
-    <Content Include="Scripts\Components\ConfigurationList.jsx" />
-    <Content Include="Scripts\Components\ConfigurationListItem.jsx" />
-    <Content Include="Scripts\Components\NewKeyForm.jsx" />
-    <Content Include="Scripts\Components\Tests\ConfigurationListTests.js" />
+    <Content Include="Scripts\Modules\ConfigurationKey.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationKeyValue.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationList.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationListItem.jsx" />
+    <Content Include="Scripts\Modules\NewKeyForm.jsx" />
+    <Content Include="Scripts\Modules\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
     <Content Include="gulp\tasks\build-task.js" />
     <Content Include="gulp\tasks\default.js" />
@@ -121,8 +122,8 @@
     <Content Include="package.json" />
     <Content Include="Views\swagger-ui.cshtml" />
     <Content Include="Views\ConfigurationKey.cshtml" />
-    <Content Include="Styles\Components\ConfigurationKey.scss" />
-    <Content Include="Styles\Components\ConfigurationList.scss" />
+    <Content Include="Styles\Pages\ConfigurationKey.scss" />
+    <Content Include="Styles\Pages\ConfigurationList.scss" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -131,7 +132,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\Pages\ConfigurationStore.jsx" />
+    <Content Include="Scripts\Pages\ConfigurationListPage.jsx" />
     <None Include="Views\ConfigurationList.cshtml" />
     <None Include="Views\Shared\Master.cshtml" />
     <Content Include="Web.config" />
@@ -143,16 +144,16 @@
     <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\UpdateValueOnConfigurationRequest.cs" />
-    <Compile Include="Models\BaseModel.cs" />
-    <Compile Include="Models\ConfigKeyDetailed.cs" />
-    <Compile Include="Models\ConfigKeyListItem.cs" />
-    <Compile Include="Models\ConfigurationKeyViewModel.cs" />
-    <Compile Include="Models\ConfigurationListViewModel.cs" />
-    <Compile Include="Models\ConfigValueListItem.cs" />
-    <Compile Include="Models\Mapping\ConfigKeyDetailMappingProfile.cs" />
-    <Compile Include="Models\Mapping\ConfigKeyMappingProfile.cs" />
-    <Compile Include="Models\Nav.cs" />
-    <Compile Include="Models\SwaggerViewModel.cs" />
+    <Compile Include="Contracts\Responses\BaseModel.cs" />
+    <Compile Include="Contracts\Responses\ConfigKeyDetailed.cs" />
+    <Compile Include="Contracts\Responses\ConfigKeyListItem.cs" />
+    <Compile Include="Views\Models\ConfigurationKeyViewModel.cs" />
+    <Compile Include="Views\Models\ConfigurationListViewModel.cs" />
+    <Compile Include="Contracts\Responses\ConfigValueListItem.cs" />
+    <Compile Include="Contracts\Responses\Mapping\ConfigKeyDetailMappingProfile.cs" />
+    <Compile Include="Contracts\Responses\Mapping\ConfigKeyMappingProfile.cs" />
+    <Compile Include="Contracts\Responses\Nav.cs" />
+    <Compile Include="Views\Models\SwaggerViewModel.cs" />
     <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />
     <Compile Include="Modules\Api\Metadata\ConfigurationNancyMetadataModule.cs" />
     <Compile Include="Modules\RouteRegistry.cs" />

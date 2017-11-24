@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Configuration.Store.Web.Models;
+using Configuration.Store.Web.Contracts.Responses;
+using Configuration.Store.Web.Views.Models;
 using Nancy;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,21 +17,23 @@ namespace Configuration.Store.Web.Modules.Ui
         {
             _service = service;
 
-            Get[RouteRegistry.Ui.Configuration.GetHome, true] = GetHome;
+            Get[RouteRegistry.Ui.Configuration.GetHome, true] = GetConfigurationList;
             Get[RouteRegistry.Ui.Configuration.GetConfiguration, true] = GetConfiguration;
         }
 
-        private async Task<dynamic> GetHome(dynamic parameters, CancellationToken token)
+        private async Task<dynamic> GetConfigurationList(dynamic parameters, CancellationToken token)
         {
             var configKeys = await _service
                 .GetConfigurationKeys()
                 .ConfigureAwait(false);
 
+            var orderedConfigKeys = configKeys.OrderBy(k => k.Key);
+
             return Negotiate
                 .WithModel(new ConfigurationListViewModel
                 {
                     ConfigKeys = Mapper
-                        .Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKeyListItem>>(configKeys.OrderBy(k => k.Key))
+                        .Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKeyListItem>>(orderedConfigKeys)
                 })
                 .WithView("ConfigurationList");
         }

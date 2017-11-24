@@ -12,35 +12,40 @@
         {
             public static class Configuration
             {
+                public static readonly Route GetConfigs = new Route
+                {
+                    Name = "GetConfigs",
+                    Template = "/api/keys"
+                };
                 public static readonly Route GetConfigForVersion = new Route
                 {
                     Name = "GetConfigForVersion",
-                    Template = "/api/{configKey}/{configVersion:version}/{envTag}"
+                    Template = "/api/keys/{configKey}/version/{configVersion:version}/{envTag}"
                 };
                 public static readonly Route AddNewConfiguration = new Route
                 {
                     Name = "AddNewConfiguration",
-                    Template = "/api/{configKey}"
+                    Template = "/api/keys/{configKey}"
                 };
                 public static readonly Route AddNewValueToConfiguration = new Route
                 {
                     Name = "AddNewValueToConfiguration",
-                    Template = "/api/{configKey}/{configVersion:version}/values"
+                    Template = "/api/keys/{configKey}/version/{configVersion:version}/values"
                 };
                 public static readonly Route UpdateValueOnConfiguration = new Route
                 {
                     Name = "UpdateValueOnConfiguration",
-                    Template = "/api/{configKey}/{configVersion:version}/values/{valueId:guid}"
+                    Template = "/api/keys/{configKey}/version/{configVersion:version}/values/{valueId:guid}"
                 };
                 public static readonly Route DeleteValueFromConfiguration = new Route
                 {
                     Name = "DeleteValueFromConfiguration",
-                    Template = "/api/{configKey}/{configVersion:version}/values/{valueId:guid}"
+                    Template = "/api/keys/{configKey}/version/{configVersion:version}/values/{valueId:guid}"
                 };
                 public static readonly Route DeleteConfiguration = new Route
                 {
                     Name = "DeleteConfiguration",
-                    Template = "/api/{configKey}/{configVersion:version}"
+                    Template = "/api/keys/{configKey}/version/{configVersion:version}"
                 };
             }
         }

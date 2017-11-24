@@ -1,5 +1,4 @@
 ﻿import ConfigurationListItem from './ConfigurationListItem'
-import NewKeyForm from './NewKeyForm'
 
 class ConfigurationList extends React.Component {
     constructor(props) {
@@ -16,16 +15,14 @@ class ConfigurationList extends React.Component {
 
     render() {
         return (
-            <div className="config-list">
+            <div>
                 {/* TODO: add a search box here to search on all configuration keys */}
-                <NewKeyForm onNewKeySaved={this._onNewKeySaved} />
                 <table className="highlight">
                     <thead>
                         <tr className="config-list-head">
                             <th>Key name</th>
-                            <th>Latest version</th>
-                            <th className="hide-on-med-and-down">Created at</th>
-                            <th className="hide-on-small-only">Value type</th>
+                            <th className="hide-on-small-only">Created at</th>
+                            <th>Value type</th>
                             <th></th>
                         </tr>
                     </thead>

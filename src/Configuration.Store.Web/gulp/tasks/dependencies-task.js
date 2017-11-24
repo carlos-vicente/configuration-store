@@ -12,6 +12,7 @@ gulp.task('copyDependencies', function(){
     gulp.src('node_modules/babel-polyfill/dist/*.js*').pipe(gulp.dest('Scripts/lib/babel-polyfill'));
     gulp.src('node_modules/whatwg-fetch/*.js*').pipe(gulp.dest('Scripts/lib/fetch'));
     gulp.src('node_modules/es6-promise/dist/*.js').pipe(gulp.dest('Scripts/lib/promise'));
+    gulp.src('node_modules/eventing-bus/lib/*.js').pipe(gulp.dest('Scripts/lib/eventing-bus'));
 
     // styles
     gulp.src('node_modules/materialize-css/dist/css/*.*').pipe(gulp.dest('Styles/materialize/css'));

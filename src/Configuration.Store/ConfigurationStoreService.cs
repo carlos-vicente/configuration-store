@@ -24,54 +24,10 @@ namespace Configuration.Store
                 .Select(storedKey => new ConfigurationKey
                 {
                     Key = storedKey.Key,
-                    LatestVersion = storedKey.LastestVersion,
                     Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type),
                     CreatedAt = storedKey.CreatedAt
                 })
                 .ToList();
-        }
-
-        public async Task<Configuration> GetConfiguration(
-            string key,
-            Version version,
-            string environmentTag,
-            int? currentSequence)
-        {
-            //TODO: params check
-            //TODO: check environment
-            
-            var config = await _repository
-                .GetConfiguration(key, version)
-                .ConfigureAwait(false);
-
-            if (config == null)
-                return null;
-
-
-            var storedValue = config
-                .Values
-                .SingleOrDefault(val => val.EnvironmentTags.Contains(environmentTag));
-
-            if (storedValue == null)
-                return null;
-
-            if (currentSequence.HasValue)
-            {
-                // check if there has been any change since last time it was obtained
-                if (storedValue.Sequence == currentSequence.Value)
-                    return new Configuration
-                    {
-                        Sequence = storedValue.Sequence,
-                        Data = null
-                    };
-            }
-
-            return new Configuration
-            {
-                Sequence = storedValue.Sequence,
-                Data = storedValue.Data,
-                Type = (ValueType)Enum.Parse(typeof(ValueType), config.Type)
-            };
         }
 
         public async Task<ConfigurationKey> GetConfigurationKey(string key)
@@ -89,7 +45,7 @@ namespace Configuration.Store
             };
 
             var values = new List<ConfigurationValue>();
-            foreach(var version in versions)
+            foreach (var version in versions)
             {
                 var configuration = await _repository
                     .GetConfiguration(key, version)
@@ -102,7 +58,7 @@ namespace Configuration.Store
                     .Values
                     .GroupBy(val => val.EnvironmentTags);
 
-                foreach(var valuesForEnv in currentValues)
+                foreach (var valuesForEnv in currentValues)
                 {
                     var latestValue = valuesForEnv
                         .OrderByDescending(val => val.Sequence)
@@ -111,8 +67,8 @@ namespace Configuration.Store
                     values.Add(new ConfigurationValue
                     {
                         Version = version,
-                        LatestData = latestValue.Data,
-                        LatestSequence = latestValue.Sequence,
+                        Data = latestValue.Data,
+                        Sequence = latestValue.Sequence,
                         EnvironmentTags = valuesForEnv.Key,
                         CreatedAt = latestValue.CreatedAt
                     });
@@ -126,26 +82,72 @@ namespace Configuration.Store
             return configKey;
         }
 
-        public async Task AddConfiguration(
+        public async Task<ConfigurationValue> GetConfigurationValue(
             string key,
             Version version,
+            string environmentTag)
+        {
+            //TODO: params check
+            //TODO: check environment
+            
+            var config = await _repository
+                .GetConfiguration(key, version)
+                .ConfigureAwait(false);
+
+            if (config == null)
+                return null;
+
+            var storedValue = config
+                .Values
+                .SingleOrDefault(val => val.EnvironmentTags.Contains(environmentTag));
+
+            if (storedValue == null)
+                return null;
+
+            return new ConfigurationValue
+            {
+                Id = storedValue.Id,
+                Version = version,
+                Sequence = storedValue.Sequence,
+                Data = storedValue.Data,
+                EnvironmentTags = storedValue.EnvironmentTags,
+                CreatedAt = storedValue.CreatedAt
+            };
+        }
+
+        public async Task AddConfiguration(
+            string key,
             ValueType dataType)
         {
             // todo: params check
 
             var currentConfig = await _repository
-                .GetConfiguration(key, version)
+                .GetConfiguration(key)
                 .ConfigureAwait(false);
 
             if(currentConfig != null)
-                throw new ArgumentException($"Can not create configuration with key {key} and version {version}, as it already exists!");
+                throw new ArgumentException($"Can not create configuration with key {key}, as it already exists!");
 
             await _repository
-                .AddNewConfiguration(key, version, dataType.ToString(), DateTime.UtcNow)
+                .AddNewConfiguration(key, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
         }
 
-        public async Task RemoveConfiguration(
+        public async Task RemoveConfiguration(string key)
+        {
+            var currentConfig = await _repository
+              .GetConfiguration(key)
+              .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not delete value on configuration with key {key}, as it does not exists!");
+
+            await _repository
+                .DeleteConfiguration(key)
+                .ConfigureAwait(false);
+        }
+
+        public async Task RemoveConfigurationVersion(
             string key,
             Version version)
         {
@@ -157,7 +159,7 @@ namespace Configuration.Store
                 throw new ArgumentException($"Can not delete value on configuration with key {key} and version {version}, as it does not exists!");
 
             await _repository
-                .DeleteConfiguration(key, version)
+                .DeleteConfigurationVersion(key, version)
                 .ConfigureAwait(false);
         }
 
@@ -168,7 +170,7 @@ namespace Configuration.Store
             string value)
         {
             var currentConfig = await _repository
-               .GetConfiguration(key, version)
+               .GetConfiguration(key)
                .ConfigureAwait(false);
 
             if (currentConfig == null)

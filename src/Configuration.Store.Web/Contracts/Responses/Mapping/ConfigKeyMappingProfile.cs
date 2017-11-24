@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using System.Linq;
 using Configuration.Store.Web.Modules;
 
-namespace Configuration.Store.Web.Models.Mapping
+namespace Configuration.Store.Web.Contracts.Responses.Mapping
 {
     public class ConfigKeyListMappingProfile : Profile
     {
@@ -16,8 +17,7 @@ namespace Configuration.Store.Web.Models.Mapping
                         new Nav
                         {
                             Rel = "self",
-                            Link = RouteRegistry.Ui.Configuration
-                                .GetConfigurationRoute(dest.Key.ToString())
+                            Link = RouteRegistry.Ui.Configuration.GetConfigurationRoute(dest.Key.ToString())
                         }
                     };
                 });

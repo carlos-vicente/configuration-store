@@ -2,7 +2,6 @@
 {
     public class NewConfigurationRequest
     {
-        public string Version { get; set; }
         public ValueType Type { get; set; }
     }
 }

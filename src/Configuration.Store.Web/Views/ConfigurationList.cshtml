@@ -1,4 +1,4 @@
-﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Models.ConfigurationListViewModel>
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Views.Models.ConfigurationListViewModel>
 @model ConfigurationListViewModel
 
 @{
@@ -8,14 +8,14 @@
 
 @section Scripts
 {
-    <link type="text/css" rel="stylesheet" href="~/Styles/app/Components/ConfigurationList.css" />
+    <link type="text/css" rel="stylesheet" href="~/Styles/app/Pages/ConfigurationList.css" />
 
     <script>
-        requirejs(['Scripts/app/ConfigurationList'], function (configList) 
+        requirejs(['Scripts/app/pages/ConfigurationListPage'], function (page) 
         {
             var data = @Html.AsJson(Model);
 
-            var element = React.createElement(configList.default, data);
+            var element = React.createElement(page.default, data);
             var rootElement = document.getElementById('root');
 
             ReactDOM.render(element, rootElement);

@@ -1,4 +1,4 @@
-﻿using Configuration.Store.Web.Models;
+﻿using Configuration.Store.Web.Views.Models;
 using Nancy;
 using System;
 

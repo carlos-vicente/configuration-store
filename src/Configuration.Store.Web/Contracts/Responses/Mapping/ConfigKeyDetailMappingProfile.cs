@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 
-namespace Configuration.Store.Web.Models.Mapping
+namespace Configuration.Store.Web.Contracts.Responses.Mapping
 {
     public class ConfigKeyDetailMappingProfile: Profile
     {

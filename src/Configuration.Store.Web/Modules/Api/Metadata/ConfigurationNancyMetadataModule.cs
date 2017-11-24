@@ -1,9 +1,12 @@
 ﻿using Configuration.Store.Web.Contracts.Requests;
+using Configuration.Store.Web.Contracts.Responses;
 using Nancy;
 using Nancy.Swagger;
 using Nancy.Swagger.Services;
 using Nancy.Swagger.Services.RouteUtils;
 using Swagger.ObjectModel;
+using System;
+using System.Collections.Generic;
 
 namespace Configuration.Store.Web.Modules.Api.Metadata
 {
@@ -21,15 +24,36 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
             };
 
             RouteDescriber
+                .AddAdditionalModels(typeof(Nav));
+            RouteDescriber
+                .AddAdditionalModels(typeof(ConfigKeyListItem));
+            RouteDescriber
                 .AddAdditionalModels(typeof(ValueType));
 
-            RouteDescriber.DescribeRouteWithParams<Configuration>(
+            RouteDescriber.DescribeRoute<IEnumerable<ConfigKeyListItem>>(
+                RouteRegistry.Api.Configuration.GetConfigs.Name,
+                "Gets a summary of all configuration keys available",
+                "Gets a summary of all configuration keys available",
+                new[]
+                {
+                    new HttpResponseMetadata<IEnumerable<ConfigKeyListItem>>
+                    {
+                        Code = (int)HttpStatusCode.OK,
+                        Message = "OK"
+                    }
+                },
+                new[]
+                {
+                    configurationStoreTag
+                });
+
+            RouteDescriber.DescribeRouteWithParams<ConfigValueListItem>(
                 RouteRegistry.Api.Configuration.GetConfigForVersion.Name,
                 "Gets the latest configuration value for the environment tag specified in the defined version",
                 "Gets configuration value for environment",
                 new[]
                 {
-                    new HttpResponseMetadata<Configuration>
+                    new HttpResponseMetadata<ConfigValueListItem>
                     {
                         Code = (int)HttpStatusCode.OK,
                         Message = "OK"
@@ -70,6 +94,14 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
                         Required = true,
                         Description = "The configuration's environment",
                         Type = "string"
+                    },
+                    new Parameter
+                    {
+                        Name = "seq",
+                        In = ParameterIn.Query,
+                        Required = false,
+                        Description = "Current sequence value held by client",
+                        Type = "integer"
                     }
                 },
                 new[]

@@ -37,11 +37,10 @@ namespace Configuration.Store
         /// <returns>NULL when no configuration value has been found</returns>
         /// <returns>Complete Configuration when value was found and either no currentSequence has been passed or a higher sequence than currentSequence is available</returns>
         /// <returns>Small Configuration (just Sequence) when currentSequence was passed and no update happened on this version of the key</returns>
-        Task<Configuration> GetConfiguration(
+        Task<ConfigurationValue> GetConfigurationValue(
             string key,
             Version version,
-            string environmentTag,
-            int? currentSequence);
+            string environmentTag);
 
         /// <summary>
         /// 
@@ -52,7 +51,6 @@ namespace Configuration.Store
         /// <returns></returns>
         Task AddConfiguration(
             string key,
-            Version version,
             ValueType dataType);
 
         /// <summary>
@@ -61,9 +59,16 @@ namespace Configuration.Store
         /// <param name="key"></param>
         /// <param name="version"></param>
         /// <returns></returns>
-        Task RemoveConfiguration(
+        Task RemoveConfigurationVersion(
             string key,
             Version version);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        Task RemoveConfiguration(string key);
 
         /// <summary>
         /// Adds a value keyed by the collection of tags to the configuration

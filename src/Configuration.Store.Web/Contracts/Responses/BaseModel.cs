@@ -1,4 +1,4 @@
-﻿namespace Configuration.Store.Web.Models
+﻿namespace Configuration.Store.Web.Contracts.Responses
 {
     public class BaseModel
     {

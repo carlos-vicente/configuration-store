@@ -45,32 +45,11 @@
 
     _saveKey(submitEvent){
         submitEvent.preventDefault();
-        
-        var url = '/api/' + this.state.key;
-        var body = JSON.stringify({
-            type: this.state.valueType,
-            version: this.state.version
-        });
 
-        console.log('Creating new key:');
-        console.log(url);
-        console.log(body);
-
-        fetch(url, {
-            method: "PUT",
-            body: body,
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then((response) => {
-            console.log(response);
-            if(response.ok){
-                this.props.onNewKeySaved();
-            }
-        }, (error) => {
-            console.log(error);
-        });
+        this.props.saveKey(
+            this.state.key,
+            this.state.valueType
+        );
     }
 
     _changeInputValue(inputName, inputValue){
@@ -121,18 +100,14 @@
                 <a className={smallCloseButtonClassName} onClick={this._closeForm}>
                     <i className="material-icons">close</i>
                 </a>
-                <article className="row" style={{ display:'none' }} ref={(fc) => { this.formContainer = fc; }}>
+                <article className="row newKeyForm" style={{ display: 'none' }} ref={(fc) => { this.formContainer = fc; }}>
                     <form className="col s12" onSubmit={this._saveKey}>
                         <div className="row">
-                            <div className="input-field col s12 m3">
+                            <div className="input-field col s12 m4">
                                 <input placeholder="Key name" name="key" id="key" type="text" className="validate" onChange={this._handleInputChange}/>
                                 <label className="active" htmlFor="key">Key name</label>
                             </div>
-                            <div className="input-field col s12 m3">
-                                <input placeholder="Version" name="version" id="version" type="text" className="validate" onChange={this._handleInputChange}/>
-                                <label className="active" htmlFor="version">Version</label>
-                            </div>
-                            <div className="input-field col s12 m3">
+                            <div className="input-field col s12 m4">
                                 <select defaultValue="" id="valueType" ref={(sel) => { this.valueTypeSelect = sel; }}>
                                     <option value="" disabled>Choose one</option>
                                     <option value="String">String</option>
@@ -140,7 +115,7 @@
                                 </select>
                                 <label htmlFor="valueType">Value type</label>
                             </div>
-                            <div className="input-field col s12 m3">
+                            <div className="input-field col s12 m4">
                                 <button className="btn waves-effect waves-light light-blue" name="action">
                                     <i className="material-icons right">send</i>Save
                                 </button>

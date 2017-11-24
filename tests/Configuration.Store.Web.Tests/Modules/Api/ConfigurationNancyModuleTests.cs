@@ -8,6 +8,9 @@ using Nancy;
 using Nancy.Responses.Negotiation;
 using Nancy.Testing;
 using Ploeh.AutoFixture;
+using Configuration.Store.Web.Contracts.Responses;
+using AutoMapper;
+using Configuration.Store.Web.Contracts.Responses.Mapping;
 
 namespace Configuration.Store.Web.Tests.Modules.Api
 {
@@ -19,6 +22,12 @@ namespace Configuration.Store.Web.Tests.Modules.Api
         private const string JsonMediaType = "application/json";
 
         private readonly IConfigurationStoreService _configurationStoreService;
+
+        static ConfigurationNancyModuleTests()
+        {
+            Mapper.Reset();
+            Mapper.Initialize(config => config.AddProfile<ConfigKeyDetailMappingProfile>());
+        }
 
         public ConfigurationNancyModuleTests(
             IConfigurationStoreService configurationStoreService)
@@ -41,16 +50,15 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             var configVersion = _fixture.Create<Version>();
             var envTag = _fixture.Create<string>();
 
-            A.CallTo(() => _configurationStoreService.GetConfiguration(
+            A.CallTo(() => _configurationStoreService.GetConfigurationValue(
                     configKey,
                     configVersion,
-                    envTag,
-                    null))
-                .Returns(Task.FromResult<Configuration>(null));
+                    envTag))
+                .Returns(Task.FromResult<ConfigurationValue>(null));
 
             // act
             var response = _browser.Get(
-                $"/api/{configKey}/{configVersion}/{envTag}",
+                $"/api/keys/{configKey}/version/{configVersion}/{envTag}",
                 with =>
                 {
                     with.HttpRequest();
@@ -70,20 +78,19 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             var sequence = _fixture.Create<int>();
 
             var config = _fixture
-                .Build<Configuration>()
+                .Build<ConfigurationValue>()
                 .With(configuration => configuration.Sequence, sequence)
                 .Create();
 
-            A.CallTo(() => _configurationStoreService.GetConfiguration(
+            A.CallTo(() => _configurationStoreService.GetConfigurationValue(
                     configKey,
                     configVersion,
-                    envTag,
-                    sequence))
-                .Returns(Task.FromResult(config));
+                    envTag))
+                .Returns(config);
 
             // act
             var response = _browser.Get(
-                $"/api/{configKey}/{configVersion}/{envTag}",
+                $"/api/keys/{configKey}/version/{configVersion}/{envTag}",
                 with =>
                 {
                     with.HttpRequest();
@@ -104,20 +111,29 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             var sequence = _fixture.Create<int>();
 
             var config = _fixture
-                .Build<Configuration>()
+                .Build<ConfigurationValue>()
                 .With(configuration => configuration.Sequence, sequence)
                 .Create();
 
-            A.CallTo(() => _configurationStoreService.GetConfiguration(
+            A.CallTo(() => _configurationStoreService.GetConfigurationValue(
                     configKey,
                     configVersion,
-                    envTag,
-                    null))
-                .Returns(Task.FromResult(config));
+                    envTag))
+                .Returns(config);
+
+            var expectedConfig = new ConfigValueListItem
+            {
+                Id = config.Id.ToString(),
+                Version = config.Version.ToString(),
+                Data = config.Data,
+                Sequence = config.Sequence,
+                EnvironmentTags = config.EnvironmentTags,
+                CreatedAt = config.CreatedAt
+            };
 
             // act
             var response = _browser.Get(
-                $"/api/{configKey}/{configVersion}/{envTag}",
+                $"/api/keys/{configKey}/version/{configVersion}/{envTag}",
                 with =>
                 {
                     with.HttpRequest();
@@ -127,8 +143,8 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Body
-                .DeserializeJson<Configuration>()
-                .ShouldBeEquivalentTo(config);
+                .DeserializeJson<ConfigValueListItem>()
+                .ShouldBeEquivalentTo(expectedConfig);
         }
 
         public void GetConfigForVersion_ShouldReturnConfiguration_WhenConfigurationExistsWithHigherSequence()
@@ -141,20 +157,29 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             var sequence = previousSequence + _fixture.Create<int>();
 
             var config = _fixture
-                .Build<Configuration>()
+                .Build<ConfigurationValue>()
                 .With(configuration => configuration.Sequence, sequence)
                 .Create();
 
-            A.CallTo(() => _configurationStoreService.GetConfiguration(
+            A.CallTo(() => _configurationStoreService.GetConfigurationValue(
                     configKey,
                     configVersion,
-                    envTag,
-                    previousSequence))
+                    envTag))
                 .Returns(Task.FromResult(config));
+
+            var expectedConfig = new ConfigValueListItem
+            {
+                Id = config.Id.ToString(),
+                Version = config.Version.ToString(),
+                Data = config.Data,
+                Sequence = config.Sequence,
+                EnvironmentTags = config.EnvironmentTags,
+                CreatedAt = config.CreatedAt
+            };
 
             // act
             var response = _browser.Get(
-                $"/api/{configKey}/{configVersion}/{envTag}",
+                $"/api/keys/{configKey}/version/{configVersion}/{envTag}",
                 with =>
                 {
                     with.HttpRequest();
@@ -165,8 +190,8 @@ namespace Configuration.Store.Web.Tests.Modules.Api
             // assert
             response.StatusCode.Should().Be(HttpStatusCode.OK);
             response.Body
-                .DeserializeJson<Configuration>()
-                .ShouldBeEquivalentTo(config);
+                .DeserializeJson<ConfigValueListItem>()
+                .ShouldBeEquivalentTo(expectedConfig);
         }
     }
 }

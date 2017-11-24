@@ -159,12 +159,12 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // act
             await _sut
-                .AddNewConfiguration(key, version, dataType, createdAt)
+                .AddNewConfiguration(key, dataType, createdAt)
                 .ConfigureAwait(false);
 
             // assert
             (await _sut
-                .GetConfiguration(key, version)
+                .GetConfiguration(key)
                 .ConfigureAwait(false))
                 .ShouldBeEquivalentTo(
                     expected,
@@ -196,7 +196,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                     });
 
             Func<Task> exThrower = async () => await _sut
-                .AddNewConfiguration(key, version, dataType.ToString(), DateTime.UtcNow)
+                .AddNewConfiguration(key, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -527,7 +527,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // act
             await _sut
-                .DeleteConfiguration(key, version)
+                .DeleteConfigurationVersion(key, version)
                 .ConfigureAwait(false);
 
             // assert
@@ -567,7 +567,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             _sut = new InMemoryConfigurationRepository(store);
 
             Func<Task> exceptionThrower = async () => await _sut
-                .DeleteConfiguration(wrongKey, version)
+                .DeleteConfigurationVersion(wrongKey, version)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -603,14 +603,69 @@ namespace Configuration.Store.Persistence.Memory.Tests
             _sut = new InMemoryConfigurationRepository(store);
 
             Func<Task> exceptionThrower = async () => await _sut
-                .DeleteConfiguration(key, wrongVersion)
+                .DeleteConfigurationVersion(key, wrongVersion)
                 .ConfigureAwait(false);
 
             // act/assert
             exceptionThrower.ShouldThrow<ArgumentException>();
         }
 
-        public async Task DeleteValueOnConfiguration_ShouldDeleteValue_WhenConfigurationAndValueExist()
+        public async Task DeleteValueOnConfiguration_ShouldDeleteValue_WhenConfigurationAndValueExistButIsNotTheLastOne()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ValueType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags),
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            _fixture.Create<Guid>(),
+                                            _fixture.Create<int>(),
+                                            _fixture.Create<string>(),
+                                            _fixture.CreateMany<string>().ToArray())
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            // act
+            await _sut
+                .DeleteValueOnConfiguration(key, version, valueId)
+                .ConfigureAwait(false);
+
+            // assert
+            store[key]
+                .Item2[version]
+                .FirstOrDefault(t => t.Item1 == valueId)
+                .Should()
+                .BeNull();
+        }
+
+        public async Task DeleteValueOnConfiguration_ShouldDeleteValueAndVersion_WhenConfigurationAndValueExistAndIsTheLastOne()
         {
             // arrange
             var key = _fixture.Create<string>();
@@ -654,10 +709,9 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // assert
             store[key]
-                .Item2[version]
-                .FirstOrDefault(t => t.Item1 == valueId)
+                .Item2
                 .Should()
-                .BeNull();
+                .NotContainKey(version);
         }
 
         public void DeleteValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()

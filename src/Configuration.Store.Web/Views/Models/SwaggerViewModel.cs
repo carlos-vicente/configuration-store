@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Configuration.Store.Web.Models
+namespace Configuration.Store.Web.Views.Models
 {
     public class SwaggerViewModel
     {

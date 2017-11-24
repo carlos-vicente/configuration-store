@@ -1,12 +1,13 @@
 ﻿using System;
-using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Configuration.Store.Web.Contracts.Requests;
-using Configuration.Store.Web.Utils;
 using Nancy;
 using Nancy.ModelBinding;
 using Nancy.Responses.Negotiation;
+using AutoMapper;
+using Configuration.Store.Web.Contracts.Responses;
+using System.Collections.Generic;
 
 namespace Configuration.Store.Web.Modules.Api
 {
@@ -20,6 +21,9 @@ namespace Configuration.Store.Web.Modules.Api
         {
             _configStoreService = configStoreService;
 
+            Get[RouteRegistry.Api.Configuration.GetConfigs.Name,
+                RouteRegistry.Api.Configuration.GetConfigs.Template,
+                true] = GetConfigs;
             Get[RouteRegistry.Api.Configuration.GetConfigForVersion.Name,
                 RouteRegistry.Api.Configuration.GetConfigForVersion.Template,
                 true] = GetConfigForVersion;
@@ -40,6 +44,21 @@ namespace Configuration.Store.Web.Modules.Api
                 true] = DeleteConfiguration;
         }
 
+        private async Task<dynamic> GetConfigs(dynamic parameters, CancellationToken token)
+        {
+            var configurationKeys = await _configStoreService
+                .GetConfigurationKeys()
+                .ConfigureAwait(false);
+
+            var mappedKeys = Mapper
+                .Map<IEnumerable<ConfigurationKey>, IEnumerable<ConfigKeyListItem>>(configurationKeys);
+
+            return Negotiate
+                .WithStatusCode(HttpStatusCode.OK)
+                .WithAllowedMediaRange(JsonMediaRange)
+                .WithModel(mappedKeys);
+        }
+
         private async Task<dynamic> GetConfigForVersion(dynamic parameters, CancellationToken token)
         {
             string key = parameters.configKey;
@@ -48,14 +67,14 @@ namespace Configuration.Store.Web.Modules.Api
 
             int? currentSequence = Request.Query.seq;
 
-            var configuration = await _configStoreService
-                .GetConfiguration(key, version, environmentTag, currentSequence)
+            var configurationValue = await _configStoreService
+                .GetConfigurationValue(key, version, environmentTag)
                 .ConfigureAwait(false);
 
             var negociator = Negotiate
                 .WithStatusCode(HttpStatusCode.OK);
 
-            if (configuration == null)
+            if (configurationValue == null)
             {
                 negociator = Negotiate
                     .WithStatusCode(HttpStatusCode.NotFound);
@@ -63,7 +82,7 @@ namespace Configuration.Store.Web.Modules.Api
             else
             {
                 if (currentSequence.HasValue
-                    && configuration.Sequence == currentSequence)
+                    && configurationValue.Sequence == currentSequence.Value)
                 {
                     // no need to return, nothing changed
                     negociator = Negotiate
@@ -71,8 +90,9 @@ namespace Configuration.Store.Web.Modules.Api
                 }
                 else
                 {
+                    var mappedConfigValue = Mapper.Map<ConfigurationValue, ConfigValueListItem>(configurationValue);
                     negociator = negociator
-                        .WithModel(configuration);
+                        .WithModel(mappedConfigValue);
                 }
             }
 
@@ -97,13 +117,11 @@ namespace Configuration.Store.Web.Modules.Api
             if (request == null)
                 return negociator.WithStatusCode(HttpStatusCode.BadRequest);
 
-            var version = request.Version.ToVersion();
-
             await _configStoreService
-                .AddConfiguration(key, version, request.Type)
+                .AddConfiguration(key, request.Type)
                 .ConfigureAwait(false);
 
-            var location = $"{this.Context.Request.Url}/{version}";
+            var location = $"{this.Context.Request.Url}";
 
             return negociator
                 .WithStatusCode(HttpStatusCode.OK)
@@ -191,7 +209,7 @@ namespace Configuration.Store.Web.Modules.Api
                 .WithAllowedMediaRange(JsonMediaRange);
 
             await _configStoreService
-                .RemoveConfiguration(key, version)
+                .RemoveConfiguration(key)
                 .ConfigureAwait(false);
 
             return negociator

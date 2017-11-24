@@ -1,3 +1,5 @@
 .config-store {
   margin-top: 3em;
   font-size: 1.3em; }
+  .config-store .newKeyForm {
+    margin-top: 1em; }

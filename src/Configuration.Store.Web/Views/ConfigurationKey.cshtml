@@ -1,4 +1,4 @@
-﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Models.ConfigurationKeyViewModel>
+﻿@inherits Nancy.ViewEngines.Razor.NancyRazorViewBase<Configuration.Store.Web.Views.Models.ConfigurationKeyViewModel>
 @model ConfigurationKeyViewModel
 
 @{
@@ -11,7 +11,7 @@
     <link type="text/css" rel="stylesheet" href="~/Styles/app/Components/ConfigurationKey.css" />
 
     <script>
-        requirejs(['../Scripts/app/ConfigurationKey'], function (configKey)
+        requirejs(['../Scripts/app/Modules/ConfigurationKey'], function (configKey)
         {
             var data = @Html.AsJson(Model);
 
