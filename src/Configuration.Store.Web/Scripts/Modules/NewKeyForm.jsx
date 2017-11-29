@@ -11,7 +11,7 @@
         this._openForm = this._openForm.bind(this);
         this._closeForm = this._closeForm.bind(this);
         this._saveKey = this._saveKey.bind(this);
-        this._afterFade = this._afterFade.bind(this);
+        this._toggleButton = this._toggleButton.bind(this);
         this._handleInputChange = this._handleInputChange.bind(this);
         this._changeInputValue = this._changeInputValue.bind(this);
         this._handleSelectChange = this._handleSelectChange.bind(this);
@@ -27,7 +27,7 @@
         jQuery(this.valueTypeSelect).material_select('destroy');
     }
 
-    _afterFade(){
+    _toggleButton(){
         this.setState((prevState, props) => {
             return {
                 shown: !prevState.shown
@@ -36,11 +36,11 @@
     }
 
     _openForm(clickEvent){
-        jQuery(this.formContainer).fadeIn(this.state.speed, this._afterFade);
+        jQuery(this.formContainer).fadeIn(this.state.speed, this._toggleButton);
     }
     
     _closeForm(clickEvent){
-        jQuery(this.formContainer).fadeOut(this.state.speed, this._afterFade);
+        jQuery(this.formContainer).fadeOut(this.state.speed, this._toggleButton);
     }
 
     _saveKey(submitEvent){
@@ -48,7 +48,8 @@
 
         this.props.saveKey(
             this.state.key,
-            this.state.valueType
+            this.state.valueType,
+            this._closeForm
         );
     }
 
@@ -56,8 +57,6 @@
         this.setState({
             [inputName]: inputValue
         });
-  
-        console.log('Setting "' + inputName + '" with value "' + inputValue + '"');
     }
 
     _handleSelectChange(){

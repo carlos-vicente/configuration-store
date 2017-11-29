@@ -13,18 +13,34 @@ class ConfigurationListPage extends React.Component {
         this._saveKey = this._saveKey.bind(this);
     }
 
-    _getUpdatedConfigKeys() {
-
+    _getUpdatedConfigKeys(callback) {
+        var fetchOptions = {
+            method: "GET",
+            headers: { "Accept": "application/json" }
+        };
+        fetch('/api/keys/', fetchOptions)
+            .then((response) => {
+                if (response.ok) {
+                    // json() will return a resolved promise to the actual value
+                    // so we returns the promise to chain the async methods
+                    return response.json();
+                }
+            }, (error) => {
+                {/* TODO: show error informartion */ }
+                console.log(error);
+            })
+            .then((data) => {
+                this.setState({ configKeys: data });
+                callback(); // TODO: still have to check this
+            });
     }
 
-    _saveKey(name, valueType) {
-        var url = '/api/' + name;
+    _saveKey(name, valueType, callback) {
+        var url = '/api/keys/' + name;
 
         var body = JSON.stringify({
             type: valueType
         });
-
-        console.log('Creating new key:');
 
         var fetchOptions = {
             method: "PUT",
@@ -33,10 +49,7 @@ class ConfigurationListPage extends React.Component {
         };
         fetch(url, fetchOptions)
             .then((response) => {
-                console.log(response);
-                if (response.ok) {
-                    this._getUpdatedConfigKeys();
-                }
+                if (response.ok) { this._getUpdatedConfigKeys(callback); }
             }, (error) => {
                 {/* TODO: show error informartion */ }
                 console.log(error);

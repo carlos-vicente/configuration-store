@@ -4,13 +4,9 @@ class ConfigurationList extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            configKeys: props.configKeys
-        };
-    }
-
-    _onNewKeySaved(){
-        console.log("New key event");
+        //this.state = {
+        //    configKeys: props.configKeys
+        //};
     }
 
     render() {
@@ -27,7 +23,7 @@ class ConfigurationList extends React.Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.state.configKeys.map((configKey, index) =>
+                        {this.props.configKeys.map((configKey, index) =>
                             <ConfigurationListItem key={index} configKey={configKey} />
                         )}
                     </tbody>
