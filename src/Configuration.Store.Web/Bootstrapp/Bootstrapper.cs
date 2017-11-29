@@ -29,6 +29,7 @@ namespace Configuration.Store.Web.Bootstrapp
 
             builder.RegisterModule<ConfigStoreModule>();
             builder.RegisterModule<PersistenceModule>();
+            builder.RegisterModule<JsonNetModule>();
 
             return builder.Build();
         }
@@ -36,6 +37,7 @@ namespace Configuration.Store.Web.Bootstrapp
         protected override void ConfigureConventions(NancyConventions nancyConventions)
         {
             base.ConfigureConventions(nancyConventions);
+
             nancyConventions.StaticContentsConventions.AddDirectory("Scripts");
             nancyConventions.StaticContentsConventions.AddDirectory("Styles");
         }

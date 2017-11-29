@@ -13,7 +13,9 @@ class ConfigurationListItem extends React.Component {
                     <div className="chip">{this.props.configKey.type}</div>
                 </td>
                 <td className="config-key-acions">
-                    <a className="btn-floating red">
+                    <a className="btn-floating red waves-effect waves-light modal-trigger"
+                        href="#delete-modal"
+                        onClick={() => this.props.onDeletePress(this.props.configKey.key)}>
                         <i className="material-icons">delete</i>
                     </a>
                 </td>

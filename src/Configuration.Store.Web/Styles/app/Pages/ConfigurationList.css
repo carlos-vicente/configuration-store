@@ -3,3 +3,5 @@
   font-size: 1.3em; }
   .config-store .newKeyForm {
     margin-top: 1em; }
+  .config-store .modal-key {
+    font-weight: bold; }

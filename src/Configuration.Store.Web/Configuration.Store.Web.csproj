@@ -145,6 +145,7 @@
   <ItemGroup>
     <Compile Include="Bootstrapp\Bootstrapper.cs" />
     <Compile Include="Bootstrapp\Modules\ConfigStoreModule.cs" />
+    <Compile Include="Bootstrapp\Modules\JsonNetModule.cs" />
     <Compile Include="Bootstrapp\Modules\PersistenceModule.cs" />
     <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="Contracts\Responses\BaseModel.cs" />
     <Compile Include="Contracts\Responses\ConfigKeyDetailed.cs" />
     <Compile Include="Contracts\Responses\ConfigKeyListItem.cs" />
+    <Compile Include="Serialization\JsonSerializationOptions.cs" />
     <Compile Include="Views\Models\ConfigurationKeyViewModel.cs" />
     <Compile Include="Views\Models\ConfigurationListViewModel.cs" />
     <Compile Include="Contracts\Responses\ConfigValueListItem.cs" />
