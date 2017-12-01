@@ -252,7 +252,7 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
 
             RouteDescriber.DescribeRouteWithParams(
                 RouteRegistry.Api.Configuration.DeleteConfiguration.Name,
-                "Deletes a specific configuration key, with a specific version, and all its values",
+                "Deletes a specific configuration key, with all versions and all their values",
                 "Deletes a configuration key",
                 new[] 
                 {
@@ -270,14 +270,6 @@ namespace Configuration.Store.Web.Modules.Api.Metadata
                         In = ParameterIn.Path,
                         Required = true,
                         Description = "The configuration key",
-                        Type = "string"
-                    },
-                    new Parameter
-                    {
-                        Name = "configVersion:version",
-                        In = ParameterIn.Path,
-                        Required = true,
-                        Description = "The configuration key's version",
                         Type = "string"
                     }
                 },

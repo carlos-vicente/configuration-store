@@ -8,13 +8,6 @@ var noClean = Argument<bool>("no-clean", false);
 var solutionFile = "./Configuration.Store.sln";
 var webDirectory = "./src/Configuration.Store.Web/";
 
-Task("Restore Nuget Packages")
-    .Does(() => 
-    {
-        var solution = File(solutionFile);
-        NuGetRestore(solution.Path);
-    });
-
 Task("Clean generated code")
     .WithCriteria(!noClean)
     .Does(() =>
@@ -42,8 +35,14 @@ Task("Clean generated code")
         CleanDirectories(directoriesToClean);
     });
 
+Task("Restore Nuget Packages")
+    .Does(() => 
+    {
+        var solution = File(solutionFile);
+        NuGetRestore(solution.Path);
+    });
+
 Task("Restore Javascript Packages")
-    .IsDependentOn("Clean generated code")
     .Does(() => 
     {
         var npmSettings = new NpmInstallSettings
@@ -63,8 +62,6 @@ Task("Restore Javascript Packages")
     });
 
 Task("Build")
-    .IsDependentOn("Restore Nuget Packages")
-    .IsDependentOn("Restore Javascript Packages")
     .Does(() => 
     {
         // build javascript stuff
@@ -86,12 +83,11 @@ Task("Build")
         DotNetBuild(solutionFile, settings =>
             settings.SetConfiguration("Release")
                 .SetVerbosity(Cake.Core.Diagnostics.Verbosity.Normal)
-                .WithTarget("Clean;Build")
+                .WithTarget(targets)
                 .WithProperty("TreatWarningsAsErrors","true"));
     });
 
 Task("Run Unit Tests")
-    .IsDependentOn("Build")
     .Does(() =>
     {
         var settings = new FixieSettings
@@ -115,12 +111,24 @@ Task("Upload test results to AppVeyor")
             AppVeyorTestResultsType.NUnit);
     });
 
+Task("Build-and-test")
+    .IsDependentOn("Build")
+    .IsDependentOn("Run Unit Tests")
+    .Does(() =>
+    {
+        Information("Project built and tested");
+    });
+
 Task("Default")
+    .IsDependentOn("Clean generated code")
+    .IsDependentOn("Restore Nuget Packages")
+    .IsDependentOn("Restore Javascript Packages")
+    .IsDependentOn("Build")
     .IsDependentOn("Run Unit Tests")
     .IsDependentOn("Upload test results to AppVeyor")
     .Does(() =>
     {
-        Information("Project built and tested");
+        Information("Project cleaned, built and tested");
     });
 
 RunTarget(target);

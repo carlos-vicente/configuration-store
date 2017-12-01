@@ -45,7 +45,7 @@
                 public static readonly Route DeleteConfiguration = new Route
                 {
                     Name = "DeleteConfiguration",
-                    Template = "/api/keys/{configKey}/version/{configVersion:version}"
+                    Template = "/api/keys/{configKey}"
                 };
             }
         }

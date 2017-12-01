@@ -11,6 +11,7 @@ class ConfigurationListPage extends React.Component {
 
         this._getUpdatedConfigKeys = this._getUpdatedConfigKeys.bind(this);
         this._saveKey = this._saveKey.bind(this);
+        this._deleteKey = this._deleteKey.bind(this);
     }
 
     _getUpdatedConfigKeys(callback) {
@@ -31,7 +32,9 @@ class ConfigurationListPage extends React.Component {
             })
             .then((data) => {
                 this.setState({ configKeys: data });
-                callback(); // TODO: still have to check this
+                if(callback){
+                    callback();
+                }
             });
     }
 
@@ -56,11 +59,28 @@ class ConfigurationListPage extends React.Component {
             });
     }
 
+    _deleteKey(name){
+        console.log('deleting key');
+
+        var url = '/api/keys/' + name;
+
+        var fetchOptions = {
+            method: "DELETE"
+        };
+        fetch(url, fetchOptions)
+            .then((response) => {
+                if (response.ok) { this._getUpdatedConfigKeys(); }
+            }, (error) => {
+                {/* TODO: show error informartion */ }
+                console.log(error);
+            });
+    }
+
     render() {
         return (
             <div className="config-store">
                 <NewKeyForm saveKey={this._saveKey} />
-                <ConfigurationList configKeys={this.state.configKeys} />
+                <ConfigurationList configKeys={this.state.configKeys} deleteKey={this._deleteKey} />
             </div>
         );
     }

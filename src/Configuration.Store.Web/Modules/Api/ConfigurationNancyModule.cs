@@ -203,8 +203,7 @@ namespace Configuration.Store.Web.Modules.Api
         private async Task<dynamic> DeleteConfiguration(dynamic parameters, CancellationToken token)
         {
             string key = parameters.configKey;
-            Version version = parameters.configVersion;
-
+            
             var negociator = Negotiate
                 .WithAllowedMediaRange(JsonMediaRange);
 

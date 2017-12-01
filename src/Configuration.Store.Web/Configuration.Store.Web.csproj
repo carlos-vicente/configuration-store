@@ -118,6 +118,7 @@
     <Content Include="Scripts\Modules\ConfigurationKeyValue.jsx" />
     <Content Include="Scripts\Modules\ConfigurationList.jsx" />
     <Content Include="Scripts\Modules\ConfigurationListItem.jsx" />
+    <Content Include="Scripts\Modules\DeleteModal.jsx" />
     <Content Include="Scripts\Modules\NewKeyForm.jsx" />
     <Content Include="Scripts\Modules\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
