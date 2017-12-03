@@ -2,7 +2,7 @@
 {
     public enum ValueType
     {
-        String,
-        JSON
+        String = 1,
+        JSON = 2
     }
 }

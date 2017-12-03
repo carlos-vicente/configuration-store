@@ -1,4 +1,6 @@
-﻿class NewKeyForm extends React.Component {
+﻿import ToggleResponsiveButton from '../Modules/ToggleResponsiveButton'
+
+class NewKeyForm extends React.Component {
     constructor(props){
         super(props);
         
@@ -11,36 +13,31 @@
         this._openForm = this._openForm.bind(this);
         this._closeForm = this._closeForm.bind(this);
         this._saveKey = this._saveKey.bind(this);
-        this._toggleButton = this._toggleButton.bind(this);
         this._handleInputChange = this._handleInputChange.bind(this);
         this._changeInputValue = this._changeInputValue.bind(this);
         this._handleSelectChange = this._handleSelectChange.bind(this);
     }
 
     componentDidMount() {
-        // todo: change to this.formContainer > select
-        jQuery(this.valueTypeSelect).material_select(this._handleSelectChange);
+        jQuery(this.formContainer)
+            .find('select')
+            .material_select(this._handleSelectChange);
     }
 
     componentWillUnmount() {
-        // todo: change to this.formContainer > select
-        jQuery(this.valueTypeSelect).material_select('destroy');
+        jQuery(this.formContainer)
+            .find('select')
+            .material_select('destroy');
     }
 
-    _toggleButton(){
-        this.setState((prevState, props) => {
-            return {
-                shown: !prevState.shown
-            }
-        });
-    }
-
-    _openForm(clickEvent){
-        jQuery(this.formContainer).fadeIn(this.state.speed, this._toggleButton);
+    _openForm(callback){
+        jQuery(this.formContainer).fadeIn(this.state.speed, callback);
     }
     
-    _closeForm(clickEvent){
-        jQuery(this.formContainer).fadeOut(this.state.speed, this._toggleButton);
+    _closeForm(callback){
+        var container = jQuery(this.formContainer);
+        container.fadeOut(this.state.speed, callback);
+        container.find('form')[0].reset();
     }
 
     _saveKey(submitEvent){
@@ -48,8 +45,7 @@
 
         this.props.saveKey(
             this.state.key,
-            this.state.valueType,
-            this._closeForm
+            this.state.valueType
         );
     }
 
@@ -86,20 +82,16 @@
             + (this.state.shown ? "" : " hide");
 
         return (
-            <article>
-                <a className={bigOpenButtonClassName} onClick={this._openForm} style={{width: 170}}>
-                    <i className="material-icons right">add</i>Add key
-                </a>
-                <a className={bigCloseButtonClassName} onClick={this._closeForm} style={{width: 170}}>
-                    <i className="material-icons right">close</i>Close
-                </a>
-                <a className={smallOpenButtonClassName} onClick={this._openForm}>
-                    <i className="material-icons">add</i>
-                </a>
-                <a className={smallCloseButtonClassName} onClick={this._closeForm}>
-                    <i className="material-icons">close</i>
-                </a>
-                <article className="row newKeyForm" style={{ display: 'none' }} ref={(fc) => { this.formContainer = fc; }}>
+            <article className="new-key-form-container">
+
+                <ToggleResponsiveButton
+                    openButtonText="Add key"
+                    openIcon="add"
+                    closeButtonText="Close"
+                    onOpen={this._openForm}
+                    onClose={this._closeForm} />
+
+                <article className="row new-key-form" style={{ display: 'none' }} ref={(fc) => { this.formContainer = fc; }}>
                     <form className="col s12" onSubmit={this._saveKey}>
                         <div className="row">
                             <div className="input-field col s12 m4">
@@ -107,7 +99,7 @@
                                 <label className="active" htmlFor="key">Key name</label>
                             </div>
                             <div className="input-field col s12 m4">
-                                <select defaultValue="" id="valueType" ref={(sel) => { this.valueTypeSelect = sel; }}>
+                                <select defaultValue="" id="valueType">
                                     <option value="" disabled>Choose one</option>
                                     <option value="String">String</option>
                                     <option value="JSON">JSON</option>

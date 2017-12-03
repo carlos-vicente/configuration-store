@@ -120,12 +120,14 @@
     <Content Include="Scripts\Modules\ConfigurationListItem.jsx" />
     <Content Include="Scripts\Modules\DeleteModal.jsx" />
     <Content Include="Scripts\Modules\NewKeyForm.jsx" />
+    <Content Include="Scripts\Modules\SearchForm.jsx" />
     <Content Include="Scripts\Modules\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
     <Content Include="gulp\tasks\build-task.js" />
     <Content Include="gulp\tasks\default.js" />
     <Content Include="packages.config" />
     <Content Include="package.json" />
+    <Content Include="Scripts\Modules\ToggleResponsiveButton.jsx" />
     <Content Include="Views\swagger-ui.cshtml" />
     <Content Include="Views\ConfigurationKey.cshtml" />
     <Content Include="Styles\Pages\ConfigurationKey.scss" />

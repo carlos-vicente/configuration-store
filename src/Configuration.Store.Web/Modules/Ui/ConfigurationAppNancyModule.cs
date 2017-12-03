@@ -27,7 +27,7 @@ namespace Configuration.Store.Web.Modules.Ui
                 .GetConfigurationKeys()
                 .ConfigureAwait(false);
 
-            var orderedConfigKeys = configKeys.OrderBy(k => k.Key);
+            var orderedConfigKeys = configKeys;
 
             return Negotiate
                 .WithModel(new ConfigurationListViewModel

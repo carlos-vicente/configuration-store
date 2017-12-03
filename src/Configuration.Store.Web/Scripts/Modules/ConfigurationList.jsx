@@ -28,7 +28,6 @@ class ConfigurationList extends React.Component {
     render() {
         return (
             <div>
-                {/* TODO: add a search box here to search on all configuration keys */}
                 <table className="highlight">
                     <thead>
                         <tr className="config-list-head">

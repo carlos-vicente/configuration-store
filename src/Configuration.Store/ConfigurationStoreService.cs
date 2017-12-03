@@ -27,6 +27,7 @@ namespace Configuration.Store
                     Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type),
                     CreatedAt = storedKey.CreatedAt
                 })
+                .OrderBy(k => k.Key)
                 .ToList();
         }
 

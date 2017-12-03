@@ -1,20 +1,24 @@
 ﻿import ConfigurationList from '../Modules/ConfigurationList'
 import NewKeyForm from '../Modules/NewKeyForm'
+import SearchForm from '../Modules/SearchForm'
 
 class ConfigurationListPage extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            originalConfigKeys: props.configKeys,
             configKeys: props.configKeys
         };
 
         this._getUpdatedConfigKeys = this._getUpdatedConfigKeys.bind(this);
         this._saveKey = this._saveKey.bind(this);
         this._deleteKey = this._deleteKey.bind(this);
+        this._filterKeys = this._filterKeys.bind(this);
+        this._resetFilter = this._resetFilter.bind(this);
     }
 
-    _getUpdatedConfigKeys(callback) {
+    _getUpdatedConfigKeys() {
         var fetchOptions = {
             method: "GET",
             headers: { "Accept": "application/json" }
@@ -32,13 +36,10 @@ class ConfigurationListPage extends React.Component {
             })
             .then((data) => {
                 this.setState({ configKeys: data });
-                if(callback){
-                    callback();
-                }
             });
     }
 
-    _saveKey(name, valueType, callback) {
+    _saveKey(name, valueType) {
         var url = '/api/keys/' + name;
 
         var body = JSON.stringify({
@@ -52,7 +53,7 @@ class ConfigurationListPage extends React.Component {
         };
         fetch(url, fetchOptions)
             .then((response) => {
-                if (response.ok) { this._getUpdatedConfigKeys(callback); }
+                if (response.ok) { this._getUpdatedConfigKeys(); }
             }, (error) => {
                 {/* TODO: show error informartion */ }
                 console.log(error);
@@ -76,10 +77,22 @@ class ConfigurationListPage extends React.Component {
             });
     }
 
+    _filterKeys(filter){
+        var data = this.state
+            .originalConfigKeys
+            .filter(key => key.key.includes(filter));
+        this.setState({ configKeys: data });
+    }
+
+    _resetFilter(){
+
+    }
+
     render() {
         return (
             <div className="config-store">
                 <NewKeyForm saveKey={this._saveKey} />
+                <SearchForm onFilter={this._filterKeys} onReset={this._resetFilter} />
                 <ConfigurationList configKeys={this.state.configKeys} deleteKey={this._deleteKey} />
             </div>
         );
