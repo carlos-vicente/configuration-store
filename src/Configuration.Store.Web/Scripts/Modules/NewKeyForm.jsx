@@ -56,7 +56,8 @@ class NewKeyForm extends React.Component {
     }
 
     _handleSelectChange(){
-        var value = jQuery(this.valueTypeSelect).val();
+        // currently this is an hack, as this can only handle valueType select
+        var value = jQuery(this.formContainer).find('select#valueType').val();
         this._changeInputValue('valueType', value);
     }
 
@@ -95,8 +96,8 @@ class NewKeyForm extends React.Component {
                     <form className="col s12" onSubmit={this._saveKey}>
                         <div className="row">
                             <div className="input-field col s12 m4">
-                                <input placeholder="Key name" name="key" id="key" type="text" className="validate" onChange={this._handleInputChange}/>
-                                <label className="active" htmlFor="key">Key name</label>
+                                <input name="key" id="key" type="text" className="validate" onChange={this._handleInputChange}/>
+                                <label htmlFor="key">Key name</label>
                             </div>
                             <div className="input-field col s12 m4">
                                 <select defaultValue="" id="valueType">
@@ -108,7 +109,7 @@ class NewKeyForm extends React.Component {
                             </div>
                             <div className="input-field col s12 m4">
                                 <button className="btn waves-effect waves-light light-blue" name="action">
-                                    <i className="material-icons right">send</i>Save
+                                    <i className="material-icons">save</i>
                                 </button>
                             </div>
                         </div>

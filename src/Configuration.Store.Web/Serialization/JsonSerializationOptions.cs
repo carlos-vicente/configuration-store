@@ -18,7 +18,11 @@ namespace Configuration.Store.Web.Serialization
             },
             Converters = new List<JsonConverter>
             {
-                new StringEnumConverter()
+                new StringEnumConverter
+                {
+                    AllowIntegerValues = false,
+                    CamelCaseText = false
+                }
             }
         };
     }

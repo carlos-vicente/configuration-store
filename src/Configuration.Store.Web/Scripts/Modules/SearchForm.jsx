@@ -14,6 +14,7 @@ class SearchForm extends React.Component{
         this._openForm = this._openForm.bind(this);
         this._closeForm = this._closeForm.bind(this);
         this._search = this._search.bind(this);
+        this._reset = this._reset.bind(this);
         this._handleInputChange = this._handleInputChange.bind(this);
     }
 
@@ -24,14 +25,25 @@ class SearchForm extends React.Component{
     _closeForm(callback){
         var container = jQuery(this.searchContainer);
         container.fadeOut(this.state.speed, callback);
-        container.find('form')[0].reset();
+        this._resetForm(container);
     }
 
+    _reset(clickEvent){
+        console.log('resetting...');
+        this.props.onReset();
+        this._resetForm();
+    }
+
+    _resetForm(formContainer){
+        var container = formContainer;
+        if(container === undefined){
+            container = jQuery(this.searchContainer);
+        }
+        container.find('form')[0].reset();
+    }
+    
     _search(submitEvent){
         submitEvent.preventDefault();
-
-        console.log('search submitted ' + this.state.search);
-
         this.props.onFilter(this.state.search);
     }
 
@@ -56,19 +68,28 @@ class SearchForm extends React.Component{
                     onOpen={this._openForm}
                     onClose={this._closeForm} />
 
-                <nav className="white" style={{ display: 'none' }} ref={(sf) => {this.searchContainer = sf;}}>
-                    <div className="nav-wrapper">
-                        <form className="col s12" onSubmit={this._search}>
-                            <div className="input-field">
-                                <input id="search" name="search" type="search" onChange={this._handleInputChange}/>
-                                <label className="label-icon active" htmlFor="search">
-                                    <i className="material-icons">search</i>
-                                </label>
-                                <i className="material-icons">close</i>
+                <article className="row search-form" style={{ display: 'none' }} ref={(sf) => {this.searchContainer = sf;}}>
+                    <form className="col s12" onSubmit={this._search}>
+                        <div className="row">
+                            <div className="input-field col s12 m6 l8">
+                                <input name="search" 
+                                        id="search" 
+                                        type="text" 
+                                        className="validate" 
+                                        onChange={this._handleInputChange}/>
+                                <label htmlFor="search">Search term</label>
                             </div>
-                        </form>
-                    </div>
-                </nav>
+                            <div className="input-field col s12 m6 l4">
+                                <button className="btn waves-effect waves-light light-blue" name="action">
+                                    <i className="material-icons">search</i>
+                                </button>
+                                <button type="button" className="btn waves-effect waves-light red" name="action" onClick={this._reset}>
+                                    <i className="material-icons">clear_all</i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </article>
             </article>
         );
     }

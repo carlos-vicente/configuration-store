@@ -156,12 +156,12 @@
     <Compile Include="Contracts\Responses\BaseModel.cs" />
     <Compile Include="Contracts\Responses\ConfigKeyDetailed.cs" />
     <Compile Include="Contracts\Responses\ConfigKeyListItem.cs" />
+    <Compile Include="Contracts\Responses\Mapping\ConfigKeyListMappingProfile.cs" />
     <Compile Include="Serialization\JsonSerializationOptions.cs" />
     <Compile Include="Views\Models\ConfigurationKeyViewModel.cs" />
     <Compile Include="Views\Models\ConfigurationListViewModel.cs" />
     <Compile Include="Contracts\Responses\ConfigValueListItem.cs" />
     <Compile Include="Contracts\Responses\Mapping\ConfigKeyDetailMappingProfile.cs" />
-    <Compile Include="Contracts\Responses\Mapping\ConfigKeyMappingProfile.cs" />
     <Compile Include="Contracts\Responses\Nav.cs" />
     <Compile Include="Views\Models\SwaggerViewModel.cs" />
     <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />

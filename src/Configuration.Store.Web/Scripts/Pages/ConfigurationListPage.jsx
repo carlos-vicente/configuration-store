@@ -35,7 +35,10 @@ class ConfigurationListPage extends React.Component {
                 console.log(error);
             })
             .then((data) => {
-                this.setState({ configKeys: data });
+                this.setState({ 
+                    configKeys: data,
+                    originalConfigKeys: data
+                });
             });
     }
 
@@ -85,7 +88,7 @@ class ConfigurationListPage extends React.Component {
     }
 
     _resetFilter(){
-
+        this.setState({ configKeys: this.state.originalConfigKeys });
     }
 
     render() {

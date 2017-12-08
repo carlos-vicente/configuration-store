@@ -26,16 +26,10 @@ class ToggleResponsiveButton extends React.Component {
     }
 
     render() {
-        var bigOpenButtonClassName = "btn waves-effect waves-light light-blue hide-on-small-only"
+        var bigOpenButtonClassName = "btn waves-effect waves-light light-blue" // hide-on-small-only"
             + (this.state.shown ? " hide" : "");
 
-        var smallOpenButtonClassName = "btn-floating btn waves-effect waves-light light-blue hide-on-med-and-up"
-            + (this.state.shown ? " hide" : "");
-
-        var bigCloseButtonClassName = "btn waves-effect waves-light red darken-2 hide-on-small-only"
-            + (this.state.shown ? "" : " hide");
-
-        var smallCloseButtonClassName = "btn-floating btn waves-effect waves-light red darken-2 hide-on-med-and-up"
+        var bigCloseButtonClassName = "btn waves-effect waves-light red darken-2" // hide-on-small-only"
             + (this.state.shown ? "" : " hide");
         
         return (
@@ -45,12 +39,6 @@ class ToggleResponsiveButton extends React.Component {
                 </a>
                 <a className={bigCloseButtonClassName} onClick={this._close} style={{width: 170}}>
                     <i className="material-icons right">close</i>{this.props.closeButtonText}
-                </a>
-                <a className={smallOpenButtonClassName} onClick={this._open}>
-                    <i className="material-icons">{this.props.openIcon}</i>
-                </a>
-                <a className={smallCloseButtonClassName} onClick={this._close}>
-                    <i className="material-icons">close</i>
                 </a>
             </span>
         );

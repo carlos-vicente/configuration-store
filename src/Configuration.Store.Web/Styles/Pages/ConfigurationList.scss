@@ -2,13 +2,15 @@
     margin-top: 2em;
     font-size: 1.3em;
 
-    .new-key-form {
-        margin-top: 1em;
-    }
-    
     .search-form-container{
         margin-top: 1em;
-    }    
+    }
+
+    .search-form{
+        button{
+            margin-right: 0.2em;
+        }
+    }
 
     .modal-key{
         font-weight:bold;
