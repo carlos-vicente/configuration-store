@@ -58,15 +58,16 @@ namespace Configuration.Store.Persistence.Memory
                         .SelectMany(pair =>
                         {
                             return pair
-                            .Value
-                            .Select(tuple => new StoredConfigValues
-                            {
-                                Id = tuple.Item1,
-                                Sequence = tuple.Item2,
-                                Data = tuple.Item3,
-                                EnvironmentTags = tuple.Item4,
-                                CreatedAt = DateTime.UtcNow // this is a memory stub, really don't care about when it was created
-                            });
+                                .Value
+                                .Select(tuple => new StoredConfigValues
+                                {
+                                    Id = tuple.Item1,
+                                    Sequence = tuple.Item2,
+                                    Version = pair.Key,
+                                    Data = tuple.Item3,
+                                    EnvironmentTags = tuple.Item4,
+                                    CreatedAt = DateTime.UtcNow // this is a memory stub, really don't care about when it was created
+                                });
                         })
                 };
             }

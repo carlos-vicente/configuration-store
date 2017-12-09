@@ -6,7 +6,9 @@ class NewKeyForm extends React.Component {
         
         this.state = {
             speed: 100,
-            shown: false
+            shown: false,
+            key: '',
+            valueType: ''
         };
 
         // 'this' handler bindings
@@ -22,12 +24,20 @@ class NewKeyForm extends React.Component {
         jQuery(this.formContainer)
             .find('select')
             .material_select(this._handleSelectChange);
+
+        jQuery(this.formContainer)
+            .find('.tooltipped')
+            .tooltip();
     }
 
     componentWillUnmount() {
         jQuery(this.formContainer)
             .find('select')
             .material_select('destroy');
+
+        jQuery(this.formContainer)
+            .find('.tooltipped')
+            .tooltip('remove');
     }
 
     _openForm(callback){
@@ -38,6 +48,11 @@ class NewKeyForm extends React.Component {
         var container = jQuery(this.formContainer);
         container.fadeOut(this.state.speed, callback);
         container.find('form')[0].reset();
+
+        this.setState({
+            key: '',
+            valueType: ''
+        });
     }
 
     _saveKey(submitEvent){
@@ -108,7 +123,11 @@ class NewKeyForm extends React.Component {
                                 <label htmlFor="valueType">Value type</label>
                             </div>
                             <div className="input-field col s12 m4">
-                                <button className="btn waves-effect waves-light light-blue" name="action">
+                                <button className="btn waves-effect waves-light light-blue tooltipped"
+                                        name="action"
+                                        data-position="top"
+                                        data-delay="50"
+                                        data-tooltip="Save key">
                                     <i className="material-icons">save</i>
                                 </button>
                             </div>

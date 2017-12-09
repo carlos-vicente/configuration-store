@@ -30,8 +30,10 @@ class ConfigurationListPage extends React.Component {
                     // so we returns the promise to chain the async methods
                     return response.json();
                 }
+                Materialize.toast('Failed updating keys', 4000);
             }, (error) => {
                 {/* TODO: show error informartion */ }
+                Materialize.toast('Failed updating keys', 4000);
                 console.log(error);
             })
             .then((data) => {
@@ -39,6 +41,7 @@ class ConfigurationListPage extends React.Component {
                     configKeys: data,
                     originalConfigKeys: data
                 });
+                Materialize.toast('Updated keys', 4000);
             });
     }
 
@@ -56,9 +59,14 @@ class ConfigurationListPage extends React.Component {
         };
         fetch(url, fetchOptions)
             .then((response) => {
-                if (response.ok) { this._getUpdatedConfigKeys(); }
+                if (response.ok) {
+                    Materialize.toast('Key ' + name + ' was saved!', 4000);
+                    this._getUpdatedConfigKeys();
+                } else {
+                    Materialize.toast('Failed to save key ' + name, 4000);
+                }
             }, (error) => {
-                {/* TODO: show error informartion */ }
+                Materialize.toast('Failed to save key ' + name, 4000);
                 console.log(error);
             });
     }

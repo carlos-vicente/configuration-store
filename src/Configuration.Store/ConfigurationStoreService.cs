@@ -33,52 +33,26 @@ namespace Configuration.Store
 
         public async Task<ConfigurationKey> GetConfigurationKey(string key)
         {
-            var versions = await _repository
-                .GetConfigurationKeyVersions(key)
+            var storedConfig = await _repository
+                .GetConfiguration(key)
                 .ConfigureAwait(false);
-
-            if (versions == null)
-                return null;
 
             var configKey = new ConfigurationKey
             {
-                Key = key
-            };
-
-            var values = new List<ConfigurationValue>();
-            foreach (var version in versions)
-            {
-                var configuration = await _repository
-                    .GetConfiguration(key, version)
-                    .ConfigureAwait(false);
-
-                // TODO: no need to this multiple times, find a better concept representation/storage interface
-                configKey.Type = (ValueType)Enum.Parse(typeof(ValueType), configuration.Type);
-
-                var currentValues = configuration
+                Key = key,
+                Type = (ValueType)Enum.Parse(typeof(ValueType), storedConfig.Type),
+                Values = storedConfig
                     .Values
-                    .GroupBy(val => val.EnvironmentTags);
-
-                foreach (var valuesForEnv in currentValues)
-                {
-                    var latestValue = valuesForEnv
-                        .OrderByDescending(val => val.Sequence)
-                        .First();
-
-                    values.Add(new ConfigurationValue
+                    .Select(storedValue => new ConfigurationValue
                     {
-                        Version = version,
-                        Data = latestValue.Data,
-                        Sequence = latestValue.Sequence,
-                        EnvironmentTags = valuesForEnv.Key,
-                        CreatedAt = latestValue.CreatedAt
-                    });
-                }
-            }
-
-            configKey.Values = values
-                .OrderBy(val => val.Version)
-                .ToArray();
+                        Id = storedValue.Id,
+                        Sequence = storedValue.Sequence,
+                        CreatedAt = storedValue.CreatedAt,
+                        Version = storedValue.Version,
+                        Data = storedValue.Data,
+                        EnvironmentTags = storedValue.EnvironmentTags
+                    })
+            };
 
             return configKey;
         }
@@ -120,7 +94,10 @@ namespace Configuration.Store
             string key,
             ValueType dataType)
         {
-            // todo: params check
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Provide a valid key name");
+            if (!Enum.IsDefined(typeof(ValueType), dataType))
+                throw new ArgumentException("Provide a valid key value type");
 
             var currentConfig = await _repository
                 .GetConfiguration(key)

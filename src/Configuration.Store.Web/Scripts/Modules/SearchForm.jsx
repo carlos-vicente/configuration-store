@@ -18,6 +18,18 @@ class SearchForm extends React.Component{
         this._handleInputChange = this._handleInputChange.bind(this);
     }
 
+    componentDidMount() {
+        jQuery(this.searchContainer)
+            .find('.tooltipped')
+            .tooltip();
+    }
+
+    componentWillUnmount() {
+        jQuery(this.searchContainer)
+            .find('.tooltipped')
+            .tooltip('remove');
+    }
+
     _openForm(callback){
         jQuery(this.searchContainer).fadeIn(this.state.speed, callback);
     }
@@ -40,6 +52,7 @@ class SearchForm extends React.Component{
             container = jQuery(this.searchContainer);
         }
         container.find('form')[0].reset();
+        this.setState({ search: '' });
     }
     
     _search(submitEvent){
@@ -71,7 +84,7 @@ class SearchForm extends React.Component{
                 <article className="row search-form" style={{ display: 'none' }} ref={(sf) => {this.searchContainer = sf;}}>
                     <form className="col s12" onSubmit={this._search}>
                         <div className="row">
-                            <div className="input-field col s12 m6 l8">
+                            <div className="input-field col s12 m8">
                                 <input name="search" 
                                         id="search" 
                                         type="text" 
@@ -79,11 +92,21 @@ class SearchForm extends React.Component{
                                         onChange={this._handleInputChange}/>
                                 <label htmlFor="search">Search term</label>
                             </div>
-                            <div className="input-field col s12 m6 l4">
-                                <button className="btn waves-effect waves-light light-blue" name="action">
+                            <div className="input-field col s12 m4">
+                                <button className="btn waves-effect waves-light light-blue tooltipped"
+                                        name="action"
+                                        data-position="top"
+                                        data-delay="50"
+                                        data-tooltip="Search">
                                     <i className="material-icons">search</i>
                                 </button>
-                                <button type="button" className="btn waves-effect waves-light red" name="action" onClick={this._reset}>
+                                <button type="button"
+                                        className="btn waves-effect waves-light red tooltipped"
+                                        name="action"
+                                        onClick={this._reset}
+                                        data-position="top"
+                                        data-delay="50"
+                                        data-tooltip="Clear search">
                                     <i className="material-icons">clear_all</i>
                                 </button>
                             </div>
