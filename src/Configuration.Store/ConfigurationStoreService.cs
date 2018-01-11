@@ -147,6 +147,16 @@ namespace Configuration.Store
             IEnumerable<string> tags,
             string value)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Provide a valid key name");
+            if (version == default(Version))
+                throw new ArgumentException("Provide a valid version");
+            if (tags == null || !tags.Any())
+                throw new ArgumentException("Provide a valid collection of environment tags");
+
+            // when value type String: value can be anything, even empty string, it's up to the client app to deal with it
+            // TODO when value type JSON: make sure it is a valid JSON
+
             var currentConfig = await _repository
                .GetConfiguration(key)
                .ConfigureAwait(false);
@@ -158,6 +168,7 @@ namespace Configuration.Store
             var storedValue = currentConfig
                 .Values
                 .FirstOrDefault(val => val.EnvironmentTags.Any(tags.Contains));
+            
             if (storedValue != null)
                 throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)}");
 

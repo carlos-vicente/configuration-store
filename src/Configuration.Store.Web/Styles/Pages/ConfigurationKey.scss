@@ -1,5 +1,6 @@
 .key-detail {
-    margin-top: 3em;
+    margin-top: 2em;
+    font-size: 1.3em;
 
     h2 {
         display: inline-block;
@@ -10,4 +11,8 @@
             margin-left:20px;
         }
     }
+}
+
+#json-editor { 
+    height: 350px;
 }

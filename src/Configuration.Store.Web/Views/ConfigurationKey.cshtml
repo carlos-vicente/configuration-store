@@ -4,18 +4,24 @@
 @{
     Layout = "Shared/Master.cshtml";
     ViewBag.Title = "Configuration key";
+    ViewBag.BaseScriptsUrl = "../Scripts";
 }
 
 @section Scripts
 {
-    <link type="text/css" rel="stylesheet" href="~/Styles/app/Components/ConfigurationKey.css" />
+    <link type="text/css" rel="stylesheet" href="~/Styles/app/Pages/ConfigurationKey.css" />
+    <link type="text/css" rel="stylesheet" href="~/Styles/jsoneditor/jsoneditor.css" />
 
     <script>
-        requirejs(['../Scripts/app/Modules/ConfigurationKey'], function (configKey)
+        require.config({
+            baseUrl: '@ViewBag.BaseScriptsUrl'
+        });
+
+        requirejs(['app/pages/ConfigurationKeyPage'], function (configKeyPage)
         {
             var data = @Html.AsJson(Model);
 
-            var element = React.createElement(configKey.default, data);
+            var element = React.createElement(configKeyPage.default, data);
             var rootElement = document.getElementById('root');
 
             ReactDOM.render(element, rootElement);

@@ -1,4 +1,4 @@
-﻿import moment from 'Scripts/lib/moment/moment.min'
+﻿import moment from 'lib/moment/moment.min'
 
 class ConfigurationListItem extends React.Component {
     render() {

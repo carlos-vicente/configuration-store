@@ -4,6 +4,7 @@
 @{
     Layout = "Shared/Master.cshtml";
     ViewBag.Title = "Configuration List";
+    ViewBag.BaseScriptsUrl = "Scripts";
 }
 
 @section Scripts
@@ -11,7 +12,11 @@
     <link type="text/css" rel="stylesheet" href="~/Styles/app/Pages/ConfigurationList.css" />
 
     <script>
-        requirejs(['Scripts/app/pages/ConfigurationListPage'], function (page) 
+        requirejs.config({
+            baseUrl: '@ViewBag.BaseScriptsUrl'
+        });
+        
+        requirejs(['app/pages/ConfigurationListPage'], function (page) 
         {
             var data = @Html.AsJson(Model);
 

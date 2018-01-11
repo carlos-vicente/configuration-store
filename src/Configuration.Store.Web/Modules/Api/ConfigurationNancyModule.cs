@@ -169,18 +169,19 @@ namespace Configuration.Store.Web.Modules.Api
             var negociator = Negotiate
                 .WithAllowedMediaRange(JsonMediaRange);
 
-            if (request == null)
+            if (version == default(Version) || request == null)
                 return negociator.WithStatusCode(HttpStatusCode.BadRequest);
 
             var valueId = await _configStoreService
                 .AddValueToConfiguration(key, version, request.Tags, request.Value)
                 .ConfigureAwait(false);
 
-            var location = $"{this.Context.Request.Url}/{valueId}";
+            // var location = $"{this.Context.Request.Url}/{valueId}";
+            var location = new Uri(this.Context.Request.Url, valueId.ToString());
 
             return negociator
                 .WithStatusCode(HttpStatusCode.OK)
-                .WithHeader("Location", location);
+                .WithHeader("Location", location.ToString());
         }
 
         private async Task<dynamic> DeleteValueFromConfiguration(dynamic parameters, CancellationToken token)
