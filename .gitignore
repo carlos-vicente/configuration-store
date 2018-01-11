@@ -190,5 +190,6 @@ tools/*
 
 **/materialize/*
 **/Scripts/app/**
+**/Styles/app/**
 **/swagger/*
 **/jsoneditor/**
