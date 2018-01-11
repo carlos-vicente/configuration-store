@@ -189,5 +189,6 @@ tools/*
 !tools/packages.config
 
 **/materialize/*
-**/Scripts/app/*
+**/Scripts/app/**
 **/swagger/*
+**/jsoneditor/**
