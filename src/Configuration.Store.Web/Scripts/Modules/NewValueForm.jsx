@@ -33,27 +33,43 @@ class NewValueForm extends React.Component {
             secondaryPlaceholder: '+Tag',
         });
 
-        envTagContainer.on('chip.add', function(e, chip){
+        envTagContainer.on('chip.add', (e, chip) => {
             // you have the added chip here
             console.log('Added chip ' + chip.tag);
+            console.log(this.state.envTags);
+            this.setState((previousState, props) => {
+                envTags: previousState.envTags.push(chip.tag)
+            });
         });
             
-        envTagContainer.on('chip.delete', function(e, chip){
+        envTagContainer.on('chip.delete', (e, chip) => {
             // you have the deleted chip here
             console.log('Removed chip ' + chip.tag);
+            console.log(this.state.envTags);
+            this.setState((previousState, props) => {
+                envTags: previousState.envTags
+                    .splice(previousState.envTags.indexOf(chip.tag), 1)
+            });
         });
 
         if(this.props.valueType === 'JSON')
         {
+            var editor;
             var options = 
             {
                 modes: ['code', 'view'],
-                mode: 'code'
-                // set onChange (Set a callback function triggered when the contents of the JSONEditor change. Called without parameters. Will only be triggered on changes made by the user, not in case of programmatic changes via the functions set or setText.) 
+                mode: 'code',
+                onChange: () => {
+                    var json = JSON.stringify(editor.get());
+                    this.setState({
+                        value: json
+                    });
+                    console.log(json);
+                }
             };
 
             var container = document.getElementById('json-editor');
-            var editor = new JSONEditor(container, options);
+            editor = new JSONEditor(container, options);
         }
     }
 
@@ -97,7 +113,7 @@ class NewValueForm extends React.Component {
     
         this.setState({
             [name]: value
-        });    
+        });
     }
 
     render() {
