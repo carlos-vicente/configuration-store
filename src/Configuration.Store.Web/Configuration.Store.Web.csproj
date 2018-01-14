@@ -120,6 +120,7 @@
     <Content Include="Scripts\Modules\ConfigurationListItem.jsx" />
     <Content Include="Scripts\Modules\DeleteModal.jsx" />
     <Content Include="Scripts\Modules\NewKeyForm.jsx" />
+    <Content Include="Scripts\Modules\NewValueForm.jsx" />
     <Content Include="Scripts\Modules\SearchForm.jsx" />
     <Content Include="Scripts\Modules\Tests\ConfigurationListTests.js" />
     <Content Include="gulpfile.js" />
@@ -128,6 +129,7 @@
     <Content Include="packages.config" />
     <Content Include="package.json" />
     <Content Include="Scripts\Modules\ToggleResponsiveButton.jsx" />
+    <Content Include="Scripts\Pages\ConfigurationKeyPage.jsx" />
     <Content Include="Views\swagger-ui.cshtml" />
     <Content Include="Views\ConfigurationKey.cshtml" />
     <Content Include="Styles\Pages\ConfigurationKey.scss" />

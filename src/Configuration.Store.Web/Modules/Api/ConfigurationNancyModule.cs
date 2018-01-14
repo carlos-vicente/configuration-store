@@ -128,6 +128,50 @@ namespace Configuration.Store.Web.Modules.Api
                 .WithHeader("Location", location);
         }
 
+        private async Task<dynamic> DeleteConfiguration(dynamic parameters, CancellationToken token)
+        {
+            string key = parameters.configKey;
+
+            var negociator = Negotiate
+                .WithAllowedMediaRange(JsonMediaRange);
+
+            await _configStoreService
+                .RemoveConfiguration(key)
+                .ConfigureAwait(false);
+
+            return negociator
+                .WithStatusCode(HttpStatusCode.OK);
+        }
+
+        private async Task<dynamic> AddNewValueToConfiguration(dynamic parameters, CancellationToken token)
+        {
+            string key = parameters.configKey;
+            Version version = parameters.configVersion;
+
+            // TODO: BindAndValidate with FluentValidation
+            var request = this.Bind<NewValueToConfigurationRequest>(new BindingConfig
+            {
+                BodyOnly = true,
+                IgnoreErrors = false
+            });
+
+            var negociator = Negotiate
+                .WithAllowedMediaRange(JsonMediaRange);
+
+            if (version == default(Version) || request == null)
+                return negociator.WithStatusCode(HttpStatusCode.BadRequest);
+
+            var valueId = await _configStoreService
+                .AddValueToConfiguration(key, version, request.Tags, request.Value)
+                .ConfigureAwait(false);
+
+            var location = new Uri(this.Context.Request.Url, valueId.ToString());
+
+            return negociator
+                .WithStatusCode(HttpStatusCode.OK)
+                .WithHeader("Location", location.ToString());
+        }
+
         private async Task<dynamic> UpdateValueOnConfiguration(dynamic parameters, CancellationToken token)
         {
             string key = parameters.configKey;
@@ -154,36 +198,6 @@ namespace Configuration.Store.Web.Modules.Api
             return negociator.WithStatusCode(HttpStatusCode.OK);
         }
 
-        private async Task<dynamic> AddNewValueToConfiguration(dynamic parameters, CancellationToken token)
-        {
-            string key = parameters.configKey;
-            Version version = parameters.configVersion;
-
-            // TODO: BindAndValidate with FluentValidation
-            var request = this.Bind<NewValueToConfigurationRequest>(new BindingConfig
-            {
-                BodyOnly = true,
-                IgnoreErrors = false
-            });
-
-            var negociator = Negotiate
-                .WithAllowedMediaRange(JsonMediaRange);
-
-            if (version == default(Version) || request == null)
-                return negociator.WithStatusCode(HttpStatusCode.BadRequest);
-
-            var valueId = await _configStoreService
-                .AddValueToConfiguration(key, version, request.Tags, request.Value)
-                .ConfigureAwait(false);
-
-            // var location = $"{this.Context.Request.Url}/{valueId}";
-            var location = new Uri(this.Context.Request.Url, valueId.ToString());
-
-            return negociator
-                .WithStatusCode(HttpStatusCode.OK)
-                .WithHeader("Location", location.ToString());
-        }
-
         private async Task<dynamic> DeleteValueFromConfiguration(dynamic parameters, CancellationToken token)
         {
             string key = parameters.configKey;
@@ -195,21 +209,6 @@ namespace Configuration.Store.Web.Modules.Api
 
             await _configStoreService
                 .RemoveValueFromConfiguration(key, version, valueId)
-                .ConfigureAwait(false);
-
-            return negociator
-                .WithStatusCode(HttpStatusCode.OK);
-        }
-
-        private async Task<dynamic> DeleteConfiguration(dynamic parameters, CancellationToken token)
-        {
-            string key = parameters.configKey;
-            
-            var negociator = Negotiate
-                .WithAllowedMediaRange(JsonMediaRange);
-
-            await _configStoreService
-                .RemoveConfiguration(key)
                 .ConfigureAwait(false);
 
             return negociator

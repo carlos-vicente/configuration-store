@@ -162,15 +162,15 @@ namespace Configuration.Store
                .ConfigureAwait(false);
 
             if (currentConfig == null)
-                throw new ArgumentException($"Can not add value to configuration with key {key} and version {version}, as it does not exists!");
+                throw new ArgumentException($"Can not add value to configuration with key {key}, as it does not exists!");
 
             // check there are no tag overlaps between diferent values from same key and version
             var storedValue = currentConfig
                 .Values
-                .FirstOrDefault(val => val.EnvironmentTags.Any(tags.Contains));
+                .FirstOrDefault(val => val.Version == version && val.EnvironmentTags.Any(tags.Contains));
             
             if (storedValue != null)
-                throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)}");
+                throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)} for version {version}");
 
             var valueId = NewId.NextGuid();
 

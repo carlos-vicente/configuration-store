@@ -3,8 +3,8 @@
         return (
             <tr className="">
                 <td>{this.props.value.version}</td>
-                <td>{this.props.value.latestData}</td>
-                <td className="hide-on-med-and-down">{this.props.value.latestSequence}</td>
+                <td>{this.props.value.data}</td>
+                <td className="hide-on-med-and-down">{this.props.value.sequence}</td>
                 <td className="hide-on-small-only">
                     {
                         this.props
@@ -13,6 +13,9 @@
                             .map((tag, tagIndex) =>
                                 <span key={tagIndex} className="chip">{tag}</span>)
                     }
+                </td>
+                <td classname="config-value-actions">
+                
                 </td>
             </tr>
         );

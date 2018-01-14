@@ -99,7 +99,6 @@ class NewValueForm extends React.Component {
         submitEvent.preventDefault();
 
         this.props.saveValue(
-            this.props.key,
             this.state.version,
             this.state.envTags,
             this.state.value
@@ -141,10 +140,17 @@ class NewValueForm extends React.Component {
                     onClose={this._closeForm} />
 
                 <article className="row new-value-form" style={{ display: 'none' }} ref={(fc) => { this.formContainer = fc; }}>
-                    <form className="col s12" onSubmit={this._saveKey}>
+                    <form className="col s12" onSubmit={this._saveValue}>
                         <div className="row">
                             <div className="input-field col s12 m3">
-                                <input name="version" id="version" type="text" className="validate" onChange={this._handleInputChange}/>
+                                <input name="version"
+                                        id="version"
+                                        type="text"
+                                        className="validate tooltipped"
+                                        data-delay="50"
+                                        data-tooltip="Semantic version"
+                                        data-position="top"
+                                        onChange={this._handleInputChange}/>
                                 <label htmlFor="version">Version</label>
                             </div>
                             <div className="input-field col s12 m6" id="env-tags-chips">
@@ -157,7 +163,6 @@ class NewValueForm extends React.Component {
                             <div className="input-field col s12 m3">
                                 <button className="btn waves-effect waves-light light-blue tooltipped"
                                         name="action"
-                                        data-position="top"
                                         data-delay="50"
                                         data-tooltip="Save value"
                                         data-position="right">

@@ -17,9 +17,10 @@ class ConfigurationKey extends React.Component {
                     <thead>
                         <tr className="">
                             <th>Version</th>
-                            <th>Latest value</th>
-                            <th className="hide-on-med-and-down">Latest sequence</th>
+                            <th>Value</th>
+                            <th className="hide-on-med-and-down">Sequence</th>
                             <th className="hide-on-small-only">Environment tags</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
