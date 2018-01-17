@@ -1,1 +1,2 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/oi4pfp9ygabas4e1?svg=true)](https://ci.appveyor.com/project/carlos-vicente/configuration-store)
+[![license](http://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/svenstaro/genact/blob/master/LICENSE)
