@@ -6,19 +6,24 @@ class ConfigurationKeyPage extends React.Component {
         super(props);
 
         this.state = {
-            detail: props.detail
+            detail: props.detail,
+            editModeOn: false,
+            editingValue: null
         };
 
         this._saveValue = this._saveValue.bind(this);
         this._getUpdatedConfigValues = this._getUpdatedConfigValues.bind(this);
+        this._enterEditMode = this._enterEditMode.bind(this);
+        this._leaveEditMode = this._leaveEditMode.bind(this);
     }
 
-    _saveValue(version, envTags, value) {
-        var url = '/api/keys/' + this.state.detail.key + '/version/' + version + '/values';
+    _saveValue(valueToSave) {
+    //_saveValue(version, envTags, value) {
+        var url = '/api/keys/' + this.state.detail.key + '/version/' + valueToSave.version + '/values';
 
         var body = JSON.stringify({
-            tags: envTags,
-            value: value
+            tags: valueToSave.envTags,
+            value: valueToSave.data
         });
 
         var fetchOptions = {
@@ -61,11 +66,25 @@ class ConfigurationKeyPage extends React.Component {
     //         });
     // }
 
+    _enterEditMode(valueToEdit){
+        this.setState({
+            editModeOn: true,
+            editingValue: valueToEdit
+        });
+    }
+
+    _leaveEditMode(valueToEdit){
+        this.setState({
+            editModeOn: false,
+            editingValue: null
+        });
+    }
+
     render() {
         return (
             <div className="key-detail">
-                <NewValueForm key={this.state.detail.key} valueType={this.state.detail.type} saveValue={this._saveValue} />
-                <ConfigurationKey detail={this.state.detail} />
+                <NewValueForm valueType={this.state.detail.type} saveValue={this._saveValue} />
+                <ConfigurationKey detail={this.state.detail} enterEditMode={this._enterEditMode} />
             </div>
         );
     }

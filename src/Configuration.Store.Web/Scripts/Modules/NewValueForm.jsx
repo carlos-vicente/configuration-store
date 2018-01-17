@@ -98,11 +98,13 @@ class NewValueForm extends React.Component {
     _saveValue(submitEvent){
         submitEvent.preventDefault();
 
-        this.props.saveValue(
-            this.state.version,
-            this.state.envTags,
-            this.state.value
-        );
+        var valueToSave = {
+            version: this.state.version,
+            envTags: this.state.envTags,
+            data: this.state.value
+        }
+
+        this.props.saveValue(valueToSave);
     }
 
     _handleInputChange(event) {

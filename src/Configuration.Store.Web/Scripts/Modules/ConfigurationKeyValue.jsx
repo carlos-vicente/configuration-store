@@ -14,8 +14,13 @@
                                 <span key={tagIndex} className="chip">{tag}</span>)
                     }
                 </td>
-                <td classname="config-value-actions">
-                
+                <td className="config-value-actions">
+                    <a className="btn-floating light-blue waves-effect waves-light modal-trigger">
+                        <i className="material-icons">edit</i>
+                    </a>
+                    <a className="btn-floating red waves-effect waves-light modal-trigger">
+                        <i className="material-icons">delete</i>
+                    </a>
                 </td>
             </tr>
         );
