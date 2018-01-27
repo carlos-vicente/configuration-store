@@ -1,5 +1,4 @@
 ﻿import ToggleResponsiveButton from '../Modules/ToggleResponsiveButton'
-// import 'lib/ace/ace'
 import JSONEditor from 'lib/jsoneditor/jsoneditor'
 
 class NewValueForm extends React.Component {
