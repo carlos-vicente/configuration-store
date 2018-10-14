@@ -33,23 +33,28 @@ namespace Configuration.Store.Tests
             var version = _fixture.Create<Version>();
             var tag = _fixture.Create<string>();
 
+            var storedConfigValue = _fixture
+                .Build<StoredConfigValues>()
+                .With(scv => scv.EnvironmentTags, new List<string> { tag })
+                .Create();
+
             var storedConfig = _fixture
                 .Build<StoredConfig>()
-                .With(sc => sc.Type, _fixture.Create<ConfigurationDataType>().ToString())
+                .With(sc => sc.Type, _fixture.Create<ValueType>().ToString())
                 .With(sc => sc.Values, new List<StoredConfigValues>
                 {
-                    _fixture
-                        .Build<StoredConfigValues>()
-                        .With(scv => scv.EnvironmentTags, new List<string> {tag})
-                        .Create()
+                    storedConfigValue
                 })
                 .Create();
 
-            var expectedConfig = new Configuration
+            var expectedConfig = new ConfigurationValue
             {
-                Type = (ConfigurationDataType) Enum.Parse(typeof(ConfigurationDataType), storedConfig.Type),
-                Sequence = storedConfig.Values.Single().Sequence,
-                Data = storedConfig.Values.Single().Data
+                Id = storedConfigValue.Id,
+                Version = version,
+                Sequence = storedConfigValue.Sequence,
+                Data = storedConfigValue.Data,
+                EnvironmentTags = storedConfigValue.EnvironmentTags,
+                CreatedAt = storedConfigValue.CreatedAt
             };
 
             A.CallTo(() => _repository.GetConfiguration(key, version))
@@ -57,7 +62,7 @@ namespace Configuration.Store.Tests
 
             // act
             var config = await _sut
-                .GetConfiguration(key, version, tag, null)
+                .GetConfigurationValue(key, version, tag)
                 .ConfigureAwait(false);
 
             // assert
@@ -74,7 +79,7 @@ namespace Configuration.Store.Tests
 
             var storedConfig = _fixture
                 .Build<StoredConfig>()
-                .With(sc => sc.Type, _fixture.Create<ConfigurationDataType>().ToString())
+                .With(sc => sc.Type, _fixture.Create<ValueType>().ToString())
                 .With(sc => sc.Values, new List<StoredConfigValues>
                 {
                     _fixture
@@ -89,7 +94,7 @@ namespace Configuration.Store.Tests
 
             // act
             var actual = await _sut
-                .GetConfiguration(key, version, someOtherTag, null)
+                .GetConfigurationValue(key, version, someOtherTag)
                 .ConfigureAwait(false);
 
             // assert

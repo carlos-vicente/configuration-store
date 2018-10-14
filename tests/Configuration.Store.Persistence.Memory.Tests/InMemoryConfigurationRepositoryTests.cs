@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Common.Tests;
 using FluentAssertions;
 using Ploeh.AutoFixture;
+using FluentAssertions.Equivalency;
 
 namespace Configuration.Store.Persistence.Memory.Tests
 {
@@ -52,7 +53,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                             key,
                             new Tuple
                                 <string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
-                                    _fixture.Create<ConfigurationDataType>().ToString(),
+                                    _fixture.Create<ValueType>().ToString(),
                                     new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
                                     {
                                         {
@@ -84,7 +85,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>();
+            var dataType = _fixture.Create<ValueType>();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -134,7 +135,10 @@ namespace Configuration.Store.Persistence.Memory.Tests
                 .ConfigureAwait(false);
 
             // assert
-            config.ShouldBeEquivalentTo(expectedConfig);
+            config.ShouldBeEquivalentTo(
+                expectedConfig,
+                options => options
+                    .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public async Task AddNewConfiguration_ShouldAddTheConfiguration_WhenItDoesNotExist()
@@ -142,10 +146,11 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             _sut = new InMemoryConfigurationRepository();
 
+            var createdAt = DateTime.UtcNow;
             var expected = new StoredConfig
             {
                 Type = dataType,
@@ -154,14 +159,17 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // act
             await _sut
-                .AddNewConfiguration(key, version, dataType)
+                .AddNewConfiguration(key, dataType, createdAt)
                 .ConfigureAwait(false);
 
             // assert
             (await _sut
-                .GetConfiguration(key, version)
+                .GetConfiguration(key)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void AddNewConfiguration_ShouldThrowException_WhenItAlreadyExists()
@@ -169,7 +177,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>();
+            var dataType = _fixture.Create<ValueType>();
 
             _sut =
                 new InMemoryConfigurationRepository(new Dictionary
@@ -188,7 +196,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
                     });
 
             Func<Task> exThrower = async () => await _sut
-                .AddNewConfiguration(key, version, dataType.ToString())
+                .AddNewConfiguration(key, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -201,7 +209,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -222,6 +230,8 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         }
                     });
 
+            var createdAt = DateTime.UtcNow;
+
             var expected = new StoredConfig
             {
                 Type = dataType,
@@ -232,21 +242,25 @@ namespace Configuration.Store.Persistence.Memory.Tests
                         Id = valueId,
                         Sequence = 1,
                         EnvironmentTags = tags,
-                        Data = data
+                        Data = data,
+                        CreatedAt = createdAt
                     }
                 }
             };
 
             // act
             await _sut
-                .AddNewValueToConfiguration(key, version, valueId, tags, data)
+                .AddNewValueToConfiguration(key, version, valueId, tags, data, createdAt)
                 .ConfigureAwait(false);
 
             // assert
             (await _sut
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void AddNewValueToConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
@@ -254,7 +268,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -278,7 +292,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
 
             Func<Task> exceptionThrower = async () => await _sut
-                .AddNewValueToConfiguration(unknownKey, version, valueId, tags, data)
+                .AddNewValueToConfiguration(unknownKey, version, valueId, tags, data, DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -291,7 +305,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -348,7 +362,10 @@ namespace Configuration.Store.Persistence.Memory.Tests
             (await _sut
                 .GetConfiguration(key, version)
                 .ConfigureAwait(false))
-                .ShouldBeEquivalentTo(expected);
+                .ShouldBeEquivalentTo(
+                    expected,
+                    options => options
+                        .Excluding((ISubjectInfo si) => si.SelectedMemberInfo.Name == "CreatedAt"));
         }
 
         public void UpdateValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
@@ -356,7 +373,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -400,7 +417,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -444,7 +461,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var tags = _fixture.CreateMany<string>().ToList();
@@ -487,7 +504,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var store = new Dictionary
                 <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
@@ -510,7 +527,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // act
             await _sut
-                .DeleteConfiguration(key, version)
+                .DeleteConfigurationVersion(key, version)
                 .ConfigureAwait(false);
 
             // assert
@@ -526,7 +543,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var wrongKey = _fixture.Create<string>();
 
@@ -550,7 +567,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             _sut = new InMemoryConfigurationRepository(store);
 
             Func<Task> exceptionThrower = async () => await _sut
-                .DeleteConfiguration(wrongKey, version)
+                .DeleteConfigurationVersion(wrongKey, version)
                 .ConfigureAwait(false);
 
             // act/assert
@@ -562,7 +579,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
 
             var wrongVersion = _fixture.Create<Version>();
 
@@ -586,19 +603,74 @@ namespace Configuration.Store.Persistence.Memory.Tests
             _sut = new InMemoryConfigurationRepository(store);
 
             Func<Task> exceptionThrower = async () => await _sut
-                .DeleteConfiguration(key, wrongVersion)
+                .DeleteConfigurationVersion(key, wrongVersion)
                 .ConfigureAwait(false);
 
             // act/assert
             exceptionThrower.ShouldThrow<ArgumentException>();
         }
 
-        public async Task DeleteValueOnConfiguration_ShouldDeleteValue_WhenConfigurationAndValueExist()
+        public async Task DeleteValueOnConfiguration_ShouldDeleteValue_WhenConfigurationAndValueExistButIsNotTheLastOne()
         {
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
+            var valueId = _fixture.Create<Guid>();
+            var data = _fixture.Create<string>();
+            var sequence = _fixture.Create<int>();
+            var tags = _fixture.CreateMany<string>().ToList();
+
+            var store = new Dictionary
+                <string, Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>>
+                {
+                    {
+                        key,
+                        new Tuple<string, IDictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>>(
+                            dataType,
+                            new Dictionary<Version, IList<Tuple<Guid, int, string, IEnumerable<string>>>>
+                            {
+                                {
+                                    version,
+                                    new List<Tuple<Guid, int, string, IEnumerable<string>>>
+                                    {
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            valueId,
+                                            sequence,
+                                            data,
+                                            tags),
+                                        new Tuple<Guid, int, string, IEnumerable<string>>(
+                                            _fixture.Create<Guid>(),
+                                            _fixture.Create<int>(),
+                                            _fixture.Create<string>(),
+                                            _fixture.CreateMany<string>().ToArray())
+                                    }
+                                }
+                            })
+                    }
+                };
+
+            _sut = new InMemoryConfigurationRepository(store);
+
+            // act
+            await _sut
+                .DeleteValueOnConfiguration(key, version, valueId)
+                .ConfigureAwait(false);
+
+            // assert
+            store[key]
+                .Item2[version]
+                .FirstOrDefault(t => t.Item1 == valueId)
+                .Should()
+                .BeNull();
+        }
+
+        public async Task DeleteValueOnConfiguration_ShouldDeleteValueAndVersion_WhenConfigurationAndValueExistAndIsTheLastOne()
+        {
+            // arrange
+            var key = _fixture.Create<string>();
+            var version = _fixture.Create<Version>();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -637,10 +709,9 @@ namespace Configuration.Store.Persistence.Memory.Tests
 
             // assert
             store[key]
-                .Item2[version]
-                .FirstOrDefault(t => t.Item1 == valueId)
+                .Item2
                 .Should()
-                .BeNull();
+                .NotContainKey(version);
         }
 
         public void DeleteValueOnConfiguration_ShouldThrowException_WhenConfigurationDoesNotExist()
@@ -648,7 +719,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -695,7 +766,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();
@@ -742,7 +813,7 @@ namespace Configuration.Store.Persistence.Memory.Tests
             // arrange
             var key = _fixture.Create<string>();
             var version = _fixture.Create<Version>();
-            var dataType = _fixture.Create<ConfigurationDataType>().ToString();
+            var dataType = _fixture.Create<ValueType>().ToString();
             var valueId = _fixture.Create<Guid>();
             var data = _fixture.Create<string>();
             var sequence = _fixture.Create<int>();

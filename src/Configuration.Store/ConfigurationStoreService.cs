@@ -16,11 +16,51 @@ namespace Configuration.Store
             _repository = repository;
         }
 
-        public async Task<Configuration> GetConfiguration(
+        public async Task<IEnumerable<ConfigurationKey>> GetConfigurationKeys()
+        {
+            return (await _repository
+                .GetConfigurations()
+                .ConfigureAwait(false))
+                .Select(storedKey => new ConfigurationKey
+                {
+                    Key = storedKey.Key,
+                    Type = (ValueType)Enum.Parse(typeof(ValueType), storedKey.Type),
+                    CreatedAt = storedKey.CreatedAt
+                })
+                .OrderBy(k => k.Key)
+                .ToList();
+        }
+
+        public async Task<ConfigurationKey> GetConfigurationKey(string key)
+        {
+            var storedConfig = await _repository
+                .GetConfiguration(key)
+                .ConfigureAwait(false);
+
+            var configKey = new ConfigurationKey
+            {
+                Key = key,
+                Type = (ValueType)Enum.Parse(typeof(ValueType), storedConfig.Type),
+                Values = storedConfig
+                    .Values
+                    .Select(storedValue => new ConfigurationValue
+                    {
+                        Id = storedValue.Id,
+                        Sequence = storedValue.Sequence,
+                        CreatedAt = storedValue.CreatedAt,
+                        Version = storedValue.Version,
+                        Data = storedValue.Data,
+                        EnvironmentTags = storedValue.EnvironmentTags
+                    })
+            };
+
+            return configKey;
+        }
+
+        public async Task<ConfigurationValue> GetConfigurationValue(
             string key,
             Version version,
-            string environmentTag,
-            int? currentSequence)
+            string environmentTag)
         {
             //TODO: params check
             //TODO: check environment
@@ -32,7 +72,6 @@ namespace Configuration.Store
             if (config == null)
                 return null;
 
-
             var storedValue = config
                 .Values
                 .SingleOrDefault(val => val.EnvironmentTags.Contains(environmentTag));
@@ -40,45 +79,53 @@ namespace Configuration.Store
             if (storedValue == null)
                 return null;
 
-            if (currentSequence.HasValue)
+            return new ConfigurationValue
             {
-                // check if there has been any change since last time it was obtained
-                if (storedValue.Sequence == currentSequence.Value)
-                    return new Configuration
-                    {
-                        Sequence = storedValue.Sequence,
-                        Data = null
-                    };
-            }
-
-            return new Configuration
-            {
+                Id = storedValue.Id,
+                Version = version,
                 Sequence = storedValue.Sequence,
                 Data = storedValue.Data,
-                Type = (ConfigurationDataType)Enum.Parse(typeof(ConfigurationDataType), config.Type)
+                EnvironmentTags = storedValue.EnvironmentTags,
+                CreatedAt = storedValue.CreatedAt
             };
         }
 
         public async Task AddConfiguration(
             string key,
-            Version version,
-            ConfigurationDataType dataType)
+            ValueType dataType)
         {
-            // todo: params check
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Provide a valid key name");
+            if (!Enum.IsDefined(typeof(ValueType), dataType))
+                throw new ArgumentException("Provide a valid key value type");
 
             var currentConfig = await _repository
-                .GetConfiguration(key, version)
+                .GetConfiguration(key)
                 .ConfigureAwait(false);
 
             if(currentConfig != null)
-                throw new ArgumentException($"Can not create configuration with key {key} and version {version}, as it already exists!");
+                throw new ArgumentException($"Can not create configuration with key {key}, as it already exists!");
 
             await _repository
-                .AddNewConfiguration(key, version, dataType.ToString())
+                .AddNewConfiguration(key, dataType.ToString(), DateTime.UtcNow)
                 .ConfigureAwait(false);
         }
 
-        public async Task RemoveConfiguration(
+        public async Task RemoveConfiguration(string key)
+        {
+            var currentConfig = await _repository
+              .GetConfiguration(key)
+              .ConfigureAwait(false);
+
+            if (currentConfig == null)
+                throw new ArgumentException($"Can not delete value on configuration with key {key}, as it does not exists!");
+
+            await _repository
+                .DeleteConfiguration(key)
+                .ConfigureAwait(false);
+        }
+
+        public async Task RemoveConfigurationVersion(
             string key,
             Version version)
         {
@@ -90,7 +137,7 @@ namespace Configuration.Store
                 throw new ArgumentException($"Can not delete value on configuration with key {key} and version {version}, as it does not exists!");
 
             await _repository
-                .DeleteConfiguration(key, version)
+                .DeleteConfigurationVersion(key, version)
                 .ConfigureAwait(false);
         }
 
@@ -100,19 +147,30 @@ namespace Configuration.Store
             IEnumerable<string> tags,
             string value)
         {
+            if (string.IsNullOrWhiteSpace(key))
+                throw new ArgumentException("Provide a valid key name");
+            if (version == default(Version))
+                throw new ArgumentException("Provide a valid version");
+            if (tags == null || !tags.Any())
+                throw new ArgumentException("Provide a valid collection of environment tags");
+
+            // when value type String: value can be anything, even empty string, it's up to the client app to deal with it
+            // TODO when value type JSON: make sure it is a valid JSON
+
             var currentConfig = await _repository
-               .GetConfiguration(key, version)
+               .GetConfiguration(key)
                .ConfigureAwait(false);
 
             if (currentConfig == null)
-                throw new ArgumentException($"Can not add value to configuration with key {key} and version {version}, as it does not exists!");
+                throw new ArgumentException($"Can not add value to configuration with key {key}, as it does not exists!");
 
             // check there are no tag overlaps between diferent values from same key and version
             var storedValue = currentConfig
                 .Values
-                .FirstOrDefault(val => val.EnvironmentTags.Any(tags.Contains));
+                .FirstOrDefault(val => val.Version == version && val.EnvironmentTags.Any(tags.Contains));
+            
             if (storedValue != null)
-                throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)}");
+                throw new ArgumentException($"There is already a configuration value for environment tags {string.Join(";", storedValue.EnvironmentTags)} which match at least one of {string.Join(";", tags)} for version {version}");
 
             var valueId = NewId.NextGuid();
 
@@ -123,7 +181,8 @@ namespace Configuration.Store
                     version,
                     valueId,
                     tags,
-                    value)
+                    value,
+                    DateTime.UtcNow)
                 .ConfigureAwait(false);
 
             return valueId;

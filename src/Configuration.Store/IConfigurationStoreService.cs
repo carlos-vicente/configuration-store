@@ -14,6 +14,20 @@ namespace Configuration.Store
     public interface IConfigurationStoreService
     {
         /// <summary>
+        /// Gets all configuration keys available, including their type and latest version
+        /// </summary>
+        /// <returns>All available configuration keys</returns>
+        Task<IEnumerable<ConfigurationKey>> GetConfigurationKeys();
+
+        /// <summary>
+        /// Gets all the configuration values for a given key;
+        /// </summary>
+        /// <param name="key">The configuration key being requested</param>
+        /// <returns>NULL when no configuration value has been found</returns>
+        /// <returns>All Configuration values available for the key</returns>
+        Task<ConfigurationKey> GetConfigurationKey(string key);
+
+        /// <summary>
         /// Gets a configuration value for all speficied filters;
         /// </summary>
         /// <param name="key">The configuration key being requested</param>
@@ -23,20 +37,38 @@ namespace Configuration.Store
         /// <returns>NULL when no configuration value has been found</returns>
         /// <returns>Complete Configuration when value was found and either no currentSequence has been passed or a higher sequence than currentSequence is available</returns>
         /// <returns>Small Configuration (just Sequence) when currentSequence was passed and no update happened on this version of the key</returns>
-        Task<Configuration> GetConfiguration(
+        Task<ConfigurationValue> GetConfigurationValue(
             string key,
             Version version,
-            string environmentTag,
-            int? currentSequence);
+            string environmentTag);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <param name="dataType"></param>
+        /// <returns></returns>
         Task AddConfiguration(
             string key,
-            Version version,
-            ConfigurationDataType dataType);
+            ValueType dataType);
 
-        Task RemoveConfiguration(
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <returns></returns>
+        Task RemoveConfigurationVersion(
             string key,
             Version version);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        Task RemoveConfiguration(string key);
 
         /// <summary>
         /// Adds a value keyed by the collection of tags to the configuration
@@ -67,6 +99,13 @@ namespace Configuration.Store
             IEnumerable<string> tags,
             string value);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="version"></param>
+        /// <param name="valueId"></param>
+        /// <returns></returns>
         Task RemoveValueFromConfiguration(
             string key,
             Version version,

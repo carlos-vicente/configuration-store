@@ -187,3 +187,9 @@ Build/results.html
 tools/*
 
 !tools/packages.config
+
+**/materialize/*
+**/Scripts/app/**
+**/Styles/app/**
+**/swagger/*
+**/jsoneditor/**

@@ -1,5 +1,7 @@
-﻿using Microsoft.Owin.Extensions;
+﻿using AutoMapper;
+using Microsoft.Owin.Extensions;
 using Owin;
+using System.Reflection;
 
 namespace Configuration.Store.Web
 {
@@ -9,6 +11,8 @@ namespace Configuration.Store.Web
         {
             app.UseNancy();
             app.UseStageMarker(PipelineStage.MapHandler);
+
+            Mapper.Initialize(config => config.AddProfiles(Assembly.GetExecutingAssembly()));
         }
     }
 }

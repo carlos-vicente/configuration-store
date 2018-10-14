@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -21,6 +22,7 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -41,8 +43,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Autofac, Version=4.6.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Autofac.4.6.0\lib\net45\Autofac.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.2.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\AutoMapper.6.2.1\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="JetBrains.Annotations, Version=11.0.0.0, Culture=neutral, PublicKeyToken=1010a0d8d6380325, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\JetBrains.Annotations.11.0.0\lib\net20\JetBrains.Annotations.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -51,18 +59,39 @@
     <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Owin.Host.SystemWeb.3.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Nancy, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Nancy.1.4.3\lib\net40\Nancy.dll</HintPath>
+    <Reference Include="Nancy, Version=1.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.1.4.4\lib\net40\Nancy.dll</HintPath>
     </Reference>
     <Reference Include="Nancy.Bootstrappers.Autofac, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.Bootstrappers.Autofac.1.4.1\lib\net40\Nancy.Bootstrappers.Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="Nancy.Metadata.Modules, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Metadata.Modules.1.4.1\lib\net40\Nancy.Metadata.Modules.dll</HintPath>
+    </Reference>
     <Reference Include="Nancy.Owin, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Nancy.Owin.1.4.1\lib\net40\Nancy.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Serialization.JsonNet, Version=1.4.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Serialization.JsonNet.1.4.1\lib\net40\Nancy.Serialization.JsonNet.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.Swagger, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Swagger.2.1.1-alpha\lib\Net45\Nancy.Swagger.dll</HintPath>
+    </Reference>
+    <Reference Include="Nancy.ViewEngines.Razor, Version=1.4.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Nancy.Viewengines.Razor.1.4.3\lib\net40\Nancy.ViewEngines.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
     </Reference>
+    <Reference Include="Swagger.ObjectModel, Version=2.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Swagger.ObjectModel.2.1.1-alpha\lib\Net45\Swagger.ObjectModel.dll</HintPath>
+    </Reference>
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -72,6 +101,9 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Razor, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.AspNet.Razor.2.0.30506.0\lib\net40\System.Web.Razor.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
@@ -81,7 +113,29 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="gulp\tasks\dependencies-task.js" />
+    <Content Include="gulp\tasks\sass-task.js" />
+    <Content Include="Scripts\Modules\ConfigurationKey.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationKeyValue.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationList.jsx" />
+    <Content Include="Scripts\Modules\ConfigurationListItem.jsx" />
+    <Content Include="Scripts\Modules\DeleteModal.jsx" />
+    <Content Include="Scripts\Modules\NewKeyForm.jsx" />
+    <Content Include="Scripts\Modules\NewValueForm.jsx" />
+    <Content Include="Scripts\Modules\SearchForm.jsx" />
+    <Content Include="Scripts\Modules\Tests\ConfigurationListTests.js" />
+    <Content Include="gulpfile.js" />
+    <Content Include="gulp\tasks\build-task.js" />
+    <Content Include="gulp\tasks\default.js" />
     <Content Include="packages.config" />
+    <Content Include="package.json" />
+    <Content Include="Scripts\Modules\ToggleResponsiveButton.jsx" />
+    <Content Include="Scripts\Pages\ConfigurationKeyPage.jsx" />
+    <Content Include="Views\swagger-ui.cshtml" />
+    <Content Include="Views\ConfigurationKey.cshtml" />
+    <Content Include="Styles\Pages\ConfigurationKey.scss" />
+    <Content Include="Styles\Pages\ConfigurationList.scss" />
+    <Content Include="Scripts\Modules\UpdateValueForm.jsx" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -90,24 +144,41 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Scripts\Pages\ConfigurationListPage.jsx" />
+    <None Include="Views\ConfigurationList.cshtml" />
+    <None Include="Views\Shared\Master.cshtml" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bootstrapp\Bootstrapper.cs" />
     <Compile Include="Bootstrapp\Modules\ConfigStoreModule.cs" />
+    <Compile Include="Bootstrapp\Modules\JsonNetModule.cs" />
     <Compile Include="Bootstrapp\Modules\PersistenceModule.cs" />
     <Compile Include="Contracts\Requests\NewConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\NewValueToConfigurationRequest.cs" />
     <Compile Include="Contracts\Requests\UpdateValueOnConfigurationRequest.cs" />
+    <Compile Include="Contracts\Responses\BaseModel.cs" />
+    <Compile Include="Contracts\Responses\ConfigKeyDetailed.cs" />
+    <Compile Include="Contracts\Responses\ConfigKeyListItem.cs" />
+    <Compile Include="Contracts\Responses\Mapping\ConfigKeyListMappingProfile.cs" />
+    <Compile Include="Serialization\JsonSerializationOptions.cs" />
+    <Compile Include="Views\Models\ConfigurationKeyViewModel.cs" />
+    <Compile Include="Views\Models\ConfigurationListViewModel.cs" />
+    <Compile Include="Contracts\Responses\ConfigValueListItem.cs" />
+    <Compile Include="Contracts\Responses\Mapping\ConfigKeyDetailMappingProfile.cs" />
+    <Compile Include="Contracts\Responses\Nav.cs" />
+    <Compile Include="Views\Models\SwaggerViewModel.cs" />
     <Compile Include="Modules\Api\ConfigurationNancyModule.cs" />
+    <Compile Include="Modules\Api\Metadata\ConfigurationNancyMetadataModule.cs" />
     <Compile Include="Modules\RouteRegistry.cs" />
+    <Compile Include="Modules\Ui\ConfigurationAppNancyModule.cs" />
+    <Compile Include="Modules\Ui\SwaggerNancyModule.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\StringExtensions.cs" />
+    <Compile Include="ViewHelpers\HtmlJsonHelper.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Modules\Ui\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\Configuration.Store.Persistence.Memory\Configuration.Store.Persistence.Memory.csproj">
       <Project>{05B6CF7E-A4E7-48C2-B550-0E102E6667E0}</Project>
@@ -147,6 +218,13 @@
       </FlavorProperties>
     </VisualStudio>
   </ProjectExtensions>
+  <Import Project="..\..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets" Condition="Exists('..\..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\..\packages\Nancy.Viewengines.Razor.1.4.3\build\Nancy.ViewEngines.Razor.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
