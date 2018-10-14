@@ -1,6 +1,6 @@
-﻿import ConfigurationList from '../Modules/ConfigurationList'
-import NewKeyForm from '../Modules/NewKeyForm'
-import SearchForm from '../Modules/SearchForm'
+﻿import ConfigurationList from '../Modules/Keys/ConfigurationList'
+import NewKeyForm from '../Modules/Keys/NewKeyForm'
+import SearchForm from '../Modules/Keys/SearchForm'
 
 class ConfigurationListPage extends React.Component {
     constructor(props) {

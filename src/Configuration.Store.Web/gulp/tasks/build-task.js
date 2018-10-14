@@ -9,7 +9,7 @@ var babelOptions = {
 };
 
 gulp.task('buildApp', function () {
-    gulp.src('Scripts/Modules/*.jsx')
+    gulp.src('Scripts/Modules/**/*.jsx')
         .pipe(babel(babelOptions))
         .pipe(gulp.dest('Scripts/app/Modules/'));
 

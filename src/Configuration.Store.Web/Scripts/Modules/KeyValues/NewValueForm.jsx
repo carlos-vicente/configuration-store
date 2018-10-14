@@ -1,5 +1,6 @@
-﻿import ToggleResponsiveButton from '../Modules/ToggleResponsiveButton'
-import JSONEditor from 'lib/jsoneditor/jsoneditor'
+﻿import ToggleResponsiveButton from '../ToggleResponsiveButton'
+import JsonValueEditor from './JsonValueEditor'
+import TagContainer from './TagContainer'
 
 class NewValueForm extends React.Component {
     constructor(props){
@@ -18,58 +19,15 @@ class NewValueForm extends React.Component {
         this._closeForm = this._closeForm.bind(this);
         this._saveValue = this._saveValue.bind(this);
         this._handleInputChange = this._handleInputChange.bind(this);
+        this._jsonValueChanged = this._jsonValueChanged.bind(this);
+        this._addEnvironmentTag = this._addEnvironmentTag.bind(this);
+        this._removeEnvironmentTag = this._removeEnvironmentTag.bind(this);
     }
 
     componentDidMount() {
         jQuery(this.formContainer)
             .find('.tooltipped')
             .tooltip();
-
-        var envTagContainer = jQuery(this.formContainer).find('#env-tags-chips');
-
-        envTagContainer.material_chip({
-            placeholder: 'Environment tag',
-            secondaryPlaceholder: '+Tag',
-        });
-
-        envTagContainer.on('chip.add', (e, chip) => {
-            // you have the added chip here
-            console.log('Added chip ' + chip.tag);
-            console.log(this.state.envTags);
-            this.setState((previousState, props) => {
-                envTags: previousState.envTags.push(chip.tag)
-            });
-        });
-            
-        envTagContainer.on('chip.delete', (e, chip) => {
-            // you have the deleted chip here
-            console.log('Removed chip ' + chip.tag);
-            console.log(this.state.envTags);
-            this.setState((previousState, props) => {
-                envTags: previousState.envTags
-                    .splice(previousState.envTags.indexOf(chip.tag), 1)
-            });
-        });
-
-        if(this.props.valueType === 'JSON')
-        {
-            var editor;
-            var options = 
-            {
-                modes: ['code', 'view'],
-                mode: 'code',
-                onChange: () => {
-                    var json = JSON.stringify(editor.get());
-                    this.setState({
-                        value: json
-                    });
-                    console.log(json);
-                }
-            };
-
-            var container = document.getElementById('json-editor');
-            editor = new JSONEditor(container, options);
-        }
     }
 
     componentWillUnmount() {
@@ -116,6 +74,25 @@ class NewValueForm extends React.Component {
         });
     }
 
+    _jsonValueChanged(jsonValue){
+        this.setState({
+            value: jsonValue
+        });
+    }
+
+    _addEnvironmentTag(tag){
+        this.setState((previousState, props) => {
+            envTags: previousState.envTags.push(tag)
+        });
+    }
+
+    _removeEnvironmentTag(tag){
+        this.setState((previousState, props) => {
+            envTags: previousState.envTags
+                .splice(previousState.envTags.indexOf(tag), 1)
+        });
+    }
+
     render() {
         let valueSetter = null;
 
@@ -126,7 +103,7 @@ class NewValueForm extends React.Component {
             </div>;
         }else{ // it is JSON
             valueSetter = <div className="input-field col s12 m9">
-                <div id="json-editor"></div>
+                <JsonValueEditor elementId="new-json-editor" valueChanged={this._jsonValueChanged} />
             </div>;
         }
 
@@ -154,7 +131,13 @@ class NewValueForm extends React.Component {
                                         onChange={this._handleInputChange}/>
                                 <label htmlFor="version">Version</label>
                             </div>
-                            <div className="input-field col s12 m6" id="env-tags-chips">
+                            <div className="input-field col s12 m6">
+                                <TagContainer
+                                    elementId="new-eng-tags"
+                                    placeholder="Environment tag"
+                                    secondaryPlaceholder="+Tag"
+                                    addTag={this._addEnvironmentTag}
+                                    removeTag={this._removeEnvironmentTag} />
                             </div>
                         </div>
                         <div className="row">
