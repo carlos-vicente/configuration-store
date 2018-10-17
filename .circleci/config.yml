@@ -10,6 +10,10 @@ jobs:
     steps:
     - checkout
     - run:
+        name: Get dependencies
+        command: |
+          gopm get
+    - run:
         name: Test application
         command: |
           go test -v
