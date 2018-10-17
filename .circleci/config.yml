@@ -5,7 +5,7 @@ version: 2
 jobs:
   build:
     docker:
-    - image: golang:1.11.1-alpine
+    - image: golang:1.11.1-stretch
     working_directory: /go/src/github.com/carlos-vicente/configuration-store
     steps:
     - checkout
