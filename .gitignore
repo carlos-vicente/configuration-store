@@ -193,3 +193,4 @@ tools/*
 **/Styles/app/**
 **/swagger/*
 **/jsoneditor/**
+.idea/
