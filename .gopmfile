@@ -1,8 +1,12 @@
 [target]
 path = configuration-store
 
-
 [deps]
 github.com/labstack/echo = 
 github.com/swaggo/echo-swagger = 
+github.com/alecthomas/template = 
+github.com/swaggo/swag = 
+
+[res]
+docs = conf
 

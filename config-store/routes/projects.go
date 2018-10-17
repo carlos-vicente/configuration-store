@@ -1,7 +1,7 @@
 package routes
 
 import (
-	".."
+	"configuration-store/config-store"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -14,12 +14,11 @@ import (
 // @Failure 500 {object} echo.HTTPError
 // @Router /projects [get]
 func GetProjects(c echo.Context) error {
-	return c.JSON(http.StatusOK, [] config_store.Project{
+	return c.JSON(http.StatusOK, []config_store.Project{
 		{"project 1"},
 		{"project 2"},
 	})
 }
-
 
 // GetProject godoc
 // @Summary Get the identified project
