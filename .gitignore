@@ -194,3 +194,4 @@ tools/*
 **/swagger/*
 **/jsoneditor/**
 .idea/
+vendor/

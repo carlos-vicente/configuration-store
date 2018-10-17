@@ -12,11 +12,11 @@ jobs:
     - run:
         name: Install dependencies manager
         command: |
-          go get -u github.com/gpmgo/gopm
+          go get -u github.com/govend/govend
     - run:
         name: Get dependencies
         command: |
-          gopm get
+          govend -v
     - run:
         name: Test application
         command: |

@@ -1,7 +1,7 @@
 package routes
 
 import (
-	"configuration-store/config-store"
+	".."
 	"github.com/labstack/echo"
 	"net/http"
 )

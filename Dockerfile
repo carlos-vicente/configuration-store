@@ -5,15 +5,15 @@ WORKDIR /go/src/github.com/carlos-vicente/configuration-store
 ADD . /go/src/github.com/carlos-vicente/configuration-store
 
 RUN
-    go get -u github.com/gpmgo/gopm \
-    && gopm get \
-    && gopm build
+    go get -u github.com/govend/govend \
+    && govend -v \
+    && go build
 
 
 FROM alpine
 
-COPY --from=builder /go/src/github.com/carlos-vicente/configuration-store/.vendor/bin .
+COPY --from=builder /go/src/github.com/carlos-vicente/configuration-store/main .
 
 EXPOSE 8080
 
-CMD [ "./configuration-store" ]
+CMD [ "./main" ]
