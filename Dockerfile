@@ -6,7 +6,7 @@ ADD . /workspace/src/configuration-store
 
 ENV GOPATH="$GOPATH:/workspace"
 
-RUN
+RUN \
     go get -u github.com/golang/dep/cmd/dep \
     && dep ensure \
     && go build
