@@ -50,4 +50,4 @@ jobs:
           docker login --username=$HEROKU_LOGIN --password=$HEROKU_PASS $HEROKU_REGISTRY
           docker tag configuration-store $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
           docker push $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
-          heroku container:release web
+          heroku container:release web --app $HEROKU_APP_NAME
