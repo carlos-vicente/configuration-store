@@ -1,7 +1,7 @@
 package routes
 
 import (
-	".."
+	"configuration-store/api"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -14,7 +14,7 @@ import (
 // @Failure 500 {object} echo.HTTPError
 // @Router /projects [get]
 func GetProjects(c echo.Context) error {
-	return c.JSON(http.StatusOK, []config_store.Project{
+	return c.JSON(http.StatusOK, []api.Project{
 		{"project 1"},
 		{"project 2"},
 	})
@@ -29,7 +29,7 @@ func GetProjects(c echo.Context) error {
 // @Param id path string true "projects identifier" default(A)
 // @Router /projects/{id} [get]
 func GetProject(c echo.Context) error {
-	return c.JSON(http.StatusOK, config_store.Project{
+	return c.JSON(http.StatusOK, api.Project{
 		Name: c.Param("id"),
 	})
 }

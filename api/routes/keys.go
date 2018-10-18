@@ -1,7 +1,7 @@
 package routes
 
 import (
-	".."
+	"configuration-store/api"
 	"github.com/labstack/echo"
 	"net/http"
 )
@@ -15,7 +15,7 @@ import (
 // @Param id path string true "projects identifier" default(A)
 // @Router /projects/{id}/keys [get]
 func GetProjectKeys(c echo.Context) error {
-	return c.JSON(http.StatusOK, []config_store.Key{
+	return c.JSON(http.StatusOK, []api.Key{
 		{"key 1"},
 		{"key 2"},
 	})

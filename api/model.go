@@ -1,4 +1,4 @@
-package config_store
+package api
 
 type Project struct {
 	Name string `json:"name"`
