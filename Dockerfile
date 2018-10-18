@@ -7,8 +7,8 @@ ADD . /workspace/src/configuration-store
 ENV GOPATH="$GOPATH:/workspace"
 
 RUN
-    go get -u github.com/gpmgo/gopm \
-    && gopm get -v \
+    go get -u github.com/golang/dep/cmd/dep \
+    && dep ensure \
     && go build
 
 

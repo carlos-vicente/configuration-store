@@ -1,9 +1,0 @@
-[target]
-path = configuration-store
-
-[deps]
-github.com/alecthomas/template =
-github.com/labstack/echo =
-github.com/swaggo/echo-swagger =
-github.com/swaggo/swag =
-
