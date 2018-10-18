@@ -10,13 +10,17 @@ jobs:
     steps:
     - checkout
     - run:
+        name: Setup Environment Variables
+        command: |
+          echo 'export GOPATH="$GOPATH:/workspace"' >> $BASH_ENV
+    - run:
         name: Install dependencies manager
         command: |
-          go get -u github.com/govend/govend
+          go get -u github.com/gpmgo/gopm
     - run:
         name: Get dependencies
         command: |
-          govend -v
+          gopm get -v
     - run:
         name: Test application
         command: |
