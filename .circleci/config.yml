@@ -22,6 +22,27 @@ jobs:
         command: |
           gopm get -v
     - run:
+        name: ls github
+        command: |
+          ls /go/src/github.com -la
+
+    - run:
+        name: ls github.com/alecthomas
+        command: |
+          ls /go/src/github.com/alecthomas -la
+
+
+    - run:
+        name: ls github.com/alecthomas
+        command: |
+          ls /go/src/github.com/labstack -la
+
+    - run:
+        name: ls work
+        command: |
+          ls /workspace/src -la
+
+    - run:
         name: Test application
         command: |
           go test -v
