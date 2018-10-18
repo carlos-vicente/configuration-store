@@ -46,6 +46,8 @@ jobs:
     - run:
         name: Deploy to heroku
         command: |
+          curl https://cli-assets.heroku.com/install.sh | sh
           docker login --username=$HEROKU_LOGIN --password=$HEROKU_PASS $HEROKU_REGISTRY
           docker tag configuration-store $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
           docker push $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
+          heroku container:release web
