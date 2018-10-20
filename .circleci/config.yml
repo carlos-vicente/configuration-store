@@ -26,8 +26,10 @@ jobs:
         name: Test application
         command: |
           go test -v
-  deployment:
-    development:
-      branch: $CIRCLE_BRANCH
-      heroku:
-        appname: $HEROKU_APP_NAME
+  deploy:
+    steps:
+    - checkout
+    - run:
+        name: Deploy $CIRCLE_BRANCH to Heroku
+        command: |
+          git push https://heroku:$HEROKU_API_KEY@git.heroku.com/$HEROKU_APP_NAME.git $CIRCLE_BRANCH:master
