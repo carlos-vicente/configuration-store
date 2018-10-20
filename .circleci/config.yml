@@ -26,28 +26,8 @@ jobs:
         name: Test application
         command: |
           go test -v
-
-    - setup_remote_docker
-
-    - run:
-        name: Install Docker client
-        command: |
-          set -x
-          VER="18.06.1-ce"
-          curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-          tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-          mv /tmp/docker/* /usr/bin
-
-    - run:
-        name: Build docker image
-        command: |
-          docker build -t configuration-store .
-
-    - run:
-        name: Deploy to heroku
-        command: |
-          curl https://cli-assets.heroku.com/install.sh | sh
-          docker login --username=$HEROKU_LOGIN --password=$HEROKU_PASS $HEROKU_REGISTRY
-          docker tag configuration-store $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
-          docker push $HEROKU_REGISTRY/$HEROKU_APP_NAME/web
-          heroku container:release web --app $HEROKU_APP_NAME
+  deployment:
+    development:
+      branch: $CIRCLE_BRANCH
+      heroku:
+        appname: $HEROKU_APP_NAME
