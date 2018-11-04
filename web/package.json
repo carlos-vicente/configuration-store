@@ -1,0 +1,40 @@
+{
+  "name": "configuration-store",
+  "version": "0.1.0",
+  "description": "A configuration store for all your other projects",
+  "bugs": {
+    "email": "carlosvicente200@gmail.com"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "chai": "^4.1.2",
+    "enzyme": "^3.1.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^7.0.0",
+    "mocha": "^4.0.1",
+    "require-dir": "^0.3.2",
+    "yarn": "^1.3.2"
+  },
+  "author": "Carlos Vicente",
+  "license": "MIT",
+  "repository": "https://github.com/carlos-vicente/configuration-store",
+  "main": "index.js",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "es6-promise": "^4.1.1",
+    "eventing-bus": "^1.3.3",
+    "gulp-sass": "^3.1.0",
+    "jsoneditor": "^5.13.1",
+    "materialize-css": "^0.100.2",
+    "moment": "^2.19.1",
+    "react": "^16.1.0",
+    "react-dom": "^16.1.0",
+    "requirejs": "^2.3.5",
+    "swagger-ui-dist": "^3.4.4",
+    "swagger-ui-themes": "^3.0.0",
+    "whatwg-fetch": "^2.0.3"
+  }
+}

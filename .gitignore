@@ -195,3 +195,4 @@ tools/*
 **/jsoneditor/**
 .idea/
 vendor/
+web/dist/

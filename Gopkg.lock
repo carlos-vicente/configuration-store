@@ -37,6 +37,14 @@
   version = "v3.2.0"
 
 [[projects]]
+  branch = "master"
+  digest = "1:95ff191ec714cb3bfd7a136b04b0f3148f4aaf7accdad9d3b69f27f5eb136548"
+  name = "github.com/foolin/echo-template"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "23f7eb2c27826e6a01dd5c92883f02819f338fee"
+
+[[projects]]
   digest = "1:953a2628e4c5c72856b53f5470ed5e071c55eccf943d798d42908102af2a610f"
   name = "github.com/go-openapi/jsonpointer"
   packages = ["."]
@@ -229,6 +237,7 @@
   analyzer-version = 1
   input-imports = [
     "github.com/alecthomas/template",
+    "github.com/foolin/echo-template",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
     "github.com/swaggo/echo-swagger",
