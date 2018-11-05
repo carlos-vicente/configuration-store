@@ -1,4 +1,4 @@
-FROM golang:1.11.1-stretch as appBuilder
+FROM golang:1.11.2-alpine3.8 as appBuilder
 
 WORKDIR /workspace/src/configuration-store
 
@@ -10,6 +10,7 @@ RUN \
     go get -u github.com/golang/dep/cmd/dep \
     && dep ensure -vendor-only \
     && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store .
+    && go test
 
 
 
