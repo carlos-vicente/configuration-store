@@ -1,3 +1,4 @@
+# build go app
 FROM golang:1.11.2-stretch as appBuilder
 
 WORKDIR /workspace/src/configuration-store
@@ -9,10 +10,11 @@ ENV GOPATH="$GOPATH:/workspace"
 RUN \
     go get -u github.com/golang/dep/cmd/dep \
     && dep ensure -vendor-only \
-    && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store .
+    && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store . \
+    && go test
 
 
-
+# build react app
 FROM node:8.12.0-alpine as webBuilder
 
 ADD ./web /web
@@ -24,7 +26,7 @@ RUN npm install \
     && ./node_modules/.bin/gulp
 
 
-
+# bundle app
 FROM alpine
 
 COPY --from=appBuilder /workspace/src/configuration-store/output/config-store /app/config-store

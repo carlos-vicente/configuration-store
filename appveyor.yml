@@ -19,4 +19,6 @@ test: off
 deploy_script:
 - ps: >-
     "$env:DOCKER_PASS" | docker login --username "$env:DOCKER_USER" --password-stdin
+
+
     docker push $env:DOCKER_USER/configuration-store:latest
