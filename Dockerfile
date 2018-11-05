@@ -1,4 +1,4 @@
-FROM golang:1.11.2-alpine3.8 as appBuilder
+FROM golang:1.11.2-stretch as appBuilder
 
 WORKDIR /workspace/src/configuration-store
 
