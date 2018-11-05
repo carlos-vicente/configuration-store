@@ -30,6 +30,7 @@ RUN npm install \
 FROM alpine
 
 COPY --from=appBuilder /workspace/src/configuration-store/output/config-store /app/config-store
+COPY --from=webBuilder /web/views /app/web/views
 COPY --from=webBuilder /web/dist /app/web/dist
 
 EXPOSE 8888
