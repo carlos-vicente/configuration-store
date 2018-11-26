@@ -11,6 +11,9 @@ pull_requests:
 
 image: Ubuntu1804
 
+services:
+- docker
+
 build_script:
 - ps: docker build -t carlosvicente/configuration-store .
 
