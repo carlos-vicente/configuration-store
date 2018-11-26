@@ -11,7 +11,7 @@ RUN \
     go get -u github.com/golang/dep/cmd/dep \
     && dep ensure -vendor-only \
     && go test \
-    && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store .
+    && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix -o /workspace/src/configuration-store/output/config-store .
 
 
 # build react app

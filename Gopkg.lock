@@ -2,6 +2,14 @@
 
 
 [[projects]]
+  digest = "1:b62a3c5b37db602bf1158e921da1a762315a4c37855fd418a14498aa87a342d5"
+  name = "cloud.google.com/go"
+  packages = ["civil"]
+  pruneopts = "UT"
+  revision = "74b12019e2aa53ec27882158f59192d7cd6d1998"
+  version = "v0.33.1"
+
+[[projects]]
   digest = "1:d1665c44bd5db19aaee18d1b6233c99b0b9a986e8bccb24ef54747547a48027f"
   name = "github.com/PuerkitoBio/purell"
   packages = ["."]
@@ -27,6 +35,17 @@
   ]
   pruneopts = "UT"
   revision = "a0175ee3bccc567396460bf5acd36800cb10c49c"
+
+[[projects]]
+  branch = "master"
+  digest = "1:0fd9da444782c2defb1352dc098f55b8b42c538787e29e45677a1dc40ff0ab11"
+  name = "github.com/denisenkom/go-mssqldb"
+  packages = [
+    ".",
+    "internal/cp",
+  ]
+  pruneopts = "UT"
+  revision = "4e0d7dc8888fbb59764060e99b7b68e77a6f9698"
 
 [[projects]]
   digest = "1:76dc72490af7174349349838f2fe118996381b31ea83243812a97e5a0fd5ed55"
@@ -75,6 +94,43 @@
   pruneopts = "UT"
   revision = "5899d5c5e619fda5fa86e14795a835f473ca284c"
   version = "v0.17.0"
+
+[[projects]]
+  digest = "1:ea40c24cdbacd054a6ae9de03e62c5f252479b96c716375aace5c120d68647c8"
+  name = "github.com/hashicorp/hcl"
+  packages = [
+    ".",
+    "hcl/ast",
+    "hcl/parser",
+    "hcl/scanner",
+    "hcl/strconv",
+    "hcl/token",
+    "json/parser",
+    "json/scanner",
+    "json/token",
+  ]
+  pruneopts = "UT"
+  revision = "8cb6e5b959231cc1119e43259c4a608f9c51a241"
+  version = "v1.0.0"
+
+[[projects]]
+  digest = "1:89afca4ec8130e6ba5f4005ac696b689bc850098a794f70f76e7f25951edce74"
+  name = "github.com/jinzhu/gorm"
+  packages = [
+    ".",
+    "dialects/mssql",
+  ]
+  pruneopts = "UT"
+  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
+  version = "v1.9.1"
+
+[[projects]]
+  branch = "master"
+  digest = "1:fd97437fbb6b7dce04132cf06775bd258cce305c44add58eb55ca86c6c325160"
+  name = "github.com/jinzhu/inflection"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
   digest = "1:9acadb9c8c15b8a9f635a7fa960c9a522b001a3919bc03df92ac26c372476aff"
@@ -130,6 +186,14 @@
 
 [[projects]]
   branch = "master"
+  digest = "1:6d8c5fe46f5ee421c58339e323e83b2ba2532ea48b0a0d184a81f45db95228a1"
+  name = "github.com/paked/configure"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "5203c690d95a533ea7ff84abbaf1c8f3b93abdbe"
+
+[[projects]]
+  branch = "master"
   digest = "1:912cebbd77238d5cf94af066379c822f86c2c2fccd658ff5dbfbc425770ec95b"
   name = "github.com/swaggo/echo-swagger"
   packages = ["."]
@@ -170,11 +234,12 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:dedf20eb0d3e8d6aa8a4d3d2fae248222b688ed528201995e152cc497899123c"
+  digest = "1:21fff5e6df3eecd602ee8f53b0df0e19ecdfbe601e8e1baec628a4189b34d491"
   name = "golang.org/x/crypto"
   packages = [
     "acme",
     "acme/autocert",
+    "md4",
   ]
   pruneopts = "UT"
   revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
@@ -238,8 +303,11 @@
   input-imports = [
     "github.com/alecthomas/template",
     "github.com/foolin/echo-template",
+    "github.com/jinzhu/gorm",
+    "github.com/jinzhu/gorm/dialects/mssql",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",
+    "github.com/paked/configure",
     "github.com/swaggo/echo-swagger",
     "github.com/swaggo/swag",
   ]
