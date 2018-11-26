@@ -38,4 +38,4 @@ EXPOSE 8888
 WORKDIR /app
 
 ENTRYPOINT ["/app/config-store"]
-CMD ["8888"]
+CMD ["--port=8888"]
