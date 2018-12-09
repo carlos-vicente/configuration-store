@@ -1,7 +1,6 @@
-var gulp = require('gulp');
+const gulp = require('gulp');
 
-// This task makes sure that when running gul
-gulp.task('copyDependencies', function(){
+function copyDependencies(cb){
     // scripts
     gulp.src('node_modules/jquery/dist/*.js').pipe(gulp.dest('dist/lib/jquery'));
     gulp.src('node_modules/materialize-css/dist/js/*.*').pipe(gulp.dest('dist/lib/materialize/'));
@@ -21,4 +20,8 @@ gulp.task('copyDependencies', function(){
     gulp.src('node_modules/swagger-ui-themes/themes/3.x/*.*').pipe(gulp.dest('dist/styles/swagger/themes'));
     gulp.src('node_modules/jsoneditor/dist/*.css').pipe(gulp.dest('dist/styles/jsoneditor'));
     gulp.src('node_modules/jsoneditor/dist/img/*.*').pipe(gulp.dest('dist/styles/jsoneditor/img'));
-});
+
+    cb();
+}
+
+gulp.task('copyDependencies', copyDependencies);

@@ -6,8 +6,8 @@
   name = "cloud.google.com/go"
   packages = ["civil"]
   pruneopts = "UT"
-  revision = "74b12019e2aa53ec27882158f59192d7cd6d1998"
-  version = "v0.33.1"
+  revision = "0ebda48a7f143b1cce9eb37a8c1106ac762a3430"
+  version = "v0.34.0"
 
 [[projects]]
   digest = "1:d1665c44bd5db19aaee18d1b6233c99b0b9a986e8bccb24ef54747547a48027f"
@@ -69,7 +69,7 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "ef5f0afec364d3b9396b7b77b43dbe26bf1f8004"
-  version = "v0.17.0"
+  version = "v0.17.2"
 
 [[projects]]
   digest = "1:81210e0af657a0fb3638932ec68e645236bceefa4c839823db0c4d918f080895"
@@ -77,7 +77,7 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "8483a886a90412cd6858df4ea3483dce9c8e35a3"
-  version = "v0.17.0"
+  version = "v0.17.2"
 
 [[projects]]
   digest = "1:394fed5c0425fe01da3a34078adaa1682e4deaea6e5d232dde25c4034004c151"
@@ -85,7 +85,7 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "5bae59e25b21498baea7f9d46e9c147ec106a42e"
-  version = "v0.17.0"
+  version = "v0.17.2"
 
 [[projects]]
   digest = "1:32f3d2e7f343de7263c550d696fb8a64d3c49d8df16b1ddfc8e80e1e4b3233ce"
@@ -93,7 +93,7 @@
   packages = ["."]
   pruneopts = "UT"
   revision = "5899d5c5e619fda5fa86e14795a835f473ca284c"
-  version = "v0.17.0"
+  version = "v0.17.2"
 
 [[projects]]
   digest = "1:ea40c24cdbacd054a6ae9de03e62c5f252479b96c716375aace5c120d68647c8"
@@ -114,15 +114,15 @@
   version = "v1.0.0"
 
 [[projects]]
-  digest = "1:89afca4ec8130e6ba5f4005ac696b689bc850098a794f70f76e7f25951edce74"
+  digest = "1:7b19935846f3c36ff2200fd275dd3f932f10c2c88f9a3a27a4ec1a0ba0246677"
   name = "github.com/jinzhu/gorm"
   packages = [
     ".",
     "dialects/mssql",
   ]
   pruneopts = "UT"
-  revision = "6ed508ec6a4ecb3531899a69cbc746ccf65a4166"
-  version = "v1.9.1"
+  revision = "472c70caa40267cb89fd8facb07fe6454b578626"
+  version = "v1.9.2"
 
 [[projects]]
   branch = "master"
@@ -133,18 +133,18 @@
   revision = "04140366298a54a039076d798123ffa108fff46c"
 
 [[projects]]
-  digest = "1:9acadb9c8c15b8a9f635a7fa960c9a522b001a3919bc03df92ac26c372476aff"
+  digest = "1:73c5062c19c602b4d279b581b0ee3ffe43f61bfc37e91885b89190154bb5e909"
   name = "github.com/labstack/echo"
   packages = [
     ".",
     "middleware",
   ]
   pruneopts = "UT"
-  revision = "1abaa3049251d17932e4313c2d6165073fd07fd8"
-  version = "v3.3.6"
+  revision = "c7eb8da9ec73e78c4f38413f3f835e0cd52c7d72"
+  version = "v3.3.8"
 
 [[projects]]
-  digest = "1:568171fc14a3d819b112c3e219d351ea7b05e8dad7935c4168c6b3373244a686"
+  digest = "1:764bce605f1c70823a567ac3205a03e6b7f375ca747d8820fded0b0abddda802"
   name = "github.com/labstack/gommon"
   packages = [
     "bytes",
@@ -153,8 +153,8 @@
     "random",
   ]
   pruneopts = "UT"
-  revision = "2a618302b929cc20862dda3aa6f02f64dbe740dd"
-  version = "v0.2.7"
+  revision = "7fd9f68ece0bcb1a905fac8f1549f0083f71c51b"
+  version = "v0.2.8"
 
 [[projects]]
   branch = "master"
@@ -193,6 +193,14 @@
   revision = "5203c690d95a533ea7ff84abbaf1c8f3b93abdbe"
 
 [[projects]]
+  digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   branch = "master"
   digest = "1:912cebbd77238d5cf94af066379c822f86c2c2fccd658ff5dbfbc425770ec95b"
   name = "github.com/swaggo/echo-swagger"
@@ -209,12 +217,12 @@
   revision = "49c8a91ea3fafab040bb3da430dbd76d67448bd6"
 
 [[projects]]
-  digest = "1:f7e7c41b7c708912d83dc5e4acd1392402733e18f5a6aebbe217e0f9e10057f2"
+  digest = "1:a7960ad94d8f1eb8ea1582b5bca5ac11bc938f6a9652a83d4f1806ff861b5372"
   name = "github.com/swaggo/swag"
   packages = ["."]
   pruneopts = "UT"
-  revision = "db2ee6c14a35e4fca95b0d75054296ef2b699050"
-  version = "v1.3.2"
+  revision = "e8c6d12e2c12a510070257ad5f2cecd937cbe76a"
+  version = "v1.4.0"
 
 [[projects]]
   digest = "1:c468422f334a6b46a19448ad59aaffdfc0a36b08fdcc1c749a0b29b6453d7e59"
@@ -234,7 +242,7 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:21fff5e6df3eecd602ee8f53b0df0e19ecdfbe601e8e1baec628a4189b34d491"
+  digest = "1:76622cc1b630193d4370a3d940a78cba0e530eda56afc5600ca09dfd1bb34218"
   name = "golang.org/x/crypto"
   packages = [
     "acme",
@@ -242,11 +250,11 @@
     "md4",
   ]
   pruneopts = "UT"
-  revision = "0c41d7ab0a0ee717d4590a44bcb987dfd9e183eb"
+  revision = "505ab145d0a99da450461ae2c1a9f6cd10d1f447"
 
 [[projects]]
   branch = "master"
-  digest = "1:80b14d5e8dc8ecc95154e3747028cfa3be6d590a85a60d0a633203419bbc9a19"
+  digest = "1:b4aa41e0234714b5a30f2c69ea9bf56ecdbc8d269fbe71ab05911e45782b172f"
   name = "golang.org/x/net"
   packages = [
     "context",
@@ -255,15 +263,15 @@
     "webdav/internal/xml",
   ]
   pruneopts = "UT"
-  revision = "04a2e542c03f1d053ab3e4d6e5abcd4b66e2be8e"
+  revision = "610586996380ceef02dd726cc09df7e00a3f8e56"
 
 [[projects]]
   branch = "master"
-  digest = "1:0a40b0bdd57a93e741d8557465be3a2edeec408e9b6399586ad65bbe8e355796"
+  digest = "1:9399de11945e643d7131cf070736122b76800d92d57a80494bd9a4e73e6979f3"
   name = "golang.org/x/sys"
   packages = ["unix"]
   pruneopts = "UT"
-  revision = "fa43e7bc11baaae89f3f902b2b4d832b68234844"
+  revision = "70b957f3b65e069b4930ea94e2721eefa0f8f695"
 
 [[projects]]
   digest = "1:0c56024909189aee3364b7f21a95a27459f718aa7c199a5c111c36cfffd9eaef"
@@ -290,12 +298,25 @@
   version = "v0.3.0"
 
 [[projects]]
-  digest = "1:342378ac4dcb378a5448dd723f0784ae519383532f5e70ade24132c4c8693202"
+  branch = "master"
+  digest = "1:a99b52ff45e7b215b683682e89a52f6598869684a8917d0a7f8136cb16eab553"
+  name = "golang.org/x/tools"
+  packages = [
+    "go/ast/astutil",
+    "go/buildutil",
+    "go/internal/cgo",
+    "go/loader",
+  ]
+  pruneopts = "UT"
+  revision = "4c874b978acba4ecd4a257d3bb8829dd5de17be8"
+
+[[projects]]
+  digest = "1:4d2e5a73dc1500038e504a8d78b986630e3626dc027bc030ba5c75da257cdb96"
   name = "gopkg.in/yaml.v2"
   packages = ["."]
   pruneopts = "UT"
-  revision = "5420a8b6744d3b0345ab293f6fcba19c978f1183"
-  version = "v2.2.1"
+  revision = "51d6538a90f86fe93ac480b35f37b2be17fef232"
+  version = "v2.2.2"
 
 [solve-meta]
   analyzer-name = "dep"
@@ -303,7 +324,6 @@
   input-imports = [
     "github.com/alecthomas/template",
     "github.com/foolin/echo-template",
-    "github.com/jinzhu/gorm",
     "github.com/jinzhu/gorm/dialects/mssql",
     "github.com/labstack/echo",
     "github.com/labstack/echo/middleware",

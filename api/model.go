@@ -5,5 +5,6 @@ type Project struct {
 }
 
 type Key struct {
+	Id string `json:"id"`
 	Name string `json:"name"`
 }

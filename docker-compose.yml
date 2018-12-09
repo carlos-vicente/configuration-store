@@ -1,0 +1,37 @@
+version: '3'
+services:
+  sql:
+    image: mcr.microsoft.com/mssql/server:2017-latest-ubuntu
+    container_name: sql
+    ports:
+    - 1433:1433
+    environment:
+    - ACCEPT_EULA=Y
+    - SA_PASSWORD=P@ssw0rd
+  database-init:
+    image: mcr.microsoft.com/mssql-tools
+    container_name: db
+    command: /bin/bash -c '/opt/mssql-tools/bin/sqlcmd -l 60 -S sql -U sa -P $${SA_PASSWORD} -d tempdb -Q "CREATE DATABASE $${DATABASE}" && echo "asc" > /var/output/sql.txt'
+    environment:
+    - SA_PASSWORD=P@ssw0rd
+    - DATABASE=ConfigurationDatabase
+    volumes:
+    - data-volume:/var/output
+    depends_on:
+    - sql
+  config-store:
+    build: .
+    container_name: config-store
+    image: config-store
+    ports:
+    - 80:80
+    environment:
+    - CONNECTION_STRING=sqlserver://sa:P@ssw0rd@sql:1433?database=ConfigurationDatabase
+    entrypoint: ["dockerize", "-timeout", "30s", "-wait", "file:///var/output/sql.txt", "/app/config-store", "--port=80"]
+    depends_on:
+    - sql
+    volumes:
+    - data-volume:/var/output
+
+volumes:
+  data-volume:

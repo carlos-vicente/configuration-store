@@ -1,5 +1,7 @@
 version: 0.1.{build}
 
+skip_tags: true
+
 environment:
   DOCKER_USER:
     secure: 6rLbbyBh1nQI1gXYMVTBsA==
@@ -15,7 +17,7 @@ services:
 - docker
 
 build_script:
-- ps: docker build -t carlosvicente/configuration-store .
+- ps: docker build -t $env:DOCKER_USER/configuration-store .
 
 test: off
 

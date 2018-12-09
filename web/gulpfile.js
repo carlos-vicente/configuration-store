@@ -10,7 +10,19 @@
   when you run `gulp`.
 */
 
-var requireDir = require('require-dir');
+'use strict';
 
-// Require all tasks in gulp/tasks, including subfolders
-requireDir('./gulp/tasks', { recurse: true });
+const gulp = require('gulp');
+const HubRegistry = require('gulp-hub');
+
+/* load some files into the registry */
+const hub = new HubRegistry([
+    'gulp/tasks/buildApp.js',
+    'gulp/tasks/buildCss.js',
+    'gulp/tasks/copyDependencies.js']);
+
+/* tell gulp to use the tasks just loaded */
+gulp.registry(hub);
+
+
+gulp.task('default', gulp.series('copyDependencies', 'buildCss', 'buildApp'));
