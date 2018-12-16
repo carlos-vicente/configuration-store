@@ -34,10 +34,6 @@
   version = "3.3.6"
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/swaggo/echo-swagger"
-
-[[constraint]]
   name = "github.com/swaggo/swag"
   version = "1.3.2"
 

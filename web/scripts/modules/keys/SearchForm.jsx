@@ -27,7 +27,7 @@ class SearchForm extends React.Component{
     componentWillUnmount() {
         jQuery(this.searchContainer)
             .find('.tooltipped')
-            .tooltip('remove');
+            .tooltip('destroy');
     }
 
     _openForm(callback){

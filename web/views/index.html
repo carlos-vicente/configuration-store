@@ -1,13 +1,21 @@
-<html>
-    <head>
-        <title>some title</title>
-    </head>
-    <body>
-        <h1>Header</h1>
+{{define "content"}}
 
-        <script>
+    <link type="text/css" rel="stylesheet" href="/static/styles/app/pages/ConfigurationList.css" />
+
+    <script>
+        require.config({
+            baseUrl: '../static'
+        });
+
+        requirejs(['app/pages/ConfigurationListPage'], function (configKeyPage)
+        {
             var data = {{.}};
-            console.log(data);
-        </script>
-    </body>
-</html>
+
+            var element = React.createElement(configKeyPage.default, data);
+            var rootElement = document.getElementById('root');
+
+            ReactDOM.render(element, rootElement);
+        });
+    </script>
+
+{{end}}

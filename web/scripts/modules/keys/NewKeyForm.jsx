@@ -17,13 +17,13 @@ class NewKeyForm extends React.Component {
         this._saveKey = this._saveKey.bind(this);
         this._handleInputChange = this._handleInputChange.bind(this);
         this._changeInputValue = this._changeInputValue.bind(this);
-        this._handleSelectChange = this._handleSelectChange.bind(this);
+        //this._handleSelectChange = this._handleSelectChange.bind(this);
     }
 
     componentDidMount() {
         jQuery(this.formContainer)
             .find('select')
-            .material_select(this._handleSelectChange);
+            .formSelect();
 
         jQuery(this.formContainer)
             .find('.tooltipped')
@@ -33,7 +33,7 @@ class NewKeyForm extends React.Component {
     componentWillUnmount() {
         jQuery(this.formContainer)
             .find('select')
-            .material_select('destroy');
+            .formSelect('destroy');
 
         jQuery(this.formContainer)
             .find('.tooltipped')
@@ -70,11 +70,11 @@ class NewKeyForm extends React.Component {
         });
     }
 
-    _handleSelectChange(){
+    /*_handleSelectChange(){
         // currently this is an hack, as this can only handle valueType select
         var value = jQuery(this.formContainer).find('select#valueType').val();
         this._changeInputValue('valueType', value);
-    }
+    }*/
 
     _handleInputChange(event) {
         const target = event.target;

@@ -57,7 +57,7 @@ func main() {
 		Extension:		echotemplate.DefaultConfig.Extension,
 		Funcs:			echotemplate.DefaultConfig.Funcs,
 		Partials:		echotemplate.DefaultConfig.Partials,
-		Master:			"web/layouts/master",
+		Master:			"layouts/master",
 		Root:			"web/views",
 	}
 	e.Renderer = echotemplate.New(templateConfig)

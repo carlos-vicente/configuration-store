@@ -4,22 +4,47 @@ import (
 	"github.com/labstack/echo"
 	"github.com/swaggo/swag"
 	"net/http"
+	"time"
 )
 
-type Project struct {
-	Name string `json:"name"`
+type Nav struct {
+	Rel string `json:"rel"`
+	Link string `json:"link"`
+} 
+
+type ConfigKeyListItem struct {
+	Key string			`json:"key"`
+	Type string			`json:"type"`
+	CreatedAt time.Time	`json:"createdAt"`
+	Links []Nav			`json:"links"`
+}
+
+type ConfigKeyList struct {
+	Title string
+	ConfigKeys []ConfigKeyListItem `json:"configKeys"`
 }
 
 // Register registers all routes on the base url
 func Register(e *echo.Echo, base string) {
 	e.GET(base + "/", func(context echo.Context) error {
-		data := &Project{
-			"some project",
+
+		data := &ConfigKeyList{
+			Title: "Configuration keys",
+			ConfigKeys: []ConfigKeyListItem{
+				{
+					Key:"key",
+					Type:"String",
+					CreatedAt: time.Now(),
+					Links: []Nav{
+						{"self", "/key/key"},
+					},
+				},
+			},
 		}
 
 		return context.Render(
 			http.StatusOK,
-			"index.html",
+			"index",
 			data)
 	})
 }
