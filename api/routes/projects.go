@@ -2,7 +2,7 @@ package routes
 
 import (
 	"configuration-store/api"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
@@ -11,12 +11,11 @@ import (
 // @Description Gets all configured projects from configuration storage
 // @Produce  json
 // @Success 200 {object} api.Project[]
-// @Failure 500 {object} echo.HTTPError
 // @Router /projects [get]
 func GetProjects(c echo.Context) error {
 	return c.JSON(http.StatusOK, []api.Project{
-		{"project 1"},
-		{"project 2"},
+		{Name: "project 1"},
+		{Name: "project 2"},
 	})
 }
 
@@ -25,7 +24,6 @@ func GetProjects(c echo.Context) error {
 // @Description Gets the identified project from configuration storage
 // @Produce json
 // @Success 200 {object} api.Project
-// @Failure 500 {object} echo.HTTPError
 // @Param id path string true "projects identifier" default(A)
 // @Router /projects/{id} [get]
 func GetProject(c echo.Context) error {

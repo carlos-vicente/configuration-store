@@ -1,17 +1,17 @@
 # build go app
-FROM golang:1.11.2-stretch as appBuilder
+FROM golang:1.13-stretch as appBuilder
 
 WORKDIR /workspace/src/configuration-store
 
 ADD . /workspace/src/configuration-store
 
-ENV GOPATH="$GOPATH:/workspace"
+#ENV GOPATH="$GOPATH:/workspace"
 
 RUN \
-    go get -u github.com/golang/dep/cmd/dep \
-    && dep ensure -vendor-only \
-    && go test \
-    && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store .
+    #go get -u github.com/golang/dep/cmd/dep && \
+    #dep ensure -vendor-only && \
+    go test && \
+    CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /workspace/src/configuration-store/output/config-store .
 
 
 # build react app

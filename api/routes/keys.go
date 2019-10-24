@@ -2,7 +2,7 @@ package routes
 
 import (
 	"configuration-store/services"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 	"net/http"
 )
 
@@ -11,7 +11,6 @@ import (
 // @Description Gets all configured project's keys from configuration storage
 // @Produce json
 // @Success 200 {object} api.Key[]
-// @Failure 500 {object} echo.HTTPError
 // @Router /keys [get]
 func GetProjectKeys(service services.ConfigurationKeys) func(c echo.Context) error {
 	return func(c echo.Context) error{
@@ -26,7 +25,6 @@ func GetProjectKeys(service services.ConfigurationKeys) func(c echo.Context) err
 // @Description Gets a specific configured project's key from configuration storage
 // @Produce json
 // @Success 200 {object} api.Key
-// @Failure 500 {object} echo.HTTPError
 // @Param id path string true "key identifier" default(A)
 // @Router /keys/{id} [get]
 func GetProjectKey(service services.ConfigurationKeys) func(c echo.Context) error {

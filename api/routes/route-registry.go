@@ -2,7 +2,7 @@ package routes
 
 import (
 	"configuration-store/services"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // Register registers all routes on the base url

@@ -1,0 +1,86 @@
+basePath: /api/v1
+definitions:
+  api.Key:
+    properties:
+      id:
+        type: string
+      name:
+        type: string
+    type: object
+  api.Project:
+    properties:
+      name:
+        type: string
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is configuration store server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Configuration store
+  version: "1.0"
+paths:
+  /keys:
+    get:
+      description: Gets all configured project's keys from configuration storage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Key'
+      summary: Gets all project's keys
+  /keys/{id}:
+    get:
+      description: Gets a specific configured project's key from configuration storage
+      parameters:
+      - default: A
+        description: key identifier
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Key'
+      summary: Gets a project's specific key
+  /projects:
+    get:
+      description: Gets all configured projects from configuration storage
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Project'
+      summary: Gets all projects
+  /projects/{id}:
+    get:
+      description: Gets the identified project from configuration storage
+      parameters:
+      - default: A
+        description: projects identifier
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.Project'
+      summary: Get the identified project
+swagger: "2.0"

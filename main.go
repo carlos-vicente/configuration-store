@@ -6,10 +6,11 @@ import (
 	"configuration-store/services"
 	web_routes "configuration-store/web/routes"
 	"fmt"
-	"github.com/foolin/echo-template"
+	"github.com/foolin/goview"
+	"github.com/foolin/goview/supports/echoview-v4"
 	_ "github.com/jinzhu/gorm/dialects/mssql"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 	"github.com/paked/configure"
 )
 
@@ -17,7 +18,7 @@ import (
 var (
 	conf = configure.New()
 	port = conf.Int("port", 8080, "The port to listen for requests")
-	connectionString = conf.String("connection-string", "sqlserver://sa:yourStrong(!)Password@192.168.137.7:1433?database=cenas", "Configuration store connection string")
+	connectionString = conf.String("connection-string", "sqlserver://sa:P@ssw0rd@192.168.137.7:1433?database=ConfigurationDatabase", "Configuration store connection string")
 )
 
 func init() {
@@ -51,22 +52,22 @@ func main() {
 	e.Use(middleware.CSRF())
 	//e.Use(middleware.Secure()) // breaks swagger ui integration -> find out why
 
-	templateConfig := echotemplate.TemplateConfig{
-		Delims:			echotemplate.DefaultConfig.Delims,
-		DisableCache:	echotemplate.DefaultConfig.DisableCache,
-		Extension:		echotemplate.DefaultConfig.Extension,
-		Funcs:			echotemplate.DefaultConfig.Funcs,
-		Partials:		echotemplate.DefaultConfig.Partials,
-		Master:			"layouts/master",
-		Root:			"web/views",
+	viewConfig := goview.Config{
+		Root:         "web/views",
+		Extension:    goview.DefaultConfig.Extension,
+		Master:       goview.DefaultConfig.Master,
+		Partials:     goview.DefaultConfig.Partials,
+		Funcs:        goview.DefaultConfig.Funcs,
+		DisableCache: goview.DefaultConfig.DisableCache,
+		Delims:       goview.DefaultConfig.Delims,
 	}
-	e.Renderer = echotemplate.New(templateConfig)
+	e.Renderer = echoview.New(viewConfig)
 
 	conf.Parse()
 
-	fmt.Printf("Connecting to %s", *connectionString)
+	/*fmt.Printf("Connecting to %s", *connectionString)
 
-	/*db, err := gorm.Open("mssql", *connectionString) //dereference pointer
+	db, err := gorm.Open("mssql", *connectionString) //dereference pointer
 	if err != nil {
 		e.Logger.Fatal("failed to connect database")
 	}
@@ -74,12 +75,12 @@ func main() {
 
 	db.AutoMigrate(&api.Project{})*/
 
-	configKeysService := services.ConfigurationKeyService{
+	configKeysService := &services.ConfigurationKeyService{
 		DbConnection: *connectionString,
 	}
 
-	api_routes.Register(e, "/api/v1", &configKeysService)
-	web_routes.Register(e, "")
+	api_routes.Register(e, "/api/v1", configKeysService)
+	//web_routes.Register(e, "")
 	web_routes.RegisterSwaggerUi(e, "")
 	e.Static("/static", "web/dist")
 
